@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!-- JGUYET MAVEN POM FILE --> 
+  
+  <!-- ########################################################################## -->
+  <!-- MAVEN PROJECT HDR -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>Swingy</groupId>
+  <artifactId>Swingy</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <!-- ########################################################################## -->
+  <!-- UTF-8 CONVERTION -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <!-- ########################################################################## -->
+  <!-- BUILD SECTION -->
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <!-- ###################################################################### -->
+      <!-- START PLUGIN COMPILER -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+      </plugin>
+      <!-- END PLUGIN COMPILER -->
+      <!-- ###################################################################### -->
+      <!-- START PLUGIN MANIFEST -->
+      <plugin>
+      <!-- dependencie of plugin -->
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.0.2</version>
+      <configuration>
+        <archive>
+          <manifest>
+            <addClasspath>true</addClasspath>
+            <classpathPrefix>lib/</classpathPrefix>
+            <mainClass>swingy.App</mainClass>
+          </manifest>
+        </archive>
+      </configuration>
+    </plugin>
+    <!-- END PLUGIN MANIFEST -->
+    <!-- ######################################################################## -->
+    </plugins>
+  </build>
+  <!-- END BUILD SECTION -->
+  <!-- ########################################################################## -->
+
+</project>
