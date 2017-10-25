@@ -4,8 +4,8 @@
   <!-- ########################################################################## -->
   <!-- MAVEN PROJECT HDR -->
   <modelVersion>4.0.0</modelVersion>
-  <groupId>Swingy</groupId>
-  <artifactId>Swingy</artifactId>
+  <groupId>swingy</groupId>
+  <artifactId>swingy</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   
   <!-- ########################################################################## -->
@@ -13,6 +13,18 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  
+  <!-- ########################################################################## -->
+  <!-- LIBRARIES DEPENDENCIES -->
+  <dependencies>
+  	<dependency>
+	    <groupId>org.eclipse.jdt</groupId>
+	    <artifactId>org.eclipse.jdt.annotation</artifactId>
+	    <version>2.1.100</version>
+	</dependency>
+  </dependencies>
+  <!-- END LIBRARIES DEPENDENCIES -->
+  <!-- ########################################################################## -->
   
   <!-- ########################################################################## -->
   <!-- BUILD SECTION -->
@@ -24,16 +36,23 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.5.1</version>
+        <configuration>
+          <!-- JAVA COMPILANCE VERSION -->
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
       </plugin>
       <!-- END PLUGIN COMPILER -->
       <!-- ###################################################################### -->
-      <!-- START PLUGIN MANIFEST -->
+      <!-- START PLUGIN JAR -->
       <plugin>
-      <!-- dependencie of plugin -->
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-jar-plugin</artifactId>
       <version>3.0.2</version>
       <configuration>
+      	<!-- jar file name -->
+      	<finalName>${project.name}</finalName>
+      	<!-- manifest settings -->
         <archive>
           <manifest>
             <addClasspath>true</addClasspath>
@@ -43,7 +62,7 @@
         </archive>
       </configuration>
     </plugin>
-    <!-- END PLUGIN MANIFEST -->
+    <!-- END PLUGIN JAR -->
     <!-- ######################################################################## -->
     </plugins>
   </build>
