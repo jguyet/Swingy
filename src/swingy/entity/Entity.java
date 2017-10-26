@@ -1,6 +1,9 @@
 package swingy.entity;
 
-import swingy.entity.statistics.Experience;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import swingy.entity.statistics.Statistics;
 import swingy.entity.transform.Transform;
 import swingy.math.Vector2;
@@ -13,13 +16,18 @@ public abstract class Entity implements ISwingyModel {
 	 */
 	public Transform	transform;
 	public Statistics	stats;
+	public byte			direction = 1;
 	
 	/**
 	 * PRIVATE VARS
 	 */
+	@NotNull
+	@Size(max=50)
 	private String		name;
-	private int			level;
-	private long		exp;
+	@Min(value=1)
+	private int			level = 1;
+	@Min(value=0)
+	private long		exp = 0;
 	
 	/**
 	 * Entity constructor
@@ -30,7 +38,7 @@ public abstract class Entity implements ISwingyModel {
 	public Entity(String name, Statistics statistics, Vector2 position) {
 		this.name = name;
 		this.stats = statistics;
-		this.transform = new Transform(position);
+		this.transform = new Transform(this, position);
 	}
 
 	public String getName() {
@@ -59,11 +67,10 @@ public abstract class Entity implements ISwingyModel {
 	
 	public boolean addExp(long exp) {
 		boolean	levelUp		= false;
-		int		newlevel	= Experience.getLevelByExp(this.exp + exp);
 		
-		if (newlevel > this.level) {
+		while ((this.exp + exp) > (this.level*1000)+(Math.sqrt(this.level - 1)*450)) {
+			this.level++;
 			levelUp = true;
-			this.level = newlevel;
 		}
 		this.exp = this.exp + exp;
 		return (levelUp);

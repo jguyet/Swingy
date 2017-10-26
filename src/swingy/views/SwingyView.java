@@ -58,7 +58,9 @@ public class SwingyView extends JPanel{
 		
 		g.clearRect(0, 0, this.win.getWidth(), this.win.getHeight());
 		
-		for (ISwingyModel model : models) {
+		ArrayList<ISwingyModel> tmp = new ArrayList<ISwingyModel>(models);
+		
+		for (ISwingyModel model : tmp) {
 			model.paint(g);
 		}
 		
