@@ -65,14 +65,16 @@ public class CrazyHero extends Entity {
 			animation[2] = 14;
 			break ;
 		}
-		System.out.println(this.transform.direction);
 		
 		if (animid >= 3)
 			animid = 0;
 		
 		sprite.posid = animation[animid];
 		
-		sprite.paint(g, this.transform.position.x, this.transform.position.y);
+		int px = this.transform.position.x + (sprite.getWidth() / 2);
+		int py = this.transform.position.y + (sprite.getHeight() - Sprite.grounds.getHeight()) + (Sprite.grounds.getHeight() / 2);
+		
+		sprite.paint(g, px, py);
 		if (!(lastpos.x == this.transform.position.x && lastpos.y == this.transform.position.y))
 			animid++;
 		lastpos = new Vector2(this.transform.position.x, this.transform.position.y);

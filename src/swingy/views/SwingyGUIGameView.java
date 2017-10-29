@@ -2,6 +2,8 @@ package swingy.views;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics2D;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -9,8 +11,9 @@ import java.util.Observer;
 import javax.swing.JPanel;
 
 import swingy.model.ISwingyModel;
+import swingy.views.events.ResponseListener;
 
-public class SwingyView extends JPanel{
+public class SwingyGUIGameView extends JPanel implements IView{
 
 	/**
 	 * VERSION
@@ -20,33 +23,43 @@ public class SwingyView extends JPanel{
 	private Window win;
 	private ArrayList<ISwingyModel> models = new ArrayList<ISwingyModel>();
 	
-	public SwingyView(Window win) {
+	public SwingyGUIGameView(Window win) {
 		this.win = win;
 		BorderLayout b = new BorderLayout();
 		this.setLayout(b);
 	}
 	
+	@Override
 	public void init() {
+		this.win.add(this);
 		this.setVisible(false);
 		this.setVisible(true);
 	}
 	
-	public Window getWindow() {
-		return (this.win);
+	@Override
+	public void destroy() {
+		this.win.remove(this);
+		this.win.setVisible(false);
+		this.win.setVisible(true);
 	}
 	
+	@Override
 	public void update() {
-		
-		this.repaint();
-		
+		this.repaint();	
 	}
 	
+	@Override
 	public void addModel(ISwingyModel model) {
 		models.add(model);
 	}
 	
+	@Override
 	public void removeModel(ISwingyModel model) {
 		models.remove(model);
+	}
+	
+	public Window getWindow() {
+		return (this.win);
 	}
 	
 	/**
@@ -63,6 +76,34 @@ public class SwingyView extends JPanel{
 		for (ISwingyModel model : tmp) {
 			model.paint(g);
 		}
+		
+	}
+	
+	@Override
+	public void addKeyListener(KeyListener l) {
+		this.win.addKeyListener(l);
+	}
+
+	@Override
+	public void addMouseListener(MouseListener m) {
+		this.win.addMouseListener(m);
+	}
+
+	@Override
+	public void waitResponse(ResponseListener rep) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void println(String txt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void print(String txt) {
+		// TODO Auto-generated method stub
 		
 	}
 

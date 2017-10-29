@@ -6,19 +6,25 @@ import swingy.controller.loop.LoopMotor;
 import swingy.controller.loop.MotorGraphics;
 import swingy.entity.CrazyHero;
 import swingy.entity.Entity;
+import swingy.enums.EModule;
 import swingy.exceptions.ModuleException;
 import swingy.math.Vector2;
 import swingy.module.IModule;
 import swingy.module.factory.ModuleFactory;
 import swingy.ressources.Sprite;
-import swingy.views.SwingyView;
+import swingy.views.IView;
+import swingy.views.SwingyConsoleView;
+import swingy.views.SwingyGUIGameView;
 import swingy.views.Window;
+import swingy.views.factory.ViewFactory;
 import swingy.world.WorldMap;
 import swingy.world.factory.WorldMapFactory;
 
 public class App {
 	
 	public static final String			TITLE = "Swingy";
+	public static final int				WIDTH = 1000;
+	public static final int				HEIGHT = 1000;
 	
 	public static WorldMap				worldMap = null;
 	
@@ -31,8 +37,8 @@ public class App {
 	public static Window				window = null;
 	/*********************************************************/
 	/**                        VIEWS                        **/
-	public static SwingyView			mainmenu = null;
-	public static SwingyView			gameview = null;
+	public static IView					mainmenuview = null;
+	public static IView					gameview = null;
 	/*********************************************************/
 	/**                     CONTROLLERS                     **/
 	public static WorldMapController	worldMapController = null;
@@ -77,8 +83,10 @@ public class App {
 	 * loading graphics interfaces
 	 */
 	public static void loadInterface() {
-		window		= new Window(TITLE, 1000, 1000);
-		gameview	= new SwingyView(window);
+		
+		window		= ViewFactory.loadWindow(modelInterface.getinstance(), TITLE, 1000, 1000);
+		gameview	= ViewFactory.newGameView(modelInterface.getinstance());
+		mainmenuview	= ViewFactory.newMainMenu(modelInterface.getinstance());
 	}
 	
 	/**
@@ -93,7 +101,6 @@ public class App {
 	 */
 	public static void loadWorldMap() {
 		worldMap	= WorldMapFactory.generateWorldMap(15);
-		
 		gameview.addModel(worldMap);
 	}
 	
@@ -102,7 +109,6 @@ public class App {
 	 */
 	public static void loopApp() {
 		//init gameview
-		window.add(gameview);
 		gameview.init();
 		
 		Entity e = new CrazyHero("tmp", new Vector2(0, 0));

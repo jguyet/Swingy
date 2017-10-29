@@ -72,6 +72,9 @@ public class WorldMap implements ISwingyModel {
 				int px = startx + (x * scale);
 				int py = starty + (y * scale);
 				
+				px = px - (grounds.getWidth() / 2);
+				py = py - (grounds.getHeight() / 2);
+				
 				grounds.posid = this.ground[y][x].groundId;
 				grounds.paint(g2, px, py);
 			}

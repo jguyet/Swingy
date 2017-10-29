@@ -131,7 +131,6 @@ public class Sprite{
 		Graphics2D g2 = (Graphics2D) g;
 		
 		update();
-		
 		g2.drawImage(img, posx, posy, posx + d2.x, posy + d2.y, s1.x, s1.y, s2.x, s2.y, null);
 	}
 }

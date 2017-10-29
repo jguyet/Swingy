@@ -7,16 +7,19 @@ import java.util.Map;
 
 import swingy.App;
 import swingy.entity.Entity;
+import swingy.enums.EModule;
 import swingy.math.Vector2;
+import swingy.views.SwingyConsoleView;
+import swingy.views.events.ResponseListener;
 
-public class CharacterController implements ISwingyController, KeyListener {
+public class CharacterController implements ISwingyController, KeyListener, ResponseListener {
 
 	private Entity					entity;
 	private Map<Integer, KeyEvent>	keysDown = new HashMap<Integer, KeyEvent>();
 	
 	public CharacterController(Entity e) {
 		this.entity = e;
-		App.window.addKeyListener(this);
+		App.gameview.addKeyListener(this);
 	}
 	
 	//##################################################################
@@ -27,27 +30,36 @@ public class CharacterController implements ISwingyController, KeyListener {
 	public void control() {
 		//control entity movements and modif
 		
+		//wait console response
+		App.gameview.print("Choise direction (North/East/South/West) : ");
+		App.gameview.waitResponse(this);
+		mouseCharacter();
+		App.gameview.println("Character at position x: " + entity.transform.position.x + " y :" + entity.transform.position.y);
+	}
+	
+	private void mouseCharacter() {
 		Vector2 tmp = new Vector2(entity.transform.position.x, entity.transform.position.y);
 		
 		if (keysDown.containsKey(KeyEvent.VK_RIGHT)
 				|| keysDown.containsKey(KeyEvent.VK_D)) {
-			tmp.x++;
+			tmp.x += 30;
 		}
 		if (keysDown.containsKey(KeyEvent.VK_LEFT)
 				|| keysDown.containsKey(KeyEvent.VK_A)) {
-			tmp.x--;
+			tmp.x -= 30;
 		}
 		if (keysDown.containsKey(KeyEvent.VK_UP)
 				|| keysDown.containsKey(KeyEvent.VK_W)) {
-			tmp.y--;
+			tmp.y -= 30;
 		}
 		if (keysDown.containsKey(KeyEvent.VK_DOWN)
 				|| keysDown.containsKey(KeyEvent.VK_S)) {
-			tmp.y++;
+			tmp.y += 30;
 		}
 		
 		if (!(tmp.x == 0 && tmp.y == 0))
 			entity.transform.translate(tmp);
+		keysDown.clear();
 	}
 	
 	//##################################################################
@@ -61,14 +73,31 @@ public class CharacterController implements ISwingyController, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//System.out.println("PRESSS " + e.getKeyCode());
 		keysDown.put(e.getKeyCode(), e);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		//System.out.println("RELEASE " + e.getKeyCode());
 		keysDown.remove(e.getKeyCode());
+	}
+
+	@Override
+	public void onResponse(String response) {
+		
+		switch (response.toUpperCase()) {
+			case "NORTH" :
+				keysDown.put(KeyEvent.VK_UP, null);
+				break ;
+			case "EAST" :
+				keysDown.put(KeyEvent.VK_RIGHT, null);
+				break ;
+			case "SOUTH" :
+				keysDown.put(KeyEvent.VK_DOWN, null);
+				break ;
+			case "WEST" :
+				keysDown.put(KeyEvent.VK_LEFT, null);
+				break ;
+		}
 	}
 
 	//##################################################################
