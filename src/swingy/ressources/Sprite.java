@@ -14,6 +14,10 @@ public class Sprite{
 	
 	public static Sprite grounds;
 	public static Sprite CRAZY;
+	public static Sprite MAGE;
+	public static Sprite PRINCESS;
+	public static Sprite RABIT;
+	public static Sprite WARRIOR;
 	
 	public static void LOAD() {
 		grounds = new Sprite("res/sprites/ground/ground.png", 16, 12, 1);
@@ -23,6 +27,22 @@ public class Sprite{
 		CRAZY = new Sprite("res/sprites/characters/1.png", 3, 4, 3);
 		CRAZY.setHeight(38);
 		CRAZY.setWidth(38);
+		
+		MAGE = new Sprite("res/sprites/mage.png", 4, 4, 0);
+		MAGE.setHeight(38);
+		MAGE.setWidth(38);
+		
+		PRINCESS = new Sprite("res/sprites/princess.png", 4, 4, 0);
+		PRINCESS.setHeight(38);
+		PRINCESS.setWidth(38);
+		
+		RABIT = new Sprite("res/sprites/wabit.png", 4, 4, 0);
+		RABIT.setHeight(38);
+		RABIT.setWidth(38);
+		
+		WARRIOR = new Sprite("res/sprites/warrior.png", 4, 4, 0);
+		WARRIOR.setHeight(38);
+		WARRIOR.setWidth(38);
 	}
 	
 	public Image	img;

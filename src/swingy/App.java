@@ -4,17 +4,14 @@ import swingy.controller.CharacterController;
 import swingy.controller.WorldMapController;
 import swingy.controller.loop.LoopMotor;
 import swingy.controller.loop.MotorGraphics;
-import swingy.entity.CrazyHero;
 import swingy.entity.Entity;
-import swingy.enums.EModule;
+import swingy.entity.Rabit;
 import swingy.exceptions.ModuleException;
 import swingy.math.Vector2;
 import swingy.module.IModule;
 import swingy.module.factory.ModuleFactory;
 import swingy.ressources.Sprite;
 import swingy.views.IView;
-import swingy.views.SwingyConsoleView;
-import swingy.views.SwingyGUIGameView;
 import swingy.views.Window;
 import swingy.views.factory.ViewFactory;
 import swingy.world.WorldMap;
@@ -111,7 +108,7 @@ public class App {
 		//init gameview
 		gameview.init();
 		
-		Entity e = new CrazyHero("tmp", new Vector2(0, 0));
+		Entity e = new Rabit("tmp", new Vector2(0, 0));
 		characterController = new CharacterController(e);
 		
 		gameview.addModel(e);
