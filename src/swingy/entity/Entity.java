@@ -4,8 +4,10 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import swingy.App;
 import swingy.entity.statistics.Statistics;
 import swingy.entity.transform.Transform;
+import swingy.math.Utils;
 import swingy.math.Vector2;
 import swingy.model.ISwingyModel;
 import swingy.world.WorldMap;
@@ -89,6 +91,13 @@ public abstract class Entity implements ISwingyModel {
 			levelUp = true;
 		}
 		this.exp = this.exp + exp;
+		Utils.writeHeros(App.Characters);
 		return (levelUp);
 	}
+	
+	public String toString() {
+		return (this.getName() + " " + this.classe() + " " + this.level + " " + this.exp + "\n");
+	}
+	
+	public abstract String classe();
 }

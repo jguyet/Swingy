@@ -16,6 +16,7 @@ import swingy.entity.Princess;
 import swingy.entity.Warrior;
 import swingy.enums.EModule;
 import swingy.enums.EStatElement;
+import swingy.math.Utils;
 import swingy.math.Vector2;
 import swingy.views.SwingyGUIMainMenuView;
 import swingy.views.components.HerosCreationComponent;
@@ -74,7 +75,7 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 				this.heroTable = new HerosTableComponent((SwingyGUIMainMenuView)App.mainmenuview);
 				
 				for (Entity e : this.characters) {
-					this.heroTable.addnewHero(e.getName(), e.getClass().getName(), e.getLevel(), e.getExp(),
+					this.heroTable.addnewHero(e.getName(), e.classe(), e.getLevel(), e.getExp(),
 							e.stats.getStat(EStatElement.Attack),
 							e.stats.getStat(EStatElement.Defense), "...", "...");
 				}
@@ -177,6 +178,7 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 				App.Characters.add(new CrazyHero(namegetter.name, new Vector2(0,0)));
 				break ;
 		}
+		Utils.writeHeros(App.Characters);
 		this.createConsoleHero = false;
 	}
 	
@@ -228,7 +230,7 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 		int id = 0;
 		
 		for (Entity e : App.Characters) {
-			App.mainmenuview.println("(" + id + ") " + e.getName());
+			App.mainmenuview.println("(" + id + ") " + e.getName() + " " + e.classe());
 			id++;
 		}
 		
@@ -281,7 +283,6 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 		
 		JButton button = (JButton)e.getSource();
 		if (button.getText().equalsIgnoreCase(this.miniMenuSelectionHero.getButton().getText())) {
-			System.out.println("SelectionHeroPanel");
 			if (this.selected_Character != null) {
 				System.out.println(this.selected_Character.getName());
 				App.Character = this.selected_Character;
@@ -289,7 +290,6 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 				App.mainmenuview.destroy();
 			}
 		} else if (button.getText().equalsIgnoreCase(this.miniMenuCreateHero.getButton().getText())) {
-			System.out.println("CreationHeroPanel");
 			if (!this.miniMenuCreateHero.isSelected()) {
 				openHeroPanelCreation();
 			} else {
@@ -310,6 +310,7 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 					App.Characters.add(new CrazyHero(this.heroFormPanel.getName(), new Vector2(0,0)));
 					break ;
 			}
+			Utils.writeHeros(App.Characters);
 			closeHeroPanelCreation();
 		}
 	}

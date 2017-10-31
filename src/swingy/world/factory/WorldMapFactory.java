@@ -16,7 +16,7 @@ public class WorldMapFactory {
 	}
 	
 	public static void loadRandomMonsters(WorldMap map) {
-		int number = map.getWidth() * 3;
+		int number = map.getWidth();
 		
 		for (int i = 0; i < number; i++) {
 			

@@ -74,4 +74,9 @@ public class Warrior extends Entity{
 			animid++;
 		lastpos = new Vector2(this.transform.position.x, this.transform.position.y);
 	}
+	
+	@Override
+	public String classe() {
+		return "Warrior";
+	}
 }

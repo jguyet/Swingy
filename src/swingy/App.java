@@ -11,6 +11,7 @@ import swingy.entity.Entity;
 import swingy.entity.Magician;
 import swingy.enums.EModule;
 import swingy.exceptions.ModuleException;
+import swingy.math.Utils;
 import swingy.math.Vector2;
 import swingy.module.IModule;
 import swingy.module.factory.ModuleFactory;
@@ -80,6 +81,7 @@ public class App {
 		lastFPS = System.currentTimeMillis();
 		if (App.modelInterface.getinstance() == EModule.GUI)
 			Sprite.LOAD();
+		App.Characters = Utils.loadHeros();
 		loadMainInterfaces();
 		loopMainMenu();
 		return true;
