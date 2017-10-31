@@ -19,7 +19,7 @@
 /Users/jguyet/git/Swingy/src/swingy/exceptions/ModuleException.java
 /Users/jguyet/git/Swingy/src/swingy/model/ISwingyModel.java
 /Users/jguyet/git/Swingy/src/swingy/entity/transform/Transform.java
-/Users/jguyet/git/Swingy/src/swingy/views/components/MainMenuSwingyTitle.java
+/Users/jguyet/git/Swingy/src/swingy/views/components/TitleComponent.java
 /Users/jguyet/git/Swingy/src/swingy/controller/loop/MotorGraphics.java
 /Users/jguyet/git/Swingy/src/swingy/entity/artefacs/Weapon.java
 /Users/jguyet/git/Swingy/src/swingy/entity/artefacs/Artefact.java
@@ -28,8 +28,10 @@
 /Users/jguyet/git/Swingy/src/swingy/views/Window.java
 /Users/jguyet/git/Swingy/src/swingy/entity/Entity.java
 /Users/jguyet/git/Swingy/src/swingy/module/interfaces/ConsoleInterface.java
+/Users/jguyet/git/Swingy/src/swingy/views/components/HerosFormComponent.java
 /Users/jguyet/git/Swingy/src/swingy/ressources/Sprite.java
 /Users/jguyet/git/Swingy/src/swingy/module/factory/ModuleFactory.java
+/Users/jguyet/git/Swingy/src/swingy/views/components/HerosSelectionComponent.java
 /Users/jguyet/git/Swingy/src/swingy/views/IView.java
 /Users/jguyet/git/Swingy/src/swingy/views/SwingyConsoleView.java
 /Users/jguyet/git/Swingy/src/swingy/controller/loop/LoopMotor.java
@@ -38,5 +40,6 @@
 /Users/jguyet/git/Swingy/src/swingy/entity/Rabit.java
 /Users/jguyet/git/Swingy/src/swingy/enums/EModule.java
 /Users/jguyet/git/Swingy/src/swingy/views/events/ResponseListener.java
+/Users/jguyet/git/Swingy/src/swingy/views/components/HerosCreationComponent.java
 /Users/jguyet/git/Swingy/src/swingy/views/components/MainMenuHerosTable.java
 /Users/jguyet/git/Swingy/src/swingy/views/factory/ViewFactory.java

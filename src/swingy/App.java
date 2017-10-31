@@ -92,9 +92,9 @@ public class App {
 	}
 	
 	public static void loopMainMenu() {
-		mainmenuview.init();
+		mainMenuController = new MainMenuController();
 		
-		mainMenuController = new MainMenuController((SwingyGUIMainMenuView) mainmenuview);
+		mainmenuview.init();
 		
 		loopController = new LoopMotor(new MotorGraphics() {
 

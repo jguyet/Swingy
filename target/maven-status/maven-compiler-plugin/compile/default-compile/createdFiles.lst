@@ -1,13 +1,12 @@
 swingy/exceptions/ModuleException.class
-swingy/views/SwingyGUIMainMenuView$MainMenuSelectionHero.class
 swingy/views/components/MainMenuHerosTable.class
-swingy/views/SwingyGUIMainMenuView$MainMenuCreateHero.class
+swingy/views/components/HerosSelectionComponent.class
 swingy/entity/Princess.class
+swingy/views/components/HerosFormComponent.class
 swingy/App$2.class
 swingy/ressources/Sprite.class
 swingy/entity/Warrior.class
 swingy/views/SwingyGUIMainMenuView.class
-swingy/views/components/MainMenuSwingyTitle.class
 swingy/controller/MainMenuController$NameGetter.class
 swingy/module/IModule.class
 swingy/entity/statistics/Statistics.class
@@ -15,7 +14,6 @@ swingy/views/Window.class
 swingy/entity/artefacs/Weapon.class
 swingy/views/events/ResponseListener.class
 swingy/entity/transform/Transform.class
-swingy/views/SwingyGUIMainMenuView$CreationForm$1.class
 swingy/controller/loop/MotorGraphics.class
 swingy/entity/CrazyHero.class
 swingy/controller/MainMenuController$1.class
@@ -27,6 +25,7 @@ swingy/math/Time.class
 swingy/entity/Rabit.class
 swingy/module/interfaces/GuiInterface.class
 swingy/controller/WorldMapController.class
+swingy/views/components/MainMenuHerosTable$1.class
 swingy/world/factory/WorldMapFactory.class
 swingy/controller/loop/LoopMotor$ControllerLoop.class
 swingy/module/interfaces/ConsoleInterface.class
@@ -35,7 +34,7 @@ swingy/controller/loop/LoopMotor$GraphicLoop.class
 swingy/entity/artefacs/Armor.class
 swingy/entity/artefacs/Helm.class
 swingy/views/IView.class
-swingy/views/SwingyGUIMainMenuView$CreationForm.class
+swingy/views/components/TitleComponent.class
 swingy/entity/artefacs/Artefact.class
 swingy/views/factory/ViewFactory.class
 swingy/math/Vector2.class
@@ -44,6 +43,7 @@ swingy/world/WorldMap.class
 swingy/App$1.class
 swingy/module/factory/ModuleFactory.class
 swingy/world/WorldMap$Case.class
+swingy/views/components/HerosCreationComponent.class
 swingy/views/SwingyConsoleView.class
 swingy/App.class
 swingy/views/SwingyGUIGameView.class

@@ -2,25 +2,18 @@ package swingy.views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.TextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Component;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import swingy.App;
-import swingy.entity.Magician;
-import swingy.entity.Princess;
-import swingy.entity.Warrior;
-import swingy.math.Vector2;
 import swingy.model.ISwingyModel;
-import swingy.views.components.MainMenuHerosTable;
-import swingy.views.components.MainMenuSwingyTitle;
+import swingy.views.components.HerosCreationComponent;
+import swingy.views.components.HerosTableComponent;
+import swingy.views.components.SwingyTitleComponent;
 import swingy.views.events.ResponseListener;
 
 public class SwingyGUIMainMenuView extends JPanel implements IView{
@@ -29,42 +22,65 @@ public class SwingyGUIMainMenuView extends JPanel implements IView{
 	 * VERSION
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final int		MENU_WIDTH = 1000;
+	private static final int		MENU_HEIGTH = 350;
 	
-	private Window win;
+	private Window					win;
 	
 	private JPanel					top = new JPanel();
-	private JPanel					swingyTitle = null;
-	private MainMenuHerosTable		heroTable = new MainMenuHerosTable();
-	
+	private ArrayList<Component>	componentsTop = new ArrayList<Component>();
 	
 	private JPanel					bottom = new JPanel();
-	private MainMenuSelectionHero	block_selection = new MainMenuSelectionHero();
-	private MainMenuCreateHero		block_creation = new MainMenuCreateHero();
-	
-	private CreationForm			creationform = null;
+	private ArrayList<Component>	componentsBottom = new ArrayList<Component>();
 	
 	public SwingyGUIMainMenuView(Window win) {
 		this.win = win;
 		BorderLayout b = new BorderLayout();
 		this.setLayout(b);
-		
 		this.top.setLayout(new BorderLayout(0, 15));
 		this.bottom.setLayout(new BorderLayout());
-		
-		// TITLE
-		this.swingyTitle = new MainMenuSwingyTitle();
-		this.heroTable = new MainMenuHerosTable();
-		
-		this.win.add(this);
+	}
+	
+	public void addtoTop(Component comp, Object constraints) {
+		removeToTop(comp);
+		this.top.add(comp, constraints);
+		this.componentsTop.add(comp);
+	}
+	
+	public void removeToTop(Component comp) {
+		if (this.componentsTop.contains(comp)) {
+			this.top.remove(comp);
+			this.componentsTop.remove(comp);
+		}
+	}
+	
+	public void addtoBottom(Component comp, Object constraints) {
+		removeToBottom(comp);
+		this.bottom.add(comp, constraints);
+		this.componentsBottom.add(comp);
+	}
+	
+	public void removeToBottom(Component comp) {
+		if (this.componentsBottom.contains(comp)) {
+			this.bottom.remove(comp);
+			this.componentsBottom.remove(comp);
+		}
 	}
 	
 	@Override
 	public void init() {
-		this.win.setSize(1000, 350);
+		this.win.add(this);
+		this.win.setSize(MENU_WIDTH, MENU_HEIGTH);
+		
+		this.add(top, BorderLayout.NORTH);
+		this.add(bottom, BorderLayout.SOUTH);
+		
+		this.setVisible(false);
+		this.setVisible(true);
 		//###############################################################################
 		//TOP
 		//###############################################################################
-		this.top.add(this.swingyTitle, BorderLayout.NORTH);
+		/*this.top.add(this.swingyTitle, BorderLayout.NORTH);
 		this.heroTable.prepare();
 		this.top.add(this.heroTable, BorderLayout.SOUTH);
 		this.add(this.top, BorderLayout.NORTH);
@@ -77,13 +93,10 @@ public class SwingyGUIMainMenuView extends JPanel implements IView{
 		
 		this.bottom.add(this.block_selection, BorderLayout.NORTH);
 		this.bottom.add(this.block_creation, BorderLayout.SOUTH);
-		this.add(this.bottom, BorderLayout.SOUTH);
-		
-		this.setVisible(false);
-		this.setVisible(true);
+		this.add(this.bottom, BorderLayout.SOUTH);*/
 	}
 	
-	public void removeHeroTable() {
+	/*public void removeHeroTable() {
 		this.top.remove(this.heroTable);
 	}
 	
@@ -126,7 +139,7 @@ public class SwingyGUIMainMenuView extends JPanel implements IView{
 			removeCreationForm();
 			this.block_selection.setVisible(true);
 		}
-	}
+	}*/
 	
 	@Override
 	public void destroy() {
@@ -143,17 +156,15 @@ public class SwingyGUIMainMenuView extends JPanel implements IView{
 	public void update() {
 		this.repaint();
 	}
-	
-	public void addHerosTable(MainMenuHerosTable heroTable) {
-		this.heroTable = heroTable;
-	}
 
 	@Override
 	public void addModel(ISwingyModel model) {
+		
 	}
 
 	@Override
 	public void removeModel(ISwingyModel model) {
+		
 	}
 	
 	/**
@@ -163,11 +174,11 @@ public class SwingyGUIMainMenuView extends JPanel implements IView{
 	{
 		super.paintComponent(g);
 		
+		//###########################################
+		// MISE EN TRANSPARENCE DU BACKGROUND
 		this.setOpaque(false);
 		this.setBackground(new Color(0,0,0,0));
-		
-		paintBlockCreation();
-		
+		//###########################################
 	}
 
 	@Override
@@ -185,170 +196,6 @@ public class SwingyGUIMainMenuView extends JPanel implements IView{
 	@Override
 	public void print(String txt) {
 		// TODO Auto-generated method stub
-	}
-	
-	public MainMenuSelectionHero getSelectionHeroPanel() {
-		return (block_selection);
-	}
-	
-	public MainMenuCreateHero getCreationHeroPanel() {
-		return (block_creation);
-	}
-	
-	public class MainMenuSelectionHero extends JPanel {
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-		private JLabel	comment = new JLabel("*select your favorite hero and click START GAME.");
-		private JButton	selectButton = new JButton("Select Hero");
-		
-		public MainMenuSelectionHero() {
-			super();
-			this.setLayout(new BorderLayout());
-			selectButton.setForeground(Color.gray);
-			selectButton.setEnabled(false);
-		}
-		
-		public JButton getButton() {
-			return (this.selectButton);
-		}
-		
-		public void prepare() {
-			this.add(this.comment, BorderLayout.NORTH);
-			this.add(this.selectButton, BorderLayout.SOUTH);
-		}
-		
-		public void setButtonEnabled(boolean enable) {
-			if (enable == true)
-				selectButton.setForeground(Color.black);
-			else
-				selectButton.setForeground(Color.gray);
-			selectButton.setEnabled(enable);
-			selectButton.repaint();
-		}
-		
-		public void addEventButtonMouseListener(MouseListener l) {
-			selectButton.addMouseListener(l);
-		}
-		
-	}
-	
-	public class MainMenuCreateHero extends JPanel {
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-		private JLabel	comment = new JLabel("*click add new hero for create a new hero.");
-		private JButton	selectButton = new JButton("Create a new Hero");
-		private boolean isSelected = false;
-		
-		public MainMenuCreateHero() {
-			super();
-			this.setLayout(new BorderLayout());
-			selectButton.setSelected(false);
-			selectButton.setEnabled(true);
-			selectButton.setForeground(Color.black);
-		}
-		
-		public JButton getButton() {
-			return (this.selectButton);
-		}
-		
-		public void prepare() {
-			this.add(this.comment, BorderLayout.NORTH);
-			this.add(this.selectButton, BorderLayout.SOUTH);
-		}
-		
-		public void setButtonEnabled(boolean enable) {
-			if (enable == true)
-				selectButton.setForeground(Color.black);
-			else
-				selectButton.setForeground(Color.gray);
-			selectButton.setEnabled(enable);
-			selectButton.repaint();
-		}
-		
-		public void addEventButtonMouseListener(MouseListener l) {
-			selectButton.addMouseListener(l);
-		}
-		
-		public boolean isSelected() {
-			return (isSelected);
-		}
-		
-		public void setSelected(boolean s) {
-			this.isSelected = s;
-		}
-		
-	}
-	
-	public class CreationForm extends JPanel {
-		
-		/**
-		 * 
-		 */
-		private static final long 	serialVersionUID = 1L;
-		private final String[] 		classes = {"Magician", "Princess", "Warrior"};
-		
-		private JPanel 				top = new JPanel();
-		
-		//NAME
-		private JLabel				lblName = new JLabel("Hero Name");
-		private TextField			inputName = new TextField("\"saolo\"");
-		//CLASS
-		private JLabel				lblClass = new JLabel("Class");
-		private JComboBox<String>	classSelect = new JComboBox<String>(classes);
-		
-		private JPanel				bottom = new JPanel();
-		private JButton				valide = new JButton("Valider");
-		
-		public CreationForm() {
-			super();
-			this.setLayout(new BorderLayout());
-			GridLayout experimentLayout = new GridLayout(0,2);
-			top.setLayout(experimentLayout);
-			//line 1
-			top.add(lblName);
-			top.add(lblClass);	
-			//line 2
-			top.add(inputName);
-			classSelect.setSelectedIndex(0);
-			top.add(classSelect);
-			
-			this.add(top, BorderLayout.NORTH);
-			
-			bottom.setLayout(new BorderLayout());
-			bottom.add(valide, BorderLayout.SOUTH);
-			this.add(bottom, BorderLayout.SOUTH);
-			
-			final CreationForm cf = this;
-			
-			valide.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					switch (((String)cf.classSelect.getSelectedItem())) {
-					case "Magician":
-						App.Characters.add(new Magician(cf.inputName.getText(), new Vector2(0,0)));
-						break ;
-					case "Princess":
-						App.Characters.add(new Princess(cf.inputName.getText(), new Vector2(0,0)));
-						break ;
-					case "Warrior":
-						App.Characters.add(new Warrior(cf.inputName.getText(), new Vector2(0,0)));
-						break ;
-					}
-					block_creation.setSelected(false);
-					paintBlockCreation();
-				}
-				
-			});
-			
-		}
 	}
 
 }
