@@ -9,6 +9,7 @@ import swingy.controller.loop.LoopMotor;
 import swingy.controller.loop.MotorGraphics;
 import swingy.entity.Entity;
 import swingy.entity.Magician;
+import swingy.enums.EModule;
 import swingy.exceptions.ModuleException;
 import swingy.math.Vector2;
 import swingy.module.IModule;
@@ -77,11 +78,10 @@ public class App {
 		if (modelInterface == null)
 			return false;
 		lastFPS = System.currentTimeMillis();
-		Sprite.LOAD();
+		if (App.modelInterface.getinstance() == EModule.GUI)
+			Sprite.LOAD();
 		loadMainInterfaces();
 		loopMainMenu();
-		//Start interface and load game
-		System.out.println("Instance : " + modelInterface.getinstance());
 		return true;
 	}
 	
@@ -137,12 +137,11 @@ public class App {
 	 * loading graphics interfaces
 	 */
 	public static void loadGameInterface() {
-		window.setSize(1000, 1000);
-		window.setTitle(Character.getName() + " Level (" + Character.getLevel() + ") exp : " + Character.getExp());
-		//window.setVisible(false);
-		//window.setVisible(true);
-		window.repaint();
-		//window		= ViewFactory.loadWindow(modelInterface.getinstance(), TITLE, 1000, 1000);
+		if (App.modelInterface.getinstance() == EModule.GUI) {
+			window.setSize(1000, 1000);
+			window.setTitle(Character.getName() + " Level (" + Character.getLevel() + ") exp : " + Character.getExp());
+			window.repaint();
+		}
 		gameview	= ViewFactory.newGameView(modelInterface.getinstance());
 	}
 	

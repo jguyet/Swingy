@@ -30,25 +30,36 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 	private ArrayList<Entity>		characters = new ArrayList<Entity>();
 	private Entity					selected_Character = null;
 	
-	private HerosFormComponent		heroFormPanel = new HerosFormComponent((SwingyGUIMainMenuView)App.mainmenuview);
-	private HerosTableComponent		heroTable = new HerosTableComponent((SwingyGUIMainMenuView)App.mainmenuview);
-	private SwingyTitleComponent			swingyTitlePanel = new SwingyTitleComponent((SwingyGUIMainMenuView)App.mainmenuview);
-	private HerosCreationComponent	miniMenuCreateHero = new HerosCreationComponent((SwingyGUIMainMenuView)App.mainmenuview);
-	private HerosSelectionComponent	miniMenuSelectionHero = new HerosSelectionComponent((SwingyGUIMainMenuView)App.mainmenuview);
+	private HerosFormComponent		heroFormPanel;
+	private HerosTableComponent		heroTable;
+	private SwingyTitleComponent	swingyTitlePanel;
+	private HerosCreationComponent	miniMenuCreateHero;
+	private HerosSelectionComponent	miniMenuSelectionHero;
+	
+	private boolean 				createConsoleHero = false;
+	private boolean					selectConsoleHero = false;
 	
 	public MainMenuController() {
 		
-		miniMenuCreateHero.getButton().addActionListener(this);
-		miniMenuSelectionHero.getButton().addActionListener(this);
-		heroFormPanel.getButton().addActionListener(this);
-		
-		
-		this.heroTable = new HerosTableComponent((SwingyGUIMainMenuView)App.mainmenuview);
-		
-		this.swingyTitlePanel.paintModel();
-		this.heroTable.paintModel();
-		this.miniMenuCreateHero.paintModel();
-		this.miniMenuSelectionHero.paintModel();
+		if (App.modelInterface.getinstance() == EModule.GUI) {
+			
+			heroFormPanel = new HerosFormComponent((SwingyGUIMainMenuView)App.mainmenuview);
+			heroTable = new HerosTableComponent((SwingyGUIMainMenuView)App.mainmenuview);
+			swingyTitlePanel = new SwingyTitleComponent((SwingyGUIMainMenuView)App.mainmenuview);
+			miniMenuCreateHero = new HerosCreationComponent((SwingyGUIMainMenuView)App.mainmenuview);
+			miniMenuSelectionHero = new HerosSelectionComponent((SwingyGUIMainMenuView)App.mainmenuview);
+			
+			miniMenuCreateHero.getButton().addActionListener(this);
+			miniMenuSelectionHero.getButton().addActionListener(this);
+			heroFormPanel.getButton().addActionListener(this);
+			
+			this.heroTable = new HerosTableComponent((SwingyGUIMainMenuView)App.mainmenuview);
+			
+			this.swingyTitlePanel.paintModel();
+			this.heroTable.paintModel();
+			this.miniMenuCreateHero.paintModel();
+			this.miniMenuSelectionHero.paintModel();
+		}
 	}
 	
 	@Override
@@ -57,48 +68,116 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 		if (App.Characters.size() != this.characters.size()) {
 			this.characters.clear();			
 			this.characters.addAll(App.Characters);
-			this.heroTable.remove();
-			this.heroTable = new HerosTableComponent((SwingyGUIMainMenuView)App.mainmenuview);
 			
-			for (Entity e : this.characters) {
-				this.heroTable.addnewHero(e.getName(), e.getClass().getName(), e.getLevel(), e.getExp(),
-						e.stats.getStat(EStatElement.Attack),
-						e.stats.getStat(EStatElement.Defense), "...", "...");
+			if (App.modelInterface.getinstance() == EModule.GUI) {
+				this.heroTable.remove();
+				this.heroTable = new HerosTableComponent((SwingyGUIMainMenuView)App.mainmenuview);
+				
+				for (Entity e : this.characters) {
+					this.heroTable.addnewHero(e.getName(), e.getClass().getName(), e.getLevel(), e.getExp(),
+							e.stats.getStat(EStatElement.Attack),
+							e.stats.getStat(EStatElement.Defense), "...", "...");
+				}
+				this.heroTable.paintModel();
+				this.heroTable.addListSelectionListener(this);
 			}
-			this.heroTable.paintModel();
-			this.heroTable.addListSelectionListener(this);
 		}
 		
 		if (App.modelInterface.getinstance() == EModule.CONSOLE) {
 		
-			App.mainmenuview.println("Create your hero :");
-			
-			NameGetter namegetter = new NameGetter();
-			
-			while (!namegetter.isValide()) {
-				App.mainmenuview.print("Hero name : ");
-				App.mainmenuview.waitResponse(namegetter);
+			if (createConsoleHero) {
+				createConsoleNewHero();
+			} else if (selectConsoleHero) {
+				selectConsoleNewHero();
+			} else {
+				consoleMenu();
 			}
-		} else {
-			
+		
 		}
 	}
 	
-	private void loadTableSelectEvent() {
-		/*final MainMenuSelectionHero tmp = mainMenu.getSelectionHeroPanel();
-		final MainMenuHerosTable tablee = this.heroTable;
-		this.heroTable.addListSelectionListener(new ListSelectionListener() {
-		    public void valueChanged(ListSelectionEvent e) {
-		    	tmp.setButtonEnabled(true);
-		    	int sel = tablee.getTable().getSelectedRow();
-		        
-		        //System.out.println(sel);
-		        //Object[] o = tablee.getRow(sel);
-		        
-		        selected_Character = characters.get(sel);
-		        //System.out.println(o[0]);
-		    }
-		});*/
+	private void consoleMenu() {
+		App.mainmenuview.println("=======MAIN=MENU=SWINGY=======");
+		App.mainmenuview.println("Swingy console menu :");
+		App.mainmenuview.println("(1) create new Hero");
+		App.mainmenuview.println("(2) select exist Hero");
+		
+		MenuGetter menugetter = new MenuGetter();
+		
+		while (!menugetter.isValide()) {
+			App.mainmenuview.print("Select number : ");
+			App.mainmenuview.waitResponse(menugetter);
+		}
+		
+		if (menugetter.id == 1) {
+			this.createConsoleHero = true;
+		} else if (menugetter.id == 2) {
+			this.selectConsoleHero = true;
+		}
+	}
+	
+	private class MenuGetter implements ResponseListener {
+
+		public int id = -1;
+		public String rep;
+		
+		@Override
+		public void onResponse(String response) {
+			rep = response;
+		}
+		
+		public boolean isValide() {
+			try {
+				id = Integer.parseInt(rep);
+			} catch (NumberFormatException e) {
+				return false;
+			}
+			if (id > 2 || id < 1)
+				return false;
+			return true;
+		}
+	}
+	
+	private void createConsoleNewHero() {
+		App.mainmenuview.println("========HERO=CREATION=========");
+		App.mainmenuview.println("Create your hero :");
+		
+		NameGetter namegetter = new NameGetter();
+		
+		while (!namegetter.isValide()) {
+			App.mainmenuview.print("Hero name : ");
+			App.mainmenuview.waitResponse(namegetter);
+		}
+		
+		App.mainmenuview.println("Select class of your hero :");
+		
+		App.mainmenuview.println("(1) Magician");
+		App.mainmenuview.println("(2) Princess");
+		App.mainmenuview.println("(3) Warrior");
+		App.mainmenuview.println("(4) Crazy");
+		
+		ClassGetter classgetter = new ClassGetter();
+		
+		while (!classgetter.isValide()) {
+			App.mainmenuview.print("Select number : ");
+			App.mainmenuview.waitResponse(classgetter);
+		}
+		
+		switch (classgetter.id) {
+			case 1:
+				App.Characters.add(new Magician(namegetter.name, new Vector2(0,0)));
+				break ;
+			case 2:
+				App.Characters.add(new Princess(namegetter.name, new Vector2(0,0)));
+				break ;
+			case 3:
+				App.Characters.add(new Warrior(namegetter.name, new Vector2(0,0)));
+				break ;
+			case 4:
+				App.Characters.add(new CrazyHero(namegetter.name, new Vector2(0,0)));
+				break ;
+		}
+		this.createConsoleHero = false;
 	}
 	
 	private class NameGetter implements ResponseListener {
@@ -116,6 +195,80 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 			if (name.length() > 10)
 				return false;
 			if (name.length() < 2)
+				return false;
+			return true;
+		}
+	}
+	
+	private class ClassGetter implements ResponseListener {
+
+		public int id = -1;
+		public String rep;
+		
+		@Override
+		public void onResponse(String response) {
+			rep = response;
+		}
+		
+		public boolean isValide() {
+			try {
+				id = Integer.parseInt(rep);
+			} catch (NumberFormatException e) {
+				return false;
+			}
+			if (id > 4 || id < 1)
+				return false;
+			return true;
+		}
+	}
+	
+	private void selectConsoleNewHero() {
+		App.mainmenuview.println("========HERO=SELECTION========");
+		App.mainmenuview.println("Select your hero :");
+		int id = 0;
+		
+		for (Entity e : App.Characters) {
+			App.mainmenuview.println("(" + id + ") " + e.getName());
+			id++;
+		}
+		
+		CharacterGetter charactergetter = new CharacterGetter(id);
+		
+		App.mainmenuview.print("Select number : ");
+		App.mainmenuview.waitResponse(charactergetter);
+		
+		if (charactergetter.isValide()) {
+			App.Character = App.Characters.get(charactergetter.id);
+			App.loopController.stop();
+		} else {
+			App.mainmenuview.println("Error return to main menu.");
+		}
+		
+		this.selectConsoleHero = false;
+	}
+	
+	private class CharacterGetter implements ResponseListener {
+
+		public int id = -1;
+		public String rep;
+		private int max;
+		
+		public CharacterGetter(int max) {
+			this.max = max;
+		}
+		
+		@Override
+		public void onResponse(String response) {
+			rep = response;
+		}
+		
+		public boolean isValide() {
+			try {
+				id = Integer.parseInt(rep);
+			} catch (NumberFormatException e) {
+				return false;
+			}
+			if (id > max || id < 0)
 				return false;
 			return true;
 		}

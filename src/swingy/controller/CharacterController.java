@@ -20,6 +20,7 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 	public CharacterController(Entity e) {
 		this.entity = e;
 		App.gameview.addKeyListener(this);
+		printMap();
 	}
 	
 	//##################################################################
@@ -41,7 +42,24 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 			this.entity.addExp(1000);
 			App.loopController.stop();
 		}
-		
+	}
+	
+	private void printMap() {
+		if (App.modelInterface.getinstance() == EModule.CONSOLE) {
+			for (int y = 0; y < App.worldMap.getHeight(); y++) {
+				for (int x = 0; x < App.worldMap.getWidth(); x++) {
+					if (entity.transform.position.x == x && entity.transform.position.y == y)
+						App.gameview.print("o");
+					else if (App.worldMap.getCaseByPosition(new Vector2(x, y)).hasEntity())
+						App.gameview.print("?");
+					else if (!App.worldMap.getCaseByPosition(new Vector2(x, y)).isWalkable())
+						App.gameview.print("x");
+					else
+						App.gameview.print(".");
+				}
+				App.gameview.println("");
+			}
+		}
 	}
 	
 	private void mouseCharacter() {
@@ -63,10 +81,13 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 				|| keysDown.containsKey(KeyEvent.VK_S)) {
 			tmp.y += 1;
 		}
-		if (App.worldMap.getCaseByPosition(tmp) == null || App.worldMap.getCaseByPosition(tmp).isWalkable())
-			if (!(tmp.x == 0 && tmp.y == 0))
+		if (App.worldMap.getCaseByPosition(tmp) == null || App.worldMap.getCaseByPosition(tmp).isWalkable()) {
+			if (!(tmp.x == 0 && tmp.y == 0)) {
 				entity.transform.translate(tmp);
+			}
+		}
 		keysDown.clear();
+		printMap();
 	}
 	
 	//##################################################################

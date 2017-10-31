@@ -198,6 +198,10 @@ public class WorldMap implements ISwingyModel {
 			return (this.groundId);
 		}
 		
+		public boolean hasEntity() {
+			return (entity != null);
+		}
+		
 		public boolean isWalkable() {
 			if (entity != null)
 				return (false);
