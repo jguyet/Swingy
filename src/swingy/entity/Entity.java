@@ -80,7 +80,11 @@ public abstract class Entity implements ISwingyModel {
 	public boolean addExp(long exp) {
 		boolean	levelUp		= false;
 		
-		while ((this.exp + exp) > (this.level*1000)+(Math.sqrt(this.level - 1)*450)) {
+		long lastLevelXp = (long) (((this.level - 1)*1000)+(Math.sqrt(this.level - 2)*450));
+		
+		System.out.println(lastLevelXp);
+		
+		while (((this.exp + exp) - lastLevelXp) > (this.level*1000)+(Math.sqrt(this.level - 1)*450)) {
 			this.level++;
 			levelUp = true;
 		}

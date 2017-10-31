@@ -2,13 +2,22 @@ package swingy.views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
+import swingy.App;
+import swingy.entity.Magician;
+import swingy.entity.Princess;
+import swingy.entity.Warrior;
+import swingy.math.Vector2;
 import swingy.model.ISwingyModel;
 import swingy.views.components.MainMenuHerosTable;
 import swingy.views.components.MainMenuSwingyTitle;
@@ -23,79 +32,100 @@ public class SwingyGUIMainMenuView extends JPanel implements IView{
 	
 	private Window win;
 	
-	private MainMenuHerosTable heroTable = null;
+	private JPanel					top = new JPanel();
+	private JPanel					swingyTitle = null;
+	private MainMenuHerosTable		heroTable = new MainMenuHerosTable();
+	
+	
+	private JPanel					bottom = new JPanel();
+	private MainMenuSelectionHero	block_selection = new MainMenuSelectionHero();
+	private MainMenuCreateHero		block_creation = new MainMenuCreateHero();
+	
+	private CreationForm			creationform = null;
 	
 	public SwingyGUIMainMenuView(Window win) {
 		this.win = win;
 		BorderLayout b = new BorderLayout();
 		this.setLayout(b);
 		
-		//###############################################################################
-		//TOP
-		//###############################################################################
-		JPanel containertop = new JPanel();
-		containertop.setLayout(new BorderLayout(0, 15));
+		this.top.setLayout(new BorderLayout(0, 15));
+		this.bottom.setLayout(new BorderLayout());
+		
 		// TITLE
-		JPanel swingyTitle = new MainMenuSwingyTitle();
-		containertop.add(swingyTitle, BorderLayout.NORTH);
-		//HERO TABLE
+		this.swingyTitle = new MainMenuSwingyTitle();
 		this.heroTable = new MainMenuHerosTable();
-		this.heroTable.addnewHero("test", "Warrior", 10, 0, 10, 12, "weapon", "unknow");
-		this.heroTable.addnewHero("test2", "Warrior", 10, 0, 10, 12, "weapon", "unknow");
-		this.heroTable.prepare();
-		containertop.add(this.heroTable, BorderLayout.SOUTH);
-		//###############################################################################
-		//ADD TOP
-		this.add(containertop, BorderLayout.NORTH);
-		//###############################################################################
 		
-		
-		//###############################################################################
-		//BOTTOM
-		//###############################################################################
-		JPanel bottom = new JPanel();
-		bottom.setLayout(new BorderLayout());
-		
-		/*JPanel block_selection = new JPanel();
-		block_selection.setLayout(new BorderLayout());
-		block_selection.add(new JLabel("*select your favorite hero and click START GAME."), BorderLayout.NORTH);
-		JButton jj = new JButton("START GAME");
-		jj.setForeground(Color.gray);
-		block_selection.add(jj, BorderLayout.SOUTH);*/
-		
-		MainMenuSelectionHero block_selection = new MainMenuSelectionHero();
-		block_selection.prepare();
-		
-		JPanel block_creation = new JPanel();
-		block_creation.setLayout(new BorderLayout());
-		block_creation.add(new JLabel("*click add new hero for create new hero."), BorderLayout.NORTH);
-		block_creation.add(new JButton("ADD NEW HERO"), BorderLayout.SOUTH);
-		
-		bottom.add(block_selection, BorderLayout.NORTH);
-		bottom.add(block_creation, BorderLayout.SOUTH);
-		
-		this.add(bottom, BorderLayout.SOUTH);
-		
-		final MainMenuSelectionHero tmp = block_selection;
-		final MainMenuHerosTable tablee = this.heroTable;
-		this.heroTable.addListSelectionListener(new ListSelectionListener() {
-		    public void valueChanged(ListSelectionEvent e) {
-		    	tmp.setButtonEnabled(true);
-		    	int sel = tablee.getTable().getSelectedRow();
-		        
-		        System.out.println(sel);
-		        Object[] o = tablee.getRow(sel);
-		        
-		        System.out.println(o[0]);
-		    }
-		});
+		this.win.add(this);
 	}
 	
 	@Override
 	public void init() {
-		this.win.add(this);
+		this.win.setSize(1000, 350);
+		//###############################################################################
+		//TOP
+		//###############################################################################
+		this.top.add(this.swingyTitle, BorderLayout.NORTH);
+		this.heroTable.prepare();
+		this.top.add(this.heroTable, BorderLayout.SOUTH);
+		this.add(this.top, BorderLayout.NORTH);
+		//###############################################################################
+		//BOTTOM
+		//###############################################################################
+		
+		this.block_selection.prepare();
+		this.block_creation.prepare();
+		
+		this.bottom.add(this.block_selection, BorderLayout.NORTH);
+		this.bottom.add(this.block_creation, BorderLayout.SOUTH);
+		this.add(this.bottom, BorderLayout.SOUTH);
+		
 		this.setVisible(false);
 		this.setVisible(true);
+	}
+	
+	public void removeHeroTable() {
+		this.top.remove(this.heroTable);
+	}
+	
+	public void repaintHeroTable() {
+		this.remove(this.top);
+		this.heroTable.prepare();
+		this.top.add(this.heroTable, BorderLayout.SOUTH);
+		this.add(this.top, BorderLayout.NORTH);
+		this.setVisible(false);
+		this.setVisible(true);
+	}
+	
+	public void addcreationForm() {
+		this.remove(this.bottom);
+		this.bottom.remove(this.block_selection);
+		this.creationform = new CreationForm();
+		this.bottom.add(this.creationform, BorderLayout.NORTH);
+		this.add(this.bottom, BorderLayout.SOUTH);
+	}
+	
+	public void removeCreationForm() {
+		this.remove(this.bottom);
+		this.bottom.remove(this.creationform);
+		this.bottom.add(this.block_selection, BorderLayout.NORTH);
+		this.add(this.bottom, BorderLayout.SOUTH);
+	}
+	
+	public void paintBlockCreation() {
+		
+		if (this.block_creation.isSelected() && this.win.getHeight() != 370) {
+			this.win.setSize(1000, 370);
+			this.block_creation.comment.setVisible(false);
+			this.block_creation.getButton().setText("Annuler");
+			addcreationForm();
+			this.block_selection.setVisible(false);
+		} else if (!this.block_creation.isSelected() && this.win.getHeight() == 370) {
+			this.win.setSize(1000, 350);
+			this.block_creation.comment.setVisible(true);
+			this.block_creation.getButton().setText("Create a new Hero");
+			removeCreationForm();
+			this.block_selection.setVisible(true);
+		}
 	}
 	
 	@Override
@@ -136,13 +166,7 @@ public class SwingyGUIMainMenuView extends JPanel implements IView{
 		this.setOpaque(false);
 		this.setBackground(new Color(0,0,0,0));
 		
-		//g.clearRect(0, 0, this.win.getWidth(), this.win.getHeight());
-		
-		/*ArrayList<ISwingyModel> tmp = new ArrayList<ISwingyModel>(models);
-		
-		for (ISwingyModel model : tmp) {
-			model.paint(g);
-		}*/
+		paintBlockCreation();
 		
 	}
 
@@ -161,20 +185,34 @@ public class SwingyGUIMainMenuView extends JPanel implements IView{
 	@Override
 	public void print(String txt) {
 		// TODO Auto-generated method stub
-		
 	}
 	
-	private class MainMenuSelectionHero extends JPanel {
+	public MainMenuSelectionHero getSelectionHeroPanel() {
+		return (block_selection);
+	}
+	
+	public MainMenuCreateHero getCreationHeroPanel() {
+		return (block_creation);
+	}
+	
+	public class MainMenuSelectionHero extends JPanel {
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private JLabel	comment = new JLabel("*select your favorite hero and click START GAME.");
-		private JButton	selectButton = new JButton("START GAME");
+		private JButton	selectButton = new JButton("Select Hero");
 		
 		public MainMenuSelectionHero() {
 			super();
 			this.setLayout(new BorderLayout());
 			selectButton.setForeground(Color.gray);
-			selectButton.setSelected(false);
 			selectButton.setEnabled(false);
+		}
+		
+		public JButton getButton() {
+			return (this.selectButton);
 		}
 		
 		public void prepare() {
@@ -191,6 +229,126 @@ public class SwingyGUIMainMenuView extends JPanel implements IView{
 			selectButton.repaint();
 		}
 		
+		public void addEventButtonMouseListener(MouseListener l) {
+			selectButton.addMouseListener(l);
+		}
+		
+	}
+	
+	public class MainMenuCreateHero extends JPanel {
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private JLabel	comment = new JLabel("*click add new hero for create a new hero.");
+		private JButton	selectButton = new JButton("Create a new Hero");
+		private boolean isSelected = false;
+		
+		public MainMenuCreateHero() {
+			super();
+			this.setLayout(new BorderLayout());
+			selectButton.setSelected(false);
+			selectButton.setEnabled(true);
+			selectButton.setForeground(Color.black);
+		}
+		
+		public JButton getButton() {
+			return (this.selectButton);
+		}
+		
+		public void prepare() {
+			this.add(this.comment, BorderLayout.NORTH);
+			this.add(this.selectButton, BorderLayout.SOUTH);
+		}
+		
+		public void setButtonEnabled(boolean enable) {
+			if (enable == true)
+				selectButton.setForeground(Color.black);
+			else
+				selectButton.setForeground(Color.gray);
+			selectButton.setEnabled(enable);
+			selectButton.repaint();
+		}
+		
+		public void addEventButtonMouseListener(MouseListener l) {
+			selectButton.addMouseListener(l);
+		}
+		
+		public boolean isSelected() {
+			return (isSelected);
+		}
+		
+		public void setSelected(boolean s) {
+			this.isSelected = s;
+		}
+		
+	}
+	
+	public class CreationForm extends JPanel {
+		
+		/**
+		 * 
+		 */
+		private static final long 	serialVersionUID = 1L;
+		private final String[] 		classes = {"Magician", "Princess", "Warrior"};
+		
+		private JPanel 				top = new JPanel();
+		
+		//NAME
+		private JLabel				lblName = new JLabel("Hero Name");
+		private TextField			inputName = new TextField("\"saolo\"");
+		//CLASS
+		private JLabel				lblClass = new JLabel("Class");
+		private JComboBox<String>	classSelect = new JComboBox<String>(classes);
+		
+		private JPanel				bottom = new JPanel();
+		private JButton				valide = new JButton("Valider");
+		
+		public CreationForm() {
+			super();
+			this.setLayout(new BorderLayout());
+			GridLayout experimentLayout = new GridLayout(0,2);
+			top.setLayout(experimentLayout);
+			//line 1
+			top.add(lblName);
+			top.add(lblClass);	
+			//line 2
+			top.add(inputName);
+			classSelect.setSelectedIndex(0);
+			top.add(classSelect);
+			
+			this.add(top, BorderLayout.NORTH);
+			
+			bottom.setLayout(new BorderLayout());
+			bottom.add(valide, BorderLayout.SOUTH);
+			this.add(bottom, BorderLayout.SOUTH);
+			
+			final CreationForm cf = this;
+			
+			valide.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					switch (((String)cf.classSelect.getSelectedItem())) {
+					case "Magician":
+						App.Characters.add(new Magician(cf.inputName.getText(), new Vector2(0,0)));
+						break ;
+					case "Princess":
+						App.Characters.add(new Princess(cf.inputName.getText(), new Vector2(0,0)));
+						break ;
+					case "Warrior":
+						App.Characters.add(new Warrior(cf.inputName.getText(), new Vector2(0,0)));
+						break ;
+					}
+					block_creation.setSelected(false);
+					paintBlockCreation();
+				}
+				
+			});
+			
+		}
 	}
 
 }

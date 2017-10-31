@@ -4,12 +4,20 @@ import java.awt.Graphics;
 
 import swingy.App;
 import swingy.entity.statistics.Statistics;
+import swingy.enums.EStatElement;
 import swingy.math.Vector2;
 import swingy.ressources.Sprite;
 
 public class Rabit extends Entity {
 	private static Statistics	stats;
 	private static Sprite		sprite = Sprite.RABIT;
+	
+	static {
+		stats = new Statistics();
+		stats.addStat(EStatElement.Attack, 4);
+		stats.addStat(EStatElement.Defense, 2);
+		stats.addStat(EStatElement.HitPoint, 5);
+	}
 	
 	public Rabit(String name, Vector2 position) {
 		super(name, stats, position);

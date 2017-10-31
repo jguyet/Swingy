@@ -1,5 +1,7 @@
 package swingy;
 
+import java.util.ArrayList;
+
 import swingy.controller.CharacterController;
 import swingy.controller.MainMenuController;
 import swingy.controller.WorldMapController;
@@ -13,6 +15,7 @@ import swingy.module.IModule;
 import swingy.module.factory.ModuleFactory;
 import swingy.ressources.Sprite;
 import swingy.views.IView;
+import swingy.views.SwingyGUIMainMenuView;
 import swingy.views.Window;
 import swingy.views.factory.ViewFactory;
 import swingy.world.WorldMap;
@@ -47,6 +50,8 @@ public class App {
 	/*********************************************************/
 	
 	public static Entity				Character = null;
+	
+	public static ArrayList<Entity>		Characters = new ArrayList<Entity>();
 
 	/**
 	 * Main of swingy
@@ -89,7 +94,7 @@ public class App {
 	public static void loopMainMenu() {
 		mainmenuview.init();
 		
-		mainMenuController = new MainMenuController();
+		mainMenuController = new MainMenuController((SwingyGUIMainMenuView) mainmenuview);
 		
 		loopController = new LoopMotor(new MotorGraphics() {
 
@@ -108,13 +113,21 @@ public class App {
 		});
 		
 		loopController.start();
+		
+		if (Character != null)
+			loadGame();
 	}
 	
 	//#######################################################################################
 	// LOAD GAME
 	
 	public static void loadGame() {
-		loadCharacter();
+		//mainmenuview.destroy();
+		//window.setVisible(false);
+		//window = null;
+		
+		loadGameInterface();
+		//loadCharacter();
 		loadWorldMap();
 		loadControllers();
 		loopApp();
@@ -124,6 +137,12 @@ public class App {
 	 * loading graphics interfaces
 	 */
 	public static void loadGameInterface() {
+		window.setSize(1000, 1000);
+		window.setTitle(Character.getName() + " Level (" + Character.getLevel() + ") exp : " + Character.getExp());
+		//window.setVisible(false);
+		//window.setVisible(true);
+		window.repaint();
+		//window		= ViewFactory.loadWindow(modelInterface.getinstance(), TITLE, 1000, 1000);
 		gameview	= ViewFactory.newGameView(modelInterface.getinstance());
 	}
 	
@@ -172,8 +191,8 @@ public class App {
 			}
 			
 		});
-		
 		loopController.start();
+		loadGame();
 	}
 	
 	//#####################################################################################

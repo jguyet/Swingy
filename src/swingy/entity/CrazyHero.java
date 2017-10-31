@@ -2,6 +2,7 @@ package swingy.entity;
 
 import java.awt.Graphics;
 
+import swingy.App;
 import swingy.entity.statistics.Statistics;
 import swingy.enums.EStatElement;
 import swingy.math.Time;
@@ -71,8 +72,8 @@ public class CrazyHero extends Entity {
 		
 		sprite.posid = animation[animid];
 		
-		int px = this.transform.position.x + (sprite.getWidth() / 2);
-		int py = this.transform.position.y + (sprite.getHeight() - Sprite.grounds.getHeight()) + (Sprite.grounds.getHeight() / 2);
+		int px = App.worldMap.getStartWidth() + (this.transform.position.x * App.SCALE) - (sprite.getWidth() / 2);
+		int py = App.worldMap.getStartHeight() + (this.transform.position.y * App.SCALE) - (sprite.getHeight() / 2);
 		
 		sprite.paint(g, px, py);
 		if (!(lastpos.x == this.transform.position.x && lastpos.y == this.transform.position.y))

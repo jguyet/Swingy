@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import swingy.App;
 import swingy.entity.statistics.Statistics;
+import swingy.enums.EStatElement;
 import swingy.math.Vector2;
 import swingy.ressources.Sprite;
 
@@ -11,6 +12,13 @@ public class Magician extends Entity {
 
 	private static Statistics	stats;
 	private static Sprite		sprite = Sprite.MAGE;
+	
+	static {
+		stats = new Statistics();
+		stats.addStat(EStatElement.Attack, 2);
+		stats.addStat(EStatElement.Defense, 6);
+		stats.addStat(EStatElement.HitPoint, 4);
+	}
 	
 	public Magician(String name, Vector2 position) {
 		super(name, stats, position);

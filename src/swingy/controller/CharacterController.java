@@ -35,6 +35,13 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 		App.gameview.waitResponse(this);
 		mouseCharacter();
 		App.gameview.println("Character at position x: " + entity.transform.position.x + " y :" + entity.transform.position.y);
+		
+		if (App.worldMap.getCaseByPosition(this.entity.transform.position) == null) {
+			System.out.println("LA");
+			this.entity.addExp(1000);
+			App.loopController.stop();
+		}
+		
 	}
 	
 	private void mouseCharacter() {
@@ -56,9 +63,9 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 				|| keysDown.containsKey(KeyEvent.VK_S)) {
 			tmp.y += 1;
 		}
-		
-		if (!(tmp.x == 0 && tmp.y == 0))
-			entity.transform.translate(tmp);
+		if (App.worldMap.getCaseByPosition(tmp) == null || App.worldMap.getCaseByPosition(tmp).isWalkable())
+			if (!(tmp.x == 0 && tmp.y == 0))
+				entity.transform.translate(tmp);
 		keysDown.clear();
 	}
 	
