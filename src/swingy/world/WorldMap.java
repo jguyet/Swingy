@@ -2,8 +2,10 @@ package swingy.world;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import swingy.App;
+import swingy.entity.Entity;
 import swingy.math.Utils;
 import swingy.model.ISwingyModel;
 import swingy.ressources.Sprite;
@@ -14,6 +16,9 @@ public class WorldMap implements ISwingyModel {
 	private int height;
 	
 	private Case[][] ground;
+	private ArrayList<Case>		cases = new ArrayList<Case>();
+	private ArrayList<Entity>	monsters = new ArrayList<Entity>();
+	private Entity				character = null;
 	
 	/**
 	 * Constructor of MAP size X size
@@ -37,7 +42,8 @@ public class WorldMap implements ISwingyModel {
 				else
 					groundId = Utils.getRandomValue(0, 1);
 				
-				this.ground[y][x] = new Case(groundId, true);
+				this.ground[y][x] = new Case(x, y, groundId, true);
+				cases.add(this.ground[y][x]);
 			}
 		}
 	}
@@ -57,20 +63,35 @@ public class WorldMap implements ISwingyModel {
 	public void setHeight(int height) {
 		this.height = height;
 	}
+	
+	public void addMonster(Entity e) {
+		this.monsters.add(e);
+	}
+	
+	public void removeMonster(Entity e) {
+		this.monsters.remove(e);
+	}
+	
+	public void addCharacter(Entity character) {
+		this.character = character;
+		
+		this.character.transform.position.x = this.width / 2;
+		this.character.transform.position.y = this.height / 2;
+	}
+	
+	public void removeCharacter() {
+		this.character = null;
+	}
 
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		
-		int scale = 30;
-		int startx = (App.window.getWidth() / 2) - ((this.width * scale) / 2);
-		int starty = (App.window.getHeight() / 2) - ((this.height * scale) / 2);
 		Sprite grounds = Sprite.grounds;
 		
 		for (int y = 0; y < this.height; y++) {
 			for (int x = 0; x < this.width; x++) {
-				int px = startx + (x * scale);
-				int py = starty + (y * scale);
+				int px = getStartWidth() + (x * App.SCALE);
+				int py = getStartHeight() + (y * App.SCALE);
 				
 				px = px - (grounds.getWidth() / 2);
 				py = py - (grounds.getHeight() / 2);
@@ -79,14 +100,50 @@ public class WorldMap implements ISwingyModel {
 				grounds.paint(g2, px, py);
 			}
 		}
+		
+		for (Entity e : this.monsters) {
+			e.paint(g2);
+		}
+		
+		if (character != null)
+			character.paint(g2);
+	}
+	
+	public int getStartWidth() {
+		return ((App.window.getWidth() / 2) - ((this.width * App.SCALE) / 2));
+	}
+	
+	public int getStartHeight() {
+		return ((App.window.getHeight() / 2) - ((this.height * App.SCALE) / 2));
+	}
+	
+	public Case getRandomWalkableCase() {
+		
+		Case finalcase = null;
+		
+		while (finalcase == null) {
+			int id = Utils.getRandomValue(0, this.cases.size() - 1);
+			Case c = this.cases.get(id);
+			
+			if (c.isWalkable() == true) {
+				finalcase = c;
+			}
+		}
+		return (finalcase);
 	}
 	
 	public class Case {
 		
+		public int		x;
+		public int		y;
+		
 		private int		groundId;
 		private boolean	walkable;
+		private Entity	entity = null;
 		
-		public Case(int groundId, boolean walkable) {
+		public Case(int x, int y, int groundId, boolean walkable) {
+			this.x = x;
+			this.y = y;
 			this.groundId = groundId;
 			this.walkable = walkable;
 		}
@@ -96,7 +153,17 @@ public class WorldMap implements ISwingyModel {
 		}
 		
 		public boolean isWalkable() {
+			if (entity != null)
+				return (false);
 			return (this.walkable);
+		}
+		
+		public void addEntity(Entity e) {
+			this.entity = e;
+		}
+		
+		public void removeEntity() {
+			this.entity = null;
 		}
 	}
 }

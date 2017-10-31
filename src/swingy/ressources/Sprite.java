@@ -12,6 +12,7 @@ import swingy.math.Vector2;
 
 public class Sprite{
 	
+	public static Sprite TITLE;
 	public static Sprite grounds;
 	public static Sprite CRAZY;
 	public static Sprite MAGE;
@@ -20,6 +21,8 @@ public class Sprite{
 	public static Sprite WARRIOR;
 	
 	public static void LOAD() {
+		TITLE = new Sprite("res/sprites/swingy.png", 1, 1, 0);
+		
 		grounds = new Sprite("res/sprites/ground/ground.png", 16, 12, 1);
 		grounds.setHeight(32);
 		grounds.setWidth(32);

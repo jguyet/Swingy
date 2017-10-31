@@ -1,11 +1,12 @@
 package swingy;
 
 import swingy.controller.CharacterController;
+import swingy.controller.MainMenuController;
 import swingy.controller.WorldMapController;
 import swingy.controller.loop.LoopMotor;
 import swingy.controller.loop.MotorGraphics;
 import swingy.entity.Entity;
-import swingy.entity.Rabit;
+import swingy.entity.Magician;
 import swingy.exceptions.ModuleException;
 import swingy.math.Vector2;
 import swingy.module.IModule;
@@ -23,6 +24,8 @@ public class App {
 	public static final int				WIDTH = 1000;
 	public static final int				HEIGHT = 1000;
 	
+	public static final int				SCALE = 30;
+	
 	public static WorldMap				worldMap = null;
 	
 	public static IModule				modelInterface = null;
@@ -38,9 +41,12 @@ public class App {
 	public static IView					gameview = null;
 	/*********************************************************/
 	/**                     CONTROLLERS                     **/
+	public static MainMenuController	mainMenuController = null;
 	public static WorldMapController	worldMapController = null;
 	public static CharacterController	characterController = null;
 	/*********************************************************/
+	
+	public static Entity				Character = null;
 
 	/**
 	 * Main of swingy
@@ -67,23 +73,72 @@ public class App {
 			return false;
 		lastFPS = System.currentTimeMillis();
 		Sprite.LOAD();
-		loadInterface();
-		loadWorldMap();
-		loadControllers();
-		loopApp();
+		loadMainInterfaces();
+		loopMainMenu();
 		//Start interface and load game
 		System.out.println("Instance : " + modelInterface.getinstance());
 		return true;
 	}
 	
+	public static void loadMainInterfaces() {
+		
+		window		= ViewFactory.loadWindow(modelInterface.getinstance(), TITLE, 1000, 350);
+		mainmenuview	= ViewFactory.newMainMenu(modelInterface.getinstance());
+	}
+	
+	public static void loopMainMenu() {
+		mainmenuview.init();
+		
+		mainMenuController = new MainMenuController();
+		
+		loopController = new LoopMotor(new MotorGraphics() {
+
+			@Override
+			public void graphicControllerLoop() {
+				// TODO Auto-generated method stub
+				mainMenuController.control();
+			}
+			@Override
+			public void graphicRenderingLoop() {
+				// TODO Auto-generated method stub
+				mainmenuview.update();
+				updateFPS();
+			}
+			
+		});
+		
+		loopController.start();
+	}
+	
+	//#######################################################################################
+	// LOAD GAME
+	
+	public static void loadGame() {
+		loadCharacter();
+		loadWorldMap();
+		loadControllers();
+		loopApp();
+	}
+	
 	/**
 	 * loading graphics interfaces
 	 */
-	public static void loadInterface() {
-		
-		window		= ViewFactory.loadWindow(modelInterface.getinstance(), TITLE, 1000, 1000);
+	public static void loadGameInterface() {
 		gameview	= ViewFactory.newGameView(modelInterface.getinstance());
-		mainmenuview	= ViewFactory.newMainMenu(modelInterface.getinstance());
+	}
+	
+	public static void loadCharacter() {
+		Character = new Magician("tmp", new Vector2(0, 0));
+	}
+	
+	/**
+	 * load world map
+	 */
+	public static void loadWorldMap() {
+		worldMap	= WorldMapFactory.generateWorldMap(Character.getLevel());
+		worldMap.addCharacter(Character);
+		WorldMapFactory.loadRandomMonsters(worldMap);
+		gameview.addModel(worldMap);
 	}
 	
 	/**
@@ -91,14 +146,7 @@ public class App {
 	 */
 	public static void loadControllers() {
 		worldMapController = new WorldMapController(App.worldMap);
-	}
-	
-	/**
-	 * load world map
-	 */
-	public static void loadWorldMap() {
-		worldMap	= WorldMapFactory.generateWorldMap(15);
-		gameview.addModel(worldMap);
+		characterController = new CharacterController(Character);
 	}
 	
 	/**
@@ -107,11 +155,6 @@ public class App {
 	public static void loopApp() {
 		//init gameview
 		gameview.init();
-		
-		Entity e = new Rabit("tmp", new Vector2(0, 0));
-		characterController = new CharacterController(e);
-		
-		gameview.addModel(e);
 		
 		loopController = new LoopMotor(new MotorGraphics() {
 
@@ -132,6 +175,8 @@ public class App {
 		
 		loopController.start();
 	}
+	
+	//#####################################################################################
 	
 	//############################################################
 	// FPS

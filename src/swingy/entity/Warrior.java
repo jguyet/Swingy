@@ -2,17 +2,15 @@ package swingy.entity;
 
 import java.awt.Graphics;
 
-import swingy.App;
 import swingy.entity.statistics.Statistics;
 import swingy.math.Vector2;
 import swingy.ressources.Sprite;
 
-public class Magician extends Entity {
-
+public class Warrior extends Entity{
 	private static Statistics	stats;
-	private static Sprite		sprite = Sprite.MAGE;
+	private static Sprite		sprite = Sprite.WARRIOR;
 	
-	public Magician(String name, Vector2 position) {
+	public Warrior(String name, Vector2 position) {
 		super(name, stats, position);
 	}
 	
@@ -54,18 +52,17 @@ public class Magician extends Entity {
 			break ;
 		}
 		
-		if (animid >= 3)
+		if (animid >= 4)
 			animid = 0;
 		
 		sprite.posid = animation[animid];
 		
-		int px = App.worldMap.getStartWidth() + (this.transform.position.x * App.SCALE) - (sprite.getWidth() / 2);
-		int py = App.worldMap.getStartHeight() + (this.transform.position.y * App.SCALE) - (sprite.getHeight() / 2);
+		int px = this.transform.position.x + (sprite.getWidth() / 2) - (Sprite.grounds.getWidth() / 2);
+		int py = this.transform.position.y + (sprite.getHeight() - Sprite.grounds.getHeight()) + (Sprite.grounds.getHeight() / 2);
 		
 		sprite.paint(g, px, py);
 		if (!(lastpos.x == this.transform.position.x && lastpos.y == this.transform.position.y))
 			animid++;
 		lastpos = new Vector2(this.transform.position.x, this.transform.position.y);
 	}
-
 }

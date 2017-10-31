@@ -8,6 +8,8 @@ import swingy.entity.statistics.Statistics;
 import swingy.entity.transform.Transform;
 import swingy.math.Vector2;
 import swingy.model.ISwingyModel;
+import swingy.world.WorldMap;
+import swingy.world.WorldMap.Case;
 
 public abstract class Entity implements ISwingyModel {
 	
@@ -39,6 +41,16 @@ public abstract class Entity implements ISwingyModel {
 		this.name = name;
 		this.stats = statistics;
 		this.transform = new Transform(this, position);
+	}
+	
+	public void initRandomPositionToMap(WorldMap map) {
+		
+		Case c = map.getRandomWalkableCase();
+		
+		c.addEntity(this);
+		
+		this.transform.position.x = c.x;
+		this.transform.position.y = c.y;
 	}
 
 	public String getName() {

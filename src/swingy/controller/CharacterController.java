@@ -42,19 +42,19 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 		
 		if (keysDown.containsKey(KeyEvent.VK_RIGHT)
 				|| keysDown.containsKey(KeyEvent.VK_D)) {
-			tmp.x += 30;
+			tmp.x += 1;
 		}
 		if (keysDown.containsKey(KeyEvent.VK_LEFT)
 				|| keysDown.containsKey(KeyEvent.VK_A)) {
-			tmp.x -= 30;
+			tmp.x -= 1;
 		}
 		if (keysDown.containsKey(KeyEvent.VK_UP)
 				|| keysDown.containsKey(KeyEvent.VK_W)) {
-			tmp.y -= 30;
+			tmp.y -= 1;
 		}
 		if (keysDown.containsKey(KeyEvent.VK_DOWN)
 				|| keysDown.containsKey(KeyEvent.VK_S)) {
-			tmp.y += 30;
+			tmp.y += 1;
 		}
 		
 		if (!(tmp.x == 0 && tmp.y == 0))

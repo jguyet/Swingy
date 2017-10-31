@@ -1,6 +1,7 @@
 package swingy.views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
@@ -70,6 +71,9 @@ public class SwingyGUIGameView extends JPanel implements IView{
 		super.paintComponent(g);
 		
 		g.clearRect(0, 0, this.win.getWidth(), this.win.getHeight());
+		
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, this.win.getWidth(), this.win.getHeight());
 		
 		ArrayList<ISwingyModel> tmp = new ArrayList<ISwingyModel>(models);
 		
