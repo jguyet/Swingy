@@ -4,12 +4,11 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import swingy.App;
 import swingy.entity.statistics.Statistics;
 import swingy.entity.transform.Transform;
-import swingy.math.Utils;
-import swingy.math.Vector2;
 import swingy.model.ISwingyModel;
+import swingy.ressources.Sprite;
+import swingy.utils.Vector2;
 import swingy.world.WorldMap;
 import swingy.world.WorldMap.Case;
 
@@ -26,7 +25,7 @@ public abstract class Entity implements ISwingyModel {
 	 * PRIVATE VARS
 	 */
 	@NotNull
-	@Size(max=50)
+	@Size(max=50,min=1)
 	private String		name;
 	@Min(value=1)
 	private int			level = 1;
@@ -42,7 +41,7 @@ public abstract class Entity implements ISwingyModel {
 	public Entity(String name, Statistics statistics, Vector2 position) {
 		this.name = name;
 		this.stats = statistics;
-		this.transform = new Transform(this, position);
+		this.transform = new Transform(position);
 	}
 	
 	public void initRandomPositionToMap(WorldMap map) {
@@ -84,14 +83,11 @@ public abstract class Entity implements ISwingyModel {
 		
 		long lastLevelXp = (long) (((this.level - 1)*1000)+(Math.sqrt(this.level - 2)*450));
 		
-		System.out.println(lastLevelXp);
-		
 		while (((this.exp + exp) - lastLevelXp) > (this.level*1000)+(Math.sqrt(this.level - 1)*450)) {
 			this.level++;
 			levelUp = true;
 		}
 		this.exp = this.exp + exp;
-		Utils.writeHeros(App.Characters);
 		return (levelUp);
 	}
 	
@@ -100,4 +96,6 @@ public abstract class Entity implements ISwingyModel {
 	}
 	
 	public abstract String classe();
+	
+	public abstract Sprite getSprite();
 }

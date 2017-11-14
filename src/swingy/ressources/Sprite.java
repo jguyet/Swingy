@@ -8,8 +8,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import swingy.App;
-import swingy.math.Vector2;
+import swingy.utils.Vector2;
 
 public class Sprite{
 	

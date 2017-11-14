@@ -1,6 +1,6 @@
 package swingy.controller.loop;
 
-import swingy.math.Time;
+import swingy.utils.Time;
 
 public class LoopMotor {
 

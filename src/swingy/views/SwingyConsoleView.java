@@ -12,8 +12,11 @@ public class SwingyConsoleView implements IView{
 
 	private ArrayList<ISwingyModel> models = new ArrayList<ISwingyModel>();
 	
+	@SuppressWarnings("unused")
 	private KeyListener keyl = null;
+	@SuppressWarnings("unused")
 	private MouseListener mousel = null;
+	@SuppressWarnings("unused")
 	private ResponseListener responselistener = null;
 	
 	public SwingyConsoleView() {

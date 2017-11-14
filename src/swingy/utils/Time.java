@@ -1,4 +1,4 @@
-package swingy.math;
+package swingy.utils;
 
 public class Time {
 	private static long 	delta;

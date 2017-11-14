@@ -1,12 +1,15 @@
 package swingy.views.factory;
 
 import swingy.App;
+import swingy.entity.Entity;
 import swingy.enums.EModule;
 import swingy.views.IView;
 import swingy.views.SwingyConsoleView;
 import swingy.views.SwingyGUIGameView;
 import swingy.views.SwingyGUIMainMenuView;
 import swingy.views.Window;
+import swingy.views.components.FightCinematiqueComponent;
+import swingy.views.components.GameInterfaceComponent;
 
 public class ViewFactory {
 	
@@ -32,5 +35,19 @@ public class ViewFactory {
 			return (new SwingyGUIGameView(App.window));
 		}
 		return (null);
+	}
+	
+	public static GameInterfaceComponent newGameGuiInterface(EModule type, IView v) {
+		if (type == EModule.GUI) {
+			return (new GameInterfaceComponent((SwingyGUIGameView)v));
+		}
+		return null;
+	}
+	
+	public static FightCinematiqueComponent newFightCinematique(EModule type, IView v, Entity p1, Entity p2) {
+		if (type == EModule.GUI) {
+			return (new FightCinematiqueComponent((SwingyGUIGameView)v, p1, p2));
+		}
+		return null;
 	}
 }

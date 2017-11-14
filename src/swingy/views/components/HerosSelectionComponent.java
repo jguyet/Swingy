@@ -52,7 +52,6 @@ public class HerosSelectionComponent extends JPanel implements ISwingyModel {
 	}
 	
 	protected void paintComponent(java.awt.Graphics g) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		
 	}
 }

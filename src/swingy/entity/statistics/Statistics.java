@@ -11,8 +11,14 @@ public class Statistics {
 	
 	private Map<EStatElement, Integer> stats = new HashMap<EStatElement, Integer>();
 	
-	public Statistics() {
+	public Statistics(Object ... args) {
 		
+		for (int i = 0; i < args.length; i += 2) {
+			EStatElement e = (EStatElement)args[i];
+			Integer val = (Integer)args[i + 1];
+			
+			addStat(e, val);
+		}
 	}
 	
 	public Map<EStatElement, Integer> getStats() {

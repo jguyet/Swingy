@@ -5,22 +5,19 @@ import java.awt.Graphics;
 import swingy.App;
 import swingy.entity.statistics.Statistics;
 import swingy.enums.EStatElement;
-import swingy.math.Vector2;
 import swingy.ressources.Sprite;
+import swingy.utils.Vector2;
 
 public class Rabit extends Entity {
-	private static Statistics	stats;
 	private static Sprite		sprite = Sprite.RABIT;
-	
-	static {
-		stats = new Statistics();
-		stats.addStat(EStatElement.Attack, 4);
-		stats.addStat(EStatElement.Defense, 2);
-		stats.addStat(EStatElement.HitPoint, 5);
-	}
+	private static Statistics	baseStats = new Statistics(
+															EStatElement.Attack, 2,
+															EStatElement.Defense, 6,
+															EStatElement.HitPoint, 4
+															);
 	
 	public Rabit(String name, Vector2 position) {
-		super(name, stats, position);
+		super(name, baseStats, position);
 		this.transform.direction = 3;
 	}
 	
@@ -79,5 +76,10 @@ public class Rabit extends Entity {
 	@Override
 	public String classe() {
 		return "Rabit";
+	}
+	
+	@Override
+	public Sprite getSprite() {
+		return this.sprite;
 	}
 }

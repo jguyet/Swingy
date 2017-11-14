@@ -5,22 +5,19 @@ import java.awt.Graphics;
 import swingy.App;
 import swingy.entity.statistics.Statistics;
 import swingy.enums.EStatElement;
-import swingy.math.Vector2;
 import swingy.ressources.Sprite;
+import swingy.utils.Vector2;
 
-public class Warrior extends Entity{
-	private static Statistics	stats;
+public class Warrior extends Entity {
 	private static Sprite		sprite = Sprite.WARRIOR;
-	
-	static {
-		stats = new Statistics();
-		stats.addStat(EStatElement.Attack, 7);
-		stats.addStat(EStatElement.Defense, 3);
-		stats.addStat(EStatElement.HitPoint, 4);
-	}
+	private static Statistics	baseStats = new Statistics(
+															EStatElement.Attack, 2,
+															EStatElement.Defense, 6,
+															EStatElement.HitPoint, 4
+															);
 	
 	public Warrior(String name, Vector2 position) {
-		super(name, stats, position);
+		super(name, baseStats, position);
 	}
 	
 	private int[]		animation;
@@ -78,5 +75,10 @@ public class Warrior extends Entity{
 	@Override
 	public String classe() {
 		return "Warrior";
+	}
+	
+	@Override
+	public Sprite getSprite() {
+		return this.sprite;
 	}
 }

@@ -1,5 +1,6 @@
-package swingy.math;
+package swingy.utils;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -14,6 +15,7 @@ import swingy.entity.Entity;
 import swingy.entity.Magician;
 import swingy.entity.Princess;
 import swingy.entity.Warrior;
+import swingy.validation.ValidatorEntity;
 
 public class Utils {
 
@@ -47,6 +49,7 @@ public class Utils {
 	public static ArrayList<Entity> loadHeros() {
 		ArrayList<String> list = readHeros();
 		ArrayList<Entity> entList = new ArrayList<Entity>();
+		
 		for (String c : list) {
 			
 			String[] pattern = c.split(" ");
@@ -77,11 +80,11 @@ public class Utils {
 				break ;
 			}
 			if (e != null) {
-				if (level > 0)
-					e.setLevel(level);
-				if (exp > 0)
-					e.setExp(exp);
-				entList.add(e);
+				e.setLevel(level);
+				e.setExp(exp);
+				
+				if (ValidatorEntity.validateEntity(e))
+					entList.add(e);
 			}
 		}
 		return (entList);
@@ -101,5 +104,12 @@ public class Utils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static Color HexToRGB(String colorStr) {
+		return new Color(
+	            Integer.valueOf( colorStr.substring( 1, 3 ), 16 ),
+	            Integer.valueOf( colorStr.substring( 3, 5 ), 16 ),
+	            Integer.valueOf( colorStr.substring( 5, 7 ), 16 ) );
 	}
 }

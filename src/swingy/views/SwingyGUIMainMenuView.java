@@ -3,17 +3,11 @@ package swingy.views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import swingy.model.ISwingyModel;
-import swingy.views.components.HerosCreationComponent;
-import swingy.views.components.HerosTableComponent;
-import swingy.views.components.SwingyTitleComponent;
 import swingy.views.events.ResponseListener;
 
 public class SwingyGUIMainMenuView extends JPanel implements IView{

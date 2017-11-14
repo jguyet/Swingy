@@ -8,8 +8,8 @@ import java.util.Map;
 import swingy.App;
 import swingy.entity.Entity;
 import swingy.enums.EModule;
-import swingy.math.Vector2;
-import swingy.views.SwingyConsoleView;
+import swingy.utils.Utils;
+import swingy.utils.Vector2;
 import swingy.views.events.ResponseListener;
 
 public class CharacterController implements ISwingyController, KeyListener, ResponseListener {
@@ -38,8 +38,8 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 		App.gameview.println("Character at position x: " + entity.transform.position.x + " y :" + entity.transform.position.y);
 		
 		if (App.worldMap.getCaseByPosition(this.entity.transform.position) == null) {
-			System.out.println("LA");
 			this.entity.addExp(1000);
+			Utils.writeHeros(App.Characters);
 			App.loopController.stop();
 		}
 	}
@@ -82,8 +82,12 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 			tmp.y += 1;
 		}
 		if (App.worldMap.getCaseByPosition(tmp) == null || App.worldMap.getCaseByPosition(tmp).isWalkable()) {
-			if (!(tmp.x == 0 && tmp.y == 0)) {
+			Vector2 movement = new Vector2(entity.transform.position.x - tmp.x, entity.transform.position.y - tmp.y);
+			if (!(movement.x == 0 && movement.y == 0)) {
 				entity.transform.translate(tmp);
+				System.out.println(movement.x + " " + movement.y);
+				App.worldMap.setStartWidth(App.worldMap.getStartWidth() + (movement.x * App.SCALE));
+				App.worldMap.setStartHeight(App.worldMap.getStartHeight() + (movement.y * App.SCALE));
 			}
 		}
 		keysDown.clear();

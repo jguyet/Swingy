@@ -2,24 +2,22 @@ package swingy.entity;
 
 import java.awt.Graphics;
 
+import javax.validation.constraints.Null;
+
 import swingy.App;
 import swingy.entity.statistics.Statistics;
 import swingy.enums.EStatElement;
-import swingy.math.Time;
-import swingy.math.Vector2;
 import swingy.ressources.Sprite;
+import swingy.utils.Vector2;
 
 public class CrazyHero extends Entity {
 	
-	private static Statistics	stats;
 	private static Sprite		sprite = Sprite.CRAZY;
-	
-	static {
-		stats = new Statistics();
-		stats.addStat(EStatElement.Attack, 5);
-		stats.addStat(EStatElement.Defense, 2);
-		stats.addStat(EStatElement.HitPoint, 3);
-	}
+	private static Statistics	baseStats = new Statistics(
+															EStatElement.Attack, 2,
+															EStatElement.Defense, 6,
+															EStatElement.HitPoint, 4
+															);
 	
 	/**
 	 * Crazy Hero<br>
@@ -30,9 +28,10 @@ public class CrazyHero extends Entity {
 	 * @param position
 	 */
 	public CrazyHero(String name, Vector2 position) {
-		super(name, stats, position);
+		super(name, baseStats, position);
 	}
 	
+	@Null
 	private int[]		animation;
 	private int			animid = 0;
 	private Vector2		lastpos = new Vector2();
@@ -84,6 +83,11 @@ public class CrazyHero extends Entity {
 	@Override
 	public String classe() {
 		return "CrazyHero";
+	}
+
+	@Override
+	public Sprite getSprite() {
+		return this.sprite;
 	}
 
 }

@@ -17,11 +17,21 @@
   <!-- ########################################################################## -->
   <!-- LIBRARIES DEPENDENCIES -->
   <dependencies>
+	 <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>1.7.5</version>
+    </dependency>
   	<dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator-annotation-processor</artifactId>
+        <version>4.1.0.Final</version>
+    </dependency>
+    <!--<dependency>
 	    <groupId>javax.validation</groupId>
 	    <artifactId>validation-api</artifactId>
-	    <version>1.0.0.GA</version>
-	</dependency>
+	    <version>1.1.0.Final</version>
+	</dependency>-->
   </dependencies>
   <!-- END LIBRARIES DEPENDENCIES -->
   <!-- ########################################################################## -->
@@ -40,9 +50,59 @@
           <!-- JAVA COMPILANCE VERSION -->
           <source>1.7</source>
           <target>1.7</target>
+          <descriptorRefs>
+          	<descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
         </configuration>
       </plugin>
       <!-- END PLUGIN COMPILER -->
+      <!-- ###################################################################### -->
+      <!-- START COPYING RES -->
+      <plugin>
+		<artifactId>maven-resources-plugin</artifactId>
+		<version>2.6</version>
+		<executions>
+			<execution>
+				<id>copy-resources</id>
+				<phase>validate</phase>
+				<goals>
+					<goal>copy-resources</goal>
+				</goals>
+				<configuration>
+					<outputDirectory>${project.build.directory}/res</outputDirectory>
+					<resources>
+						<resource>
+							<directory>res</directory>
+							<filtering>true</filtering>
+						</resource>
+					</resources>
+				</configuration>
+			</execution>
+		</executions>
+	  </plugin>
+	  <!-- END COPYING RES -->
+      <!-- ###################################################################### -->
+      <!-- START COPYING DEPENDENCIES JAR -->
+      <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-dependency-plugin</artifactId>
+		<executions>
+			<execution>
+				<id>copy-dependencies</id>
+				<phase>prepare-package</phase>
+				<goals>
+					<goal>copy-dependencies</goal>
+				</goals>
+				<configuration>
+					<outputDirectory>${project.build.directory}/lib</outputDirectory>
+					<overWriteReleases>false</overWriteReleases>
+					<overWriteSnapshots>false</overWriteSnapshots>
+					<overWriteIfNewer>true</overWriteIfNewer>
+				</configuration>
+			</execution>
+		</executions>
+	  </plugin>
+      <!-- END COPY DEPENDENCIES -->
       <!-- ###################################################################### -->
       <!-- START PLUGIN JAR -->
       <plugin>

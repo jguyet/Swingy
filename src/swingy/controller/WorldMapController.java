@@ -1,6 +1,12 @@
 package swingy.controller;
 
+import java.util.ArrayList;
+
+import swingy.App;
+import swingy.entity.Entity;
+import swingy.views.factory.ViewFactory;
 import swingy.world.WorldMap;
+import swingy.world.WorldMap.Case;
 
 public class WorldMapController implements ISwingyController{
 
@@ -20,7 +26,23 @@ public class WorldMapController implements ISwingyController{
 	
 	@Override
 	public void control() {
+		final ArrayList<Entity> list = new ArrayList<Entity>(this.world.getMonsters());
 		
+		for (Entity e : list) {
+			if (App.Character.transform.position.equals(e.transform.position)) {
+				
+				
+				App.Character.addExp(100L);
+				
+				ViewFactory.newFightCinematique(App.modelInterface.getinstance(), App.gameview, App.Character, e);
+				
+				Case c = world.getCaseByPosition(e.transform.position);
+				if (c != null) {
+					c.removeEntity();
+				}
+				world.removeMonster(e);
+			}
+		}
 	}
 
 }

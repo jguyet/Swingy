@@ -1,4 +1,4 @@
-package swingy.math;
+package swingy.utils;
 
 public class Vector2 {
 
@@ -13,5 +13,12 @@ public class Vector2 {
 	public Vector2() {
 		this.x = 0;
 		this.y = 0;
+	}
+	
+	public boolean equals(Vector2 v) {
+		if (v.x == x && v.y == y) {
+			return true;
+		}
+		return false;
 	}
 }

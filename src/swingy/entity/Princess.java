@@ -5,22 +5,19 @@ import java.awt.Graphics;
 import swingy.App;
 import swingy.entity.statistics.Statistics;
 import swingy.enums.EStatElement;
-import swingy.math.Vector2;
 import swingy.ressources.Sprite;
+import swingy.utils.Vector2;
 
 public class Princess extends Entity{
-	private static Statistics	stats;
 	private static Sprite		sprite = Sprite.PRINCESS;
-	
-	static {
-		stats = new Statistics();
-		stats.addStat(EStatElement.Attack, 3);
-		stats.addStat(EStatElement.Defense, 1);
-		stats.addStat(EStatElement.HitPoint, 3);
-	}
+	private static Statistics	baseStats = new Statistics(
+															EStatElement.Attack, 2,
+															EStatElement.Defense, 6,
+															EStatElement.HitPoint, 4
+															);
 	
 	public Princess(String name, Vector2 position) {
-		super(name, stats, position);
+		super(name, baseStats, position);
 	}
 	
 	private int[]		animation;
@@ -78,5 +75,10 @@ public class Princess extends Entity{
 	@Override
 	public String classe() {
 		return "Princess";
+	}
+	
+	@Override
+	public Sprite getSprite() {
+		return this.sprite;
 	}
 }

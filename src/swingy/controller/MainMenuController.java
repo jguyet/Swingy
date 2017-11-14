@@ -16,8 +16,8 @@ import swingy.entity.Princess;
 import swingy.entity.Warrior;
 import swingy.enums.EModule;
 import swingy.enums.EStatElement;
-import swingy.math.Utils;
-import swingy.math.Vector2;
+import swingy.utils.Utils;
+import swingy.utils.Vector2;
 import swingy.views.SwingyGUIMainMenuView;
 import swingy.views.components.HerosCreationComponent;
 import swingy.views.components.HerosFormComponent;
@@ -270,7 +270,7 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 			} catch (NumberFormatException e) {
 				return false;
 			}
-			if (id > max || id < 0)
+			if (id >= max || id < 0)
 				return false;
 			return true;
 		}

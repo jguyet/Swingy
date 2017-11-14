@@ -3,6 +3,7 @@ package swingy;
 import java.util.ArrayList;
 
 import swingy.controller.CharacterController;
+import swingy.controller.GameController;
 import swingy.controller.MainMenuController;
 import swingy.controller.WorldMapController;
 import swingy.controller.loop.LoopMotor;
@@ -11,13 +12,12 @@ import swingy.entity.Entity;
 import swingy.entity.Magician;
 import swingy.enums.EModule;
 import swingy.exceptions.ModuleException;
-import swingy.math.Utils;
-import swingy.math.Vector2;
 import swingy.module.IModule;
 import swingy.module.factory.ModuleFactory;
 import swingy.ressources.Sprite;
+import swingy.utils.Utils;
+import swingy.utils.Vector2;
 import swingy.views.IView;
-import swingy.views.SwingyGUIMainMenuView;
 import swingy.views.Window;
 import swingy.views.factory.ViewFactory;
 import swingy.world.WorldMap;
@@ -49,6 +49,7 @@ public class App {
 	public static MainMenuController	mainMenuController = null;
 	public static WorldMapController	worldMapController = null;
 	public static CharacterController	characterController = null;
+	public static GameController		gameController = null;
 	/*********************************************************/
 	
 	public static Entity				Character = null;
@@ -87,12 +88,18 @@ public class App {
 		return true;
 	}
 	
+	/**
+	 * Interface loader
+	 */
 	public static void loadMainInterfaces() {
 		
 		window		= ViewFactory.loadWindow(modelInterface.getinstance(), TITLE, 1000, 350);
 		mainmenuview	= ViewFactory.newMainMenu(modelInterface.getinstance());
 	}
 	
+	/**
+	 * Loop of main menu MVC
+	 */
 	public static void loopMainMenu() {
 		mainMenuController = new MainMenuController();
 		
@@ -124,12 +131,8 @@ public class App {
 	// LOAD GAME
 	
 	public static void loadGame() {
-		//mainmenuview.destroy();
-		//window.setVisible(false);
-		//window = null;
 		
 		loadGameInterface();
-		//loadCharacter();
 		loadWorldMap();
 		loadControllers();
 		loopApp();
@@ -141,7 +144,6 @@ public class App {
 	public static void loadGameInterface() {
 		if (App.modelInterface.getinstance() == EModule.GUI) {
 			window.setSize(1000, 1000);
-			window.setTitle(Character.getName() + " Level (" + Character.getLevel() + ") exp : " + Character.getExp());
 			window.repaint();
 		}
 		gameview	= ViewFactory.newGameView(modelInterface.getinstance());
@@ -157,7 +159,7 @@ public class App {
 	public static void loadWorldMap() {
 		worldMap	= WorldMapFactory.generateWorldMap(Character.getLevel());
 		worldMap.addCharacter(Character);
-		WorldMapFactory.loadRandomMonsters(worldMap);
+		worldMap.spawnMonsters();
 		gameview.addModel(worldMap);
 	}
 	
@@ -176,11 +178,13 @@ public class App {
 		//init gameview
 		gameview.init();
 		
+		gameController = new GameController();
 		loopController = new LoopMotor(new MotorGraphics() {
 
 			@Override
 			public void graphicControllerLoop() {
 				// TODO Auto-generated method stub
+				gameController.control();
 				worldMapController.control();
 				characterController.control();
 			}

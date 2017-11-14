@@ -6,10 +6,11 @@ import java.util.ArrayList;
 
 import swingy.App;
 import swingy.entity.Entity;
-import swingy.math.Utils;
-import swingy.math.Vector2;
+import swingy.entity.Rabit;
 import swingy.model.ISwingyModel;
 import swingy.ressources.Sprite;
+import swingy.utils.Utils;
+import swingy.utils.Vector2;
 
 public class WorldMap implements ISwingyModel {
 
@@ -20,6 +21,9 @@ public class WorldMap implements ISwingyModel {
 	private ArrayList<Case>		cases = new ArrayList<Case>();
 	private ArrayList<Entity>	monsters = new ArrayList<Entity>();
 	private Entity				character = null;
+	
+	private int					startWidth;
+	private int					startHeight;
 	
 	/**
 	 * Constructor of MAP size X size
@@ -32,6 +36,8 @@ public class WorldMap implements ISwingyModel {
 	}
 	
 	private void intitalize() {
+		this.startWidth = (App.window.getWidth() / 2) - ((this.width * App.SCALE) / 2);
+		this.startHeight = (App.window.getHeight() / 2) - ((this.height * App.SCALE) / 2);
 		this.ground = new Case[this.height][this.width];
 		
 		for (int y = 0; y < this.height; y++) {
@@ -75,6 +81,10 @@ public class WorldMap implements ISwingyModel {
 		this.monsters.remove(e);
 	}
 	
+	public ArrayList<Entity> getMonsters() {
+		return (this.monsters);
+	}
+	
 	public void addCharacter(Entity character) {
 		this.character = character;
 		
@@ -105,51 +115,26 @@ public class WorldMap implements ISwingyModel {
 		}
 		
 		for (Entity e : this.monsters) {
-			
-			if (Utils.getRandomValue(1, 4) == 1) {
-				int x = Utils.getRandomValue(0, 2);
-				int y = Utils.getRandomValue(0, 2);
-				
-				if (x != 0 && y != 0) {
-					if (Utils.getRandomValue(0, 1) == 1)
-						x = 0;
-					else
-						y = 0;
-				}
-				
-				if (x == 2)
-					x = -1;
-				if (y == 2)
-					y = -1;
-				
-				Vector2 n = new Vector2(e.transform.position.x, e.transform.position.y);
-				n.x += x;
-				n.y += y;
-				
-				if (getCaseByPosition(n) != null && getCaseByPosition(n).isWalkable()) {
-					
-					getCaseByPosition(e.transform.position).removeEntity();
-					
-					e.transform.translate(n);
-					
-					getCaseByPosition(e.transform.position).addEntity(e);
-				}
-			}
-			
-			
 			e.paint(g2);
 		}
-		
 		if (character != null)
 			character.paint(g2);
 	}
 	
 	public int getStartWidth() {
-		return ((App.window.getWidth() / 2) - ((this.width * App.SCALE) / 2));
+		return (this.startWidth);
+	}
+	
+	public void setStartWidth(int w) {
+		this.startWidth = w;
 	}
 	
 	public int getStartHeight() {
-		return ((App.window.getHeight() / 2) - ((this.height * App.SCALE) / 2));
+		return (this.startHeight);
+	}
+	
+	public void setStartHeight(int h) {
+		this.startHeight = h;
 	}
 	
 	public Case getRandomWalkableCase() {
@@ -178,6 +163,18 @@ public class WorldMap implements ISwingyModel {
 		return (this.ground[y][x]);
 	}
 	
+	public void spawnMonsters() {
+		int number = this.width;
+		
+		for (int i = 0; i < number; i++) {
+			
+			Rabit r = new Rabit("Rabit", new Vector2(0,0));
+			
+			r.initRandomPositionToMap(this);
+			this.addMonster(r);
+		}
+	}
+	
 	public class Case {
 		
 		public int		x;
@@ -203,8 +200,6 @@ public class WorldMap implements ISwingyModel {
 		}
 		
 		public boolean isWalkable() {
-			if (entity != null)
-				return (false);
 			return (this.walkable);
 		}
 		

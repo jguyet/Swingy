@@ -1,7 +1,6 @@
 package swingy.entity.transform;
 
-import swingy.entity.Entity;
-import swingy.math.Vector2;
+import swingy.utils.Vector2;
 
 public class Transform {
 
@@ -14,11 +13,7 @@ public class Transform {
 	 */
 	public byte		direction = 1;
 	
-	
-	private Entity entity;
-	
-	public Transform(Entity e, Vector2 position) {
-		this.entity = e;
+	public Transform(Vector2 position) {
 		this.position = position;
 	}
 	
