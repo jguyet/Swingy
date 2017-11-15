@@ -1,10 +1,14 @@
 package swingy.entity;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import javax.validation.constraints.Null;
 
 import swingy.App;
+import swingy.entity.artefacs.Armor;
+import swingy.entity.artefacs.Helm;
+import swingy.entity.artefacs.Weapon;
 import swingy.entity.statistics.Statistics;
 import swingy.enums.EStatElement;
 import swingy.ressources.Sprite;
@@ -18,6 +22,14 @@ public class CrazyHero extends Entity {
 															EStatElement.Defense, 6,
 															EStatElement.HitPoint, 4
 															);
+	
+	private static ArrayList<Class<?>> drops = new ArrayList<Class<?>>();
+	
+	static {
+		drops.add(Armor.class);
+		drops.add(Helm.class);
+		drops.add(Weapon.class);
+	}
 	
 	/**
 	 * Crazy Hero<br>
@@ -87,7 +99,13 @@ public class CrazyHero extends Entity {
 
 	@Override
 	public Sprite getSprite() {
-		return this.sprite;
+		return CrazyHero.sprite;
+	}
+
+	@Override
+	public ArrayList<Class<?>> getDrops() {
+		// TODO Auto-generated method stub
+		return CrazyHero.drops;
 	}
 
 }

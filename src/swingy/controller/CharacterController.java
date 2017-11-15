@@ -8,6 +8,7 @@ import java.util.Map;
 import swingy.App;
 import swingy.entity.Entity;
 import swingy.enums.EModule;
+import swingy.enums.EStatElement;
 import swingy.utils.Utils;
 import swingy.utils.Vector2;
 import swingy.views.events.ResponseListener;
@@ -20,7 +21,8 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 	public CharacterController(Entity e) {
 		this.entity = e;
 		App.gameview.addKeyListener(this);
-		printMap();
+		App.gameview.println("Character at position x: " + entity.transform.position.x + " y :" + entity.transform.position.y);
+		//printMap();
 	}
 	
 	//##################################################################
@@ -35,7 +37,6 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 		App.gameview.print("Choise direction (North/East/South/West) : ");
 		App.gameview.waitResponse(this);
 		mouseCharacter();
-		App.gameview.println("Character at position x: " + entity.transform.position.x + " y :" + entity.transform.position.y);
 		
 		if (App.worldMap.getCaseByPosition(this.entity.transform.position) == null) {
 			this.entity.addExp(1000);
@@ -85,13 +86,15 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 			Vector2 movement = new Vector2(entity.transform.position.x - tmp.x, entity.transform.position.y - tmp.y);
 			if (!(movement.x == 0 && movement.y == 0)) {
 				entity.transform.translate(tmp);
-				System.out.println(movement.x + " " + movement.y);
 				App.worldMap.setStartWidth(App.worldMap.getStartWidth() + (movement.x * App.SCALE));
 				App.worldMap.setStartHeight(App.worldMap.getStartHeight() + (movement.y * App.SCALE));
+				App.gameview.println("\033[32mYou has moved to position x: " + entity.transform.position.x + " y :" + entity.transform.position.y + "\033[00m");
 			}
+		} else {
+			App.gameview.println("\033[33mCancel movement caused by an obstacle\033[00m");
 		}
 		keysDown.clear();
-		printMap();
+		//printMap();
 	}
 	
 	//##################################################################
@@ -118,16 +121,49 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 		
 		switch (response.toUpperCase()) {
 			case "NORTH" :
+			case "UP":
 				keysDown.put(KeyEvent.VK_UP, null);
 				break ;
 			case "EAST" :
+			case "RIGHT":
 				keysDown.put(KeyEvent.VK_RIGHT, null);
 				break ;
 			case "SOUTH" :
+			case "DOWN":
 				keysDown.put(KeyEvent.VK_DOWN, null);
 				break ;
 			case "WEST" :
+			case "LEFT":
 				keysDown.put(KeyEvent.VK_LEFT, null);
+				break ;
+			case "DEBUGMAP":
+				this.printMap();
+				break ;
+			case "STATS":
+				App.gameview.println("Statistics information :");
+				App.gameview.println("Name : " + App.Character.getName());
+				App.gameview.println("Level : " + App.Character.getLevel());
+				App.gameview.println("Exp : " + App.Character.getExp());
+				App.gameview.println("HitPoint : " + App.Character.getStat(EStatElement.HitPoint));
+				App.gameview.println("Attack : " + App.Character.getStat(EStatElement.Attack));
+				App.gameview.println("Defense : " + App.Character.getStat(EStatElement.Defense));
+				break ;
+			case "BACKTOMENU":
+				App.gameview.println("=====================================");
+				Utils.writeHeros(App.Characters);
+				App.toMainMenu = true;
+				App.loopController.stop();
+				break ;
+			case "HELP":
+				App.gameview.println("=====================================");
+				App.gameview.println("STATS      print character statistics");
+				App.gameview.println("BACKTOMENU return to main menu");
+				App.gameview.println("QUIT       quit the game");
+				App.gameview.println("=====================================");
+				break ;
+			case "QUIT":
+				App.gameview.println("=====================================");
+				System.exit(0);
 				break ;
 		}
 	}

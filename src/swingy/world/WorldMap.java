@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import swingy.App;
+import swingy.entity.Drag;
 import swingy.entity.Entity;
 import swingy.entity.Rabit;
 import swingy.model.ISwingyModel;
@@ -36,19 +37,40 @@ public class WorldMap implements ISwingyModel {
 	}
 	
 	private void intitalize() {
-		this.startWidth = (App.window.getWidth() / 2) - ((this.width * App.SCALE) / 2);
-		this.startHeight = (App.window.getHeight() / 2) - ((this.height * App.SCALE) / 2);
+		if (App.window != null) {
+			this.startWidth = (App.window.getWidth() / 2) - ((this.width * App.SCALE) / 2);
+			this.startHeight = (App.window.getHeight() / 2) - ((this.height * App.SCALE) / 2);
+		}
 		this.ground = new Case[this.height][this.width];
 		
 		for (int y = 0; y < this.height; y++) {
 			for (int x = 0; x < this.width; x++) {
-				int rand = Utils.getRandomValue(1, 10);
+				int rand = Utils.getRandomValue(1, 100);
 				int groundId = 0;
 				boolean walkable = true;
+				
+				if (x > 0 && y > 0 && (this.ground[y][x - 1].groundId == 130
+										|| this.ground[y - 1][x].groundId == 130
+										|| this.ground[y - 1][x - 1].groundId == 130)) {
+					if (Utils.getRandomValue(1, 3) == 1)
+						rand = 1;
+				}
+				
+				if (x > 0 && y > 0 && (this.ground[y][x - 1].groundId == 112
+										|| this.ground[y - 1][x].groundId == 112
+										|| this.ground[y - 1][x - 1].groundId == 112)) {
+					if (Utils.getRandomValue(1, 4) == 1)
+						rand = 2;
+				}
+				
 				if (rand == 1) {
 					groundId = 130;
 					walkable = false;
-				} else
+				} else if (rand == 2) {
+					groundId = 112;
+					walkable = false;
+				}
+				else
 					groundId = Utils.getRandomValue(0, 1);
 				
 				this.ground[y][x] = new Case(x, y, groundId, walkable);
@@ -109,6 +131,14 @@ public class WorldMap implements ISwingyModel {
 				px = px - (grounds.getWidth() / 2);
 				py = py - (grounds.getHeight() / 2);
 				
+				if (px < -15)
+					continue;
+				if (py < -15)
+					continue;
+				if (px + 15 > App.window.getWidth())
+					continue ;
+				if (py + 15 > App.window.getHeight())
+					continue ;
 				grounds.posid = this.ground[y][x].groundId;
 				grounds.paint(g2, px, py);
 			}
@@ -168,7 +198,27 @@ public class WorldMap implements ISwingyModel {
 		
 		for (int i = 0; i < number; i++) {
 			
-			Rabit r = new Rabit("Rabit", new Vector2(0,0));
+			Entity r = null;
+			
+			if (Utils.getRandomValue(1, 2) == 1) {
+				r = new Drag("Drag", new Vector2(0,0));
+			}
+			else
+				r = new Rabit("Rabit", new Vector2(0,0));
+			
+			int maxlevel = App.Character.getLevel() + 3;
+			int minlevel = 1;
+			
+			int level = Utils.getRandomValue(minlevel, maxlevel);
+			
+			r.setLevel(level);
+			
+			/*int attack = Utils.getRandomValue(2, level);
+			int def = Utils.getRandomValue(0, level / 10);
+			int hit = Utils.getRandomValue(2, level);
+			r.stats.addStat(EStatElement.Attack, attack);
+			r.stats.addStat(EStatElement.Defense, def);
+			r.stats.addStat(EStatElement.HitPoint, hit);*/
 			
 			r.initRandomPositionToMap(this);
 			this.addMonster(r);

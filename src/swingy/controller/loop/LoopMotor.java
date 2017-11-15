@@ -4,7 +4,7 @@ import swingy.utils.Time;
 
 public class LoopMotor {
 
-	public long		graphRate = (long)((double) 1000000000L) / 10;
+	public long		graphRate = (long)((double) 1000000000L) / 120;
 	public double	controllerRate = (long)((double) 1000000000L) / 120;
 	public boolean	running = false;
 	

@@ -1,4 +1,5 @@
 /Users/jguyet/git/Swingy/src/swingy/entity/statistics/Statistics.java
+/Users/jguyet/git/Swingy/src/swingy/fight/Fight.java
 /Users/jguyet/git/Swingy/src/swingy/entity/Princess.java
 /Users/jguyet/git/Swingy/src/swingy/module/interfaces/GuiInterface.java
 /Users/jguyet/git/Swingy/src/swingy/controller/CharacterController.java
@@ -27,6 +28,7 @@
 /Users/jguyet/git/Swingy/src/swingy/views/factory/ViewFactory.java
 /Users/jguyet/git/Swingy/src/swingy/views/components/GameInterfaceComponent.java
 /Users/jguyet/git/Swingy/src/swingy/controller/ISwingyController.java
+/Users/jguyet/git/Swingy/src/swingy/entity/Drag.java
 /Users/jguyet/git/Swingy/src/swingy/module/IModule.java
 /Users/jguyet/git/Swingy/src/swingy/utils/Utils.java
 /Users/jguyet/git/Swingy/src/swingy/controller/MainMenuController.java

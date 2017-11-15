@@ -9,6 +9,7 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.JPanel;
 
+import swingy.App;
 import swingy.entity.Entity;
 import swingy.enums.EStatElement;
 import swingy.model.ISwingyModel;
@@ -36,7 +37,8 @@ public class GameInterfaceComponent extends JPanel implements ISwingyModel {
 	}
 	
 	public void paintModel() {
-		this.view.add(this);
+		
+		this.view.addBanner(this);
 	}
 	
 	public void setCharacter(Entity e) {
@@ -48,7 +50,7 @@ public class GameInterfaceComponent extends JPanel implements ISwingyModel {
 	}
 	
 	
-	protected void paintComponent(java.awt.Graphics g) {
+	public void paint(java.awt.Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 	    
 	    g2.setColor(Utils.HexToRGB("#D8D8D8"));
@@ -81,7 +83,7 @@ public class GameInterfaceComponent extends JPanel implements ISwingyModel {
 			
 			g2.drawString("Life : ", 150, 15);
 			
-			for (int i = 0; i < character.stats.getStat(EStatElement.HitPoint); i++) {
+			for (int i = 0; i < character.getStat(EStatElement.HitPoint); i++) {
 				
 				g2.setColor(Utils.HexToRGB("#424242"));
 				Ellipse2D.Double circle = new Ellipse2D.Double((200 + (i * 20)) - 1, 6 - 1, 12, 12);

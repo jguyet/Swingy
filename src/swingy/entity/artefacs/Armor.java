@@ -8,7 +8,7 @@ public class Armor extends Artefact{
 	private static Statistics stats = new Statistics();
 	
 	static {
-		stats.addStat(EStatElement.Increase_Defense, 2);
+		stats.addStat(EStatElement.Defense, 2);
 	}
 	
 	public Armor() {

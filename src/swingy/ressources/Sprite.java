@@ -19,6 +19,7 @@ public class Sprite{
 	public static Sprite PRINCESS;
 	public static Sprite RABIT;
 	public static Sprite WARRIOR;
+	public static Sprite DRAG;
 	
 	public static void LOAD() {
 		TITLE = new Sprite("res/sprites/swingy.png", 1, 1, 0);
@@ -46,6 +47,10 @@ public class Sprite{
 		WARRIOR = new Sprite("res/sprites/warrior.png", 4, 4, 0);
 		WARRIOR.setHeight(38);
 		WARRIOR.setWidth(38);
+		
+		DRAG = new Sprite("res/sprites/drag2.png", 1, 1, 0);
+		DRAG.setHeight(38);
+		DRAG.setWidth(38);
 	}
 	
 	public Image	img;

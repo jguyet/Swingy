@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import swingy.model.ISwingyModel;
+import swingy.utils.Utils;
 import swingy.views.events.ResponseListener;
 
 public class SwingyGUIGameView extends JPanel implements IView{
@@ -20,6 +21,8 @@ public class SwingyGUIGameView extends JPanel implements IView{
 	
 	private Window win;
 	private ArrayList<ISwingyModel> models = new ArrayList<ISwingyModel>();
+	
+	private ISwingyModel banner = null;
 	
 	public SwingyGUIGameView(Window win) {
 		this.win = win;
@@ -56,6 +59,10 @@ public class SwingyGUIGameView extends JPanel implements IView{
 		models.remove(model);
 	}
 	
+	public void addBanner(ISwingyModel model) {
+		this.banner = model;
+	}
+	
 	public Window getWindow() {
 		return (this.win);
 	}
@@ -69,7 +76,7 @@ public class SwingyGUIGameView extends JPanel implements IView{
 		
 		g.clearRect(0, 0, this.win.getWidth(), this.win.getHeight());
 		
-		g.setColor(Color.BLACK);
+		g.setColor(Color.BLACK);//Utils.HexToRGB("#886A08"));
 		g.fillRect(0, 0, this.win.getWidth(), this.win.getHeight());
 		
 		ArrayList<ISwingyModel> tmp = new ArrayList<ISwingyModel>(models);
@@ -78,6 +85,9 @@ public class SwingyGUIGameView extends JPanel implements IView{
 			model.paint(g);
 		}
 		
+		if (this.banner != null) {
+			this.banner.paint(g);
+		}
 	}
 	
 	@Override

@@ -1,8 +1,12 @@
 package swingy.entity;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import swingy.App;
+import swingy.entity.artefacs.Armor;
+import swingy.entity.artefacs.Helm;
+import swingy.entity.artefacs.Weapon;
 import swingy.entity.statistics.Statistics;
 import swingy.enums.EStatElement;
 import swingy.ressources.Sprite;
@@ -16,6 +20,14 @@ public class Magician extends Entity {
 															EStatElement.Defense, 6,
 															EStatElement.HitPoint, 4
 															);
+	
+	private static ArrayList<Class<?>> drops = new ArrayList<Class<?>>();
+	
+	static {
+		drops.add(Armor.class);
+		drops.add(Helm.class);
+		drops.add(Weapon.class);
+	}
 	
 	public Magician(String name, Vector2 position) {
 		super(name, baseStats, position);
@@ -80,7 +92,12 @@ public class Magician extends Entity {
 	
 	@Override
 	public Sprite getSprite() {
-		return this.sprite;
+		return Magician.sprite;
+	}
+
+	@Override
+	public ArrayList<Class<?>> getDrops() {
+		return Magician.drops;
 	}
 
 }

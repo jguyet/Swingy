@@ -1,4 +1,5 @@
 swingy/exceptions/ModuleException.class
+swingy/entity/Drag.class
 swingy/views/components/HerosSelectionComponent.class
 swingy/entity/Princess.class
 swingy/views/components/HerosFormComponent.class
@@ -47,6 +48,7 @@ swingy/world/WorldMap.class
 swingy/App$1.class
 swingy/module/factory/ModuleFactory.class
 swingy/world/WorldMap$Case.class
+swingy/fight/Fight.class
 swingy/views/components/HerosCreationComponent.class
 swingy/views/SwingyConsoleView.class
 swingy/controller/MainMenuController$ClassGetter.class

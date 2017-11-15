@@ -26,10 +26,12 @@ import swingy.world.factory.WorldMapFactory;
 public class App {
 	
 	public static final String			TITLE = "Swingy";
-	public static final int				WIDTH = 1000;
-	public static final int				HEIGHT = 1000;
+	public static final int				WIDTH = 2200;
+	public static final int				HEIGHT = 1400;
 	
 	public static final int				SCALE = 30;
+	
+	public static boolean				toMainMenu = false;
 	
 	public static WorldMap				worldMap = null;
 	
@@ -55,6 +57,8 @@ public class App {
 	public static Entity				Character = null;
 	
 	public static ArrayList<Entity>		Characters = new ArrayList<Entity>();
+	
+	public static String				arg;
 
 	/**
 	 * Main of swingy
@@ -64,7 +68,8 @@ public class App {
 	public static void main(String[] args) throws ModuleException {
 		if (args.length != 1)
 			throw new ModuleException();
-		if (App.start(args[0]) == false) {
+		arg = args[0];
+		if (App.start(arg) == false) {
 			throw new ModuleException(args[0]);
 		}
 	}
@@ -116,7 +121,7 @@ public class App {
 			public void graphicRenderingLoop() {
 				// TODO Auto-generated method stub
 				mainmenuview.update();
-				updateFPS();
+				//updateFPS();
 			}
 			
 		});
@@ -143,7 +148,7 @@ public class App {
 	 */
 	public static void loadGameInterface() {
 		if (App.modelInterface.getinstance() == EModule.GUI) {
-			window.setSize(1000, 1000);
+			window.setSize(WIDTH, HEIGHT);
 			window.repaint();
 		}
 		gameview	= ViewFactory.newGameView(modelInterface.getinstance());
@@ -192,12 +197,17 @@ public class App {
 			public void graphicRenderingLoop() {
 				// TODO Auto-generated method stub
 				gameview.update();
-				updateFPS();
+				//updateFPS();
 			}
 			
 		});
 		loopController.start();
-		loadGame();
+		if (toMainMenu) {
+			toMainMenu = false;
+			start(arg);
+		} else {
+			loadGame();
+		}
 	}
 	
 	//#####################################################################################
@@ -212,7 +222,7 @@ public class App {
 	{
 		if (System.currentTimeMillis() - lastFPS > 1000)
 		{
-			//System.out.println("FPS:"+ fps);
+			System.out.println("FPS:"+ fps);
 			fps = 0;
 			lastFPS += 1000;
 		}

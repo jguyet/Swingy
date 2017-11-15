@@ -1,11 +1,15 @@
 package swingy.entity;
 
+import java.util.ArrayList;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import swingy.entity.artefacs.Artefact;
 import swingy.entity.statistics.Statistics;
 import swingy.entity.transform.Transform;
+import swingy.enums.EStatElement;
 import swingy.model.ISwingyModel;
 import swingy.ressources.Sprite;
 import swingy.utils.Vector2;
@@ -20,6 +24,8 @@ public abstract class Entity implements ISwingyModel {
 	public Transform	transform;
 	public Statistics	stats;
 	public byte			direction = 1;
+	public ArrayList<Artefact> inventory = new ArrayList<Artefact>();
+	public int			fightHitPoint = 0;
 	
 	/**
 	 * PRIVATE VARS
@@ -78,6 +84,15 @@ public abstract class Entity implements ISwingyModel {
 		addExp(exp);
 	}
 	
+	public int getStat(EStatElement e) {
+		int baseStat = this.stats.getStat(e);
+		
+		for (Artefact a : this.inventory) {
+			baseStat += a.stats.getStat(e);
+		}
+		return baseStat;
+	}
+	
 	public boolean addExp(long exp) {
 		boolean	levelUp		= false;
 		
@@ -98,4 +113,6 @@ public abstract class Entity implements ISwingyModel {
 	public abstract String classe();
 	
 	public abstract Sprite getSprite();
+	
+	public abstract ArrayList<Class<?>> getDrops();
 }

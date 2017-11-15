@@ -8,7 +8,7 @@ public class Helm extends Artefact {
 	private static Statistics stats = new Statistics();
 	
 	static {
-		stats.addStat(EStatElement.Increase_HitPoint, 2);
+		stats.addStat(EStatElement.HitPoint, 2);
 	}
 	
 	public Helm() {
