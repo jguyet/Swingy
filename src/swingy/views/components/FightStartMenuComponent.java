@@ -13,14 +13,12 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JPanel;
 
 import swingy.entity.Entity;
-import swingy.model.ISwingyModel;
 import swingy.ressources.Sprite;
 import swingy.utils.Utils;
 import swingy.utils.Vector2;
 import swingy.views.SwingyGUIGameView;
 
-public class FightCinematiqueComponent extends JPanel implements ISwingyModel {
-
+public class FightStartMenuComponent extends JPanel{
 	/**
 	 * GRAPHIC VERSION
 	 */
@@ -34,7 +32,7 @@ public class FightCinematiqueComponent extends JPanel implements ISwingyModel {
 	private ArrayList<Vector2> bandesToRight = new ArrayList<Vector2>();
 	private ArrayList<Vector2> bandesToLeft = new ArrayList<Vector2>();
 	
-	public FightCinematiqueComponent(SwingyGUIGameView view, Entity p1, Entity p2) {
+	public FightStartMenuComponent(SwingyGUIGameView view, Entity p1, Entity p2) {
 		super();
 		this.view = view;
 		this.p1 = p1;
@@ -44,16 +42,6 @@ public class FightCinematiqueComponent extends JPanel implements ISwingyModel {
 		//transparence
 		this.setOpaque(false);
 		this.paintModel();
-		
-		final FightCinematiqueComponent tmp = this;
-		final ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
-		ses.schedule(new Runnable() {
-
-            @Override
-            public void run() {
-                tmp.removeModel();
-            }
-        }, 3, TimeUnit.SECONDS);
 		
 		for (int y = 0; y < this.view.getHeight(); y += 110) {
 			bandesToRight.add(new Vector2(-(this.view.getWidth()), y));
@@ -75,31 +63,43 @@ public class FightCinematiqueComponent extends JPanel implements ISwingyModel {
 	protected void paintComponent(java.awt.Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 	    
-		g2.setColor(Color.BLACK);
+		g2.setColor(Color.WHITE);
 		
 		for (Vector2 v : bandesToRight) {
 			g2.fillRect(v.x, v.y, this.view.getWidth(), 55);
-			v.x += 20;
+			if (v.x == 0)
+				continue ;
+			if (v.x > 0)
+				v.x = 0;
+			else
+				v.x += 20;
 		}
 		
 		for (Vector2 v : bandesToLeft) {
 			g2.fillRect(v.x, v.y, this.view.getWidth(), 55);
-			v.x -= 20;
+			if (v.x == 0)
+				continue ;
+			if (v.x < 20)
+				v.x = 0;
+			else
+				v.x -= 20;
 		}
 		
 	    g2.setColor(Utils.HexToRGB("#D8D8D8"));
-	    g2.fillRect(0, ((this.view.getHeight() / 2) - 125), this.view.getWidth(), 55);
-	    g2.fillRect(0, ((this.view.getHeight() / 2) - 15), this.view.getWidth(), 55);
+	    g2.fillRect((this.view.getWidth() / 2) - 10, 0, 20, (this.view.getHeight() / 2) - 80);
+	    g2.fillRect((this.view.getWidth() / 2) - 10, (this.view.getHeight() / 2), 20, (this.view.getHeight() / 2));
 	    	
-	    g2.setColor(Color.WHITE);
+	    g2.setColor(Color.BLACK);
 	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 		        RenderingHints.VALUE_ANTIALIAS_ON);
 		Font font = new Font("Serif", Font.PLAIN, 50);
 		g2.setFont(font);
-		g2.drawString("FIGHT", (this.view.getWidth() / 2) - 100, (this.view.getHeight() / 2) - 25);
+		g2.drawString("FIGHT", (this.view.getWidth() / 2) - 70, (this.view.getHeight() / 2) - 25);
 		
 		paintSpriteLeft(g2, p1.getSprite());
 		paintSpriteRight(g2, p2.getSprite());
+		
+		Sprite.ESCAPE.paint(g2, 100, 300);
 	}
 	
 	private void paintSpriteLeft(Graphics2D g2, Sprite s) {

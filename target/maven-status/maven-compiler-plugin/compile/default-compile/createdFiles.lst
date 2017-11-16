@@ -18,7 +18,6 @@ swingy/views/Window.class
 swingy/entity/artefacs/Weapon.class
 swingy/views/events/ResponseListener.class
 swingy/utils/Time.class
-swingy/views/components/GameInterfaceComponent.class
 swingy/entity/transform/Transform.class
 swingy/controller/loop/MotorGraphics.class
 swingy/views/components/FightCinematiqueComponent.class
@@ -34,6 +33,8 @@ swingy/module/interfaces/GuiInterface.class
 swingy/controller/WorldMapController.class
 swingy/world/factory/WorldMapFactory.class
 swingy/controller/loop/LoopMotor$ControllerLoop.class
+swingy/views/components/GameBannerInterfaceComponent.class
+swingy/enums/GameConsoleLabel.class
 swingy/module/interfaces/ConsoleInterface.class
 swingy/enums/EModule.class
 swingy/controller/loop/LoopMotor$GraphicLoop.class
@@ -57,6 +58,7 @@ swingy/App.class
 swingy/views/SwingyGUIGameView.class
 swingy/utils/Utils.class
 swingy/utils/Vector2.class
+swingy/views/components/FightStartMenuComponent.class
 swingy/controller/MainMenuController.class
 swingy/entity/Entity.class
 swingy/entity/Magician.class

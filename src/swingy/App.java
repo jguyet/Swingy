@@ -26,8 +26,8 @@ import swingy.world.factory.WorldMapFactory;
 public class App {
 	
 	public static final String			TITLE = "Swingy";
-	public static final int				WIDTH = 2200;
-	public static final int				HEIGHT = 1400;
+	public static final int				WIDTH = 1800;
+	public static final int				HEIGHT = 1000;
 	
 	public static final int				SCALE = 30;
 	
@@ -127,7 +127,7 @@ public class App {
 		});
 		
 		loopController.start();
-		
+		mainmenuview = null;
 		if (Character != null)
 			loadGame();
 	}
@@ -182,6 +182,8 @@ public class App {
 	public static void loopApp() {
 		//init gameview
 		gameview.init();
+		
+		gameview.println("Spawn to map");
 		
 		gameController = new GameController();
 		loopController = new LoopMotor(new MotorGraphics() {

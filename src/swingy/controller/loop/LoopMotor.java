@@ -4,8 +4,8 @@ import swingy.utils.Time;
 
 public class LoopMotor {
 
-	public long		graphRate = (long)((double) 1000000000L) / 120;
-	public double	controllerRate = (long)((double) 1000000000L) / 120;
+	public long		graphRate = (long)((double) 1000000000L) / 60;
+	public long		controllerRate = (long)((double) 1000000000L) / 100;
 	public boolean	running = false;
 	
 	private GraphicLoop graphloop;
@@ -75,6 +75,8 @@ public class LoopMotor {
 					call(1);
 					frames++;
 					frameCounter++;
+				} else {
+					try { Thread.sleep(10); } catch (Exception e) {}
 				}
 				if (frameCounter >= 1000000000L) {
 					frames = 0;
@@ -110,6 +112,8 @@ public class LoopMotor {
 				{
 					lastTime = Time.getTime();
 					call(2);
+				} else {
+					try { Thread.sleep(10); } catch (Exception e) {}
 				}
 			}
 		}

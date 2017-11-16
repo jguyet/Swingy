@@ -1,6 +1,10 @@
 package swingy.entity;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 
 import swingy.App;
@@ -38,6 +42,7 @@ public class Rabit extends Entity {
 
 	@Override
 	public void paint(Graphics g) {
+		Graphics2D g2 = (Graphics2D)g;
 		
 		switch (this.transform.direction) {
 		case 1://east
@@ -77,6 +82,15 @@ public class Rabit extends Entity {
 		
 		int px = App.worldMap.getStartWidth() + (this.transform.position.x * App.SCALE) - (sprite.getWidth() / 2);
 		int py = App.worldMap.getStartHeight() + (this.transform.position.y * App.SCALE) - (sprite.getHeight() / 2);
+		
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		        RenderingHints.VALUE_ANTIALIAS_ON);
+		Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);
+		g.setFont(font);
+		g.setColor(Color.YELLOW);
+		g.drawString(this.getName(), px + 2, py - 15);
+		g.setColor(Color.WHITE);
+		g.drawString("lvl " + this.getLevel(), px, py);
 		
 		sprite.paint(g, px, py);
 		if (!(lastpos.x == this.transform.position.x && lastpos.y == this.transform.position.y))

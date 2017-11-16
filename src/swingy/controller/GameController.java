@@ -1,12 +1,12 @@
 package swingy.controller;
 
 import swingy.App;
-import swingy.views.components.GameInterfaceComponent;
+import swingy.views.components.GameBannerInterfaceComponent;
 import swingy.views.factory.ViewFactory;
 
 public class GameController implements ISwingyController {
 
-	private GameInterfaceComponent model;
+	private GameBannerInterfaceComponent model;
 	
 	public GameController() {
 		

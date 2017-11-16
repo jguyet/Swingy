@@ -20,6 +20,7 @@ public class Sprite{
 	public static Sprite RABIT;
 	public static Sprite WARRIOR;
 	public static Sprite DRAG;
+	public static Sprite ESCAPE;
 	
 	public static void LOAD() {
 		TITLE = new Sprite("res/sprites/swingy.png", 1, 1, 0);
@@ -51,6 +52,10 @@ public class Sprite{
 		DRAG = new Sprite("res/sprites/drag2.png", 1, 1, 0);
 		DRAG.setHeight(38);
 		DRAG.setWidth(38);
+		
+		ESCAPE = new Sprite("res/sprites/escape.png", 5, 2, 0);
+		ESCAPE.setHeight(100);
+		ESCAPE.setWidth(100);
 	}
 	
 	public Image	img;

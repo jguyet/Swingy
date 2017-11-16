@@ -9,6 +9,7 @@ import swingy.App;
 import swingy.entity.Entity;
 import swingy.enums.EModule;
 import swingy.enums.EStatElement;
+import swingy.enums.GameConsoleLabel;
 import swingy.utils.Utils;
 import swingy.utils.Vector2;
 import swingy.views.events.ResponseListener;
@@ -34,7 +35,7 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 		//control entity movements and modif
 		
 		//wait console response
-		App.gameview.print("Choise direction (North/East/South/West) : ");
+		App.gameview.print(GameConsoleLabel.CHOISE_YOUR_DIRECTION.lbl());
 		App.gameview.waitResponse(this);
 		mouseCharacter();
 		
@@ -64,6 +65,13 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 	}
 	
 	private void mouseCharacter() {
+		
+		if (keysDown.containsKey(KeyEvent.VK_ESCAPE)) {
+			
+			this.onResponse("BACKTOMENU");
+			return ;
+		}
+		
 		Vector2 tmp = new Vector2(entity.transform.position.x, entity.transform.position.y);
 		
 		if (keysDown.containsKey(KeyEvent.VK_RIGHT)
@@ -88,10 +96,10 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 				entity.transform.translate(tmp);
 				App.worldMap.setStartWidth(App.worldMap.getStartWidth() + (movement.x * App.SCALE));
 				App.worldMap.setStartHeight(App.worldMap.getStartHeight() + (movement.y * App.SCALE));
-				App.gameview.println("\033[32mYou has moved to position x: " + entity.transform.position.x + " y :" + entity.transform.position.y + "\033[00m");
+				App.gameview.println("\033[32m" + GameConsoleLabel.INDICE_CHARACTER_POSITION.lbl() + entity.transform.position.x + " y :" + entity.transform.position.y + "\033[00m");
 			}
 		} else {
-			App.gameview.println("\033[33mCancel movement caused by an obstacle\033[00m");
+			App.gameview.println("\033[33m" + GameConsoleLabel.CANCEL_CHARACTER_MOVEMENT.lbl() +"\033[00m");
 		}
 		keysDown.clear();
 		//printMap();
@@ -151,8 +159,12 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 			case "BACKTOMENU":
 				App.gameview.println("=====================================");
 				Utils.writeHeros(App.Characters);
+				if (App.window != null) {
+					App.window.setVisible(false);
+				}
 				App.toMainMenu = true;
 				App.loopController.stop();
+				
 				break ;
 			case "HELP":
 				App.gameview.println("=====================================");

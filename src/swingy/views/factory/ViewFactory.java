@@ -9,7 +9,8 @@ import swingy.views.SwingyGUIGameView;
 import swingy.views.SwingyGUIMainMenuView;
 import swingy.views.Window;
 import swingy.views.components.FightCinematiqueComponent;
-import swingy.views.components.GameInterfaceComponent;
+import swingy.views.components.FightStartMenuComponent;
+import swingy.views.components.GameBannerInterfaceComponent;
 
 public class ViewFactory {
 	
@@ -37,9 +38,9 @@ public class ViewFactory {
 		return (null);
 	}
 	
-	public static GameInterfaceComponent newGameGuiInterface(EModule type, IView v) {
+	public static GameBannerInterfaceComponent newGameGuiInterface(EModule type, IView v) {
 		if (type == EModule.GUI) {
-			return (new GameInterfaceComponent((SwingyGUIGameView)v));
+			return (new GameBannerInterfaceComponent((SwingyGUIGameView)v));
 		}
 		return null;
 	}
@@ -47,6 +48,13 @@ public class ViewFactory {
 	public static FightCinematiqueComponent newFightCinematique(EModule type, IView v, Entity p1, Entity p2) {
 		if (type == EModule.GUI) {
 			return (new FightCinematiqueComponent((SwingyGUIGameView)v, p1, p2));
+		}
+		return null;
+	}
+	
+	public static FightStartMenuComponent newFightStartMenuComponent(EModule type, IView v, Entity p1, Entity p2) {
+		if (type == EModule.GUI) {
+			return (new FightStartMenuComponent((SwingyGUIGameView)v, p1, p2));
 		}
 		return null;
 	}

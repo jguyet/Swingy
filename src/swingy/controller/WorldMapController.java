@@ -33,6 +33,7 @@ public class WorldMapController implements ISwingyController{
 		for (Entity e : list) {
 			if (App.Character.transform.position.equals(e.transform.position)) {
 				
+				ViewFactory.newFightStartMenuComponent(App.modelInterface.getinstance(), App.gameview, App.Character, e);
 				
 				Fight fight = new Fight(App.Character, e);
 				
@@ -42,7 +43,7 @@ public class WorldMapController implements ISwingyController{
 				
 					App.Character.addExp(100L);
 					
-					ViewFactory.newFightCinematique(App.modelInterface.getinstance(), App.gameview, App.Character, e);
+					//ViewFactory.newFightCinematique(App.modelInterface.getinstance(), App.gameview, App.Character, e);
 					Case c = world.getCaseByPosition(e.transform.position);
 					if (c != null) {
 						c.removeEntity();

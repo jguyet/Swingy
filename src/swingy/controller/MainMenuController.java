@@ -2,6 +2,8 @@ package swingy.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -16,6 +18,7 @@ import swingy.entity.Princess;
 import swingy.entity.Warrior;
 import swingy.enums.EModule;
 import swingy.enums.EStatElement;
+import swingy.enums.GameConsoleLabel;
 import swingy.utils.Utils;
 import swingy.utils.Vector2;
 import swingy.views.SwingyGUIMainMenuView;
@@ -26,7 +29,7 @@ import swingy.views.components.HerosTableComponent;
 import swingy.views.components.SwingyTitleComponent;
 import swingy.views.events.ResponseListener;
 
-public class MainMenuController implements ISwingyController, ActionListener, ListSelectionListener {
+public class MainMenuController implements ISwingyController, ActionListener, ListSelectionListener, KeyListener {
 	
 	private ArrayList<Entity>		characters = new ArrayList<Entity>();
 	private Entity					selected_Character = null;
@@ -60,6 +63,8 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 			this.heroTable.paintModel();
 			this.miniMenuCreateHero.paintModel();
 			this.miniMenuSelectionHero.paintModel();
+			
+			App.window.addKeyListener(this);
 		}
 	}
 	
@@ -98,15 +103,15 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 	}
 	
 	private void consoleMenu() {
-		App.mainmenuview.println("=======MAIN=MENU=SWINGY=======");
-		App.mainmenuview.println("Swingy console menu :");
-		App.mainmenuview.println("(1) create new Hero");
-		App.mainmenuview.println("(2) select exist Hero");
+		App.mainmenuview.println(GameConsoleLabel.MAIN_MENU.lbl());
+		App.mainmenuview.println(GameConsoleLabel.MAIN_MENU_QUESTION.lbl());
+		App.mainmenuview.println(GameConsoleLabel.MAIN_MENU_FIRST_POSSIBILITY.lbl());
+		App.mainmenuview.println(GameConsoleLabel.MAIN_MENU_SECOND_POSSIBILITY.lbl());
 		
 		MenuGetter menugetter = new MenuGetter();
 		
 		while (!menugetter.isValide()) {
-			App.mainmenuview.print("Select number : ");
+			App.mainmenuview.print(GameConsoleLabel.WAIT_NUMBER.lbl());
 			App.mainmenuview.waitResponse(menugetter);
 		}
 		
@@ -140,17 +145,17 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 	}
 	
 	private void createConsoleNewHero() {
-		App.mainmenuview.println("========HERO=CREATION=========");
-		App.mainmenuview.println("Create your hero :");
+		App.mainmenuview.println(GameConsoleLabel.MAIN_MENU_HERO_CREATION.lbl());
+		App.mainmenuview.println(GameConsoleLabel.MAIN_MENU_HERO_CREATION_LABEL.lbl());
 		
 		NameGetter namegetter = new NameGetter();
 		
 		while (!namegetter.isValide()) {
-			App.mainmenuview.print("Hero name : ");
+			App.mainmenuview.print(GameConsoleLabel.MAIN_MENU_HERO_CREATION_WAIT_NAME.lbl());
 			App.mainmenuview.waitResponse(namegetter);
 		}
 		
-		App.mainmenuview.println("Select class of your hero :");
+		App.mainmenuview.println(GameConsoleLabel.MAIN_MENU_HERO_CREATION_WAIT_CLASS_SELECTION.lbl());
 		
 		App.mainmenuview.println("(1) Magician");
 		App.mainmenuview.println("(2) Princess");
@@ -160,7 +165,7 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 		ClassGetter classgetter = new ClassGetter();
 		
 		while (!classgetter.isValide()) {
-			App.mainmenuview.print("Select number : ");
+			App.mainmenuview.print(GameConsoleLabel.WAIT_NUMBER.lbl());
 			App.mainmenuview.waitResponse(classgetter);
 		}
 		
@@ -225,8 +230,8 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 	}
 	
 	private void selectConsoleNewHero() {
-		App.mainmenuview.println("========HERO=SELECTION========");
-		App.mainmenuview.println("Select your hero :");
+		App.mainmenuview.println(GameConsoleLabel.MAIN_MENU_HERO_SELECTION.lbl());
+		App.mainmenuview.println(GameConsoleLabel.MAIN_MENU_HERO_SELECTION_LABEL.lbl());
 		int id = 0;
 		
 		for (Entity e : App.Characters) {
@@ -236,14 +241,14 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 		
 		CharacterGetter charactergetter = new CharacterGetter(id);
 		
-		App.mainmenuview.print("Select number : ");
+		App.mainmenuview.print(GameConsoleLabel.WAIT_NUMBER.lbl());
 		App.mainmenuview.waitResponse(charactergetter);
 		
 		if (charactergetter.isValide()) {
 			App.Character = App.Characters.get(charactergetter.id);
 			App.loopController.stop();
 		} else {
-			App.mainmenuview.println("Error return to main menu.");
+			App.mainmenuview.println(GameConsoleLabel.ERROR_MAIN_MENU_HERO_SELECTION_NUMBER.lbl());
 		}
 		
 		this.selectConsoleHero = false;
@@ -335,4 +340,17 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
         
         selected_Character = characters.get(sel);
 	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && App.mainmenuview != null) {
+			System.exit(0);
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
 }
