@@ -1,18 +1,17 @@
 package swingy.views.components;
 
+import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
 
 import swingy.entity.Entity;
+import swingy.enums.EStatElement;
 import swingy.ressources.Sprite;
 import swingy.utils.Utils;
 import swingy.utils.Vector2;
@@ -63,7 +62,9 @@ public class FightStartMenuComponent extends JPanel{
 	protected void paintComponent(java.awt.Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 	    
-		g2.setColor(Color.WHITE);
+		g2.setColor(Color.GRAY);
+		
+		g2.setComposite(AlphaComposite.SrcOver.derive(0.8f));
 		
 		for (Vector2 v : bandesToRight) {
 			g2.fillRect(v.x, v.y, this.view.getWidth(), 55);
@@ -84,6 +85,7 @@ public class FightStartMenuComponent extends JPanel{
 			else
 				v.x -= 20;
 		}
+		g2.setComposite(AlphaComposite.SrcOver.derive(1f));
 		
 	    g2.setColor(Utils.HexToRGB("#D8D8D8"));
 	    g2.fillRect((this.view.getWidth() / 2) - 10, 0, 20, (this.view.getHeight() / 2) - 80);
@@ -96,10 +98,36 @@ public class FightStartMenuComponent extends JPanel{
 		g2.setFont(font);
 		g2.drawString("FIGHT", (this.view.getWidth() / 2) - 70, (this.view.getHeight() / 2) - 25);
 		
+		font = new Font("Serif", Font.PLAIN, 100);
+		g2.setFont(font);
+		g2.drawString("VS", (this.view.getWidth() / 2) - 70, (this.view.getHeight() / 2) / 2);
+		
+		font = new Font("Serif", Font.PLAIN, 20);
+		g2.setFont(font);
+		g2.drawString("  " + p1.getName(), 0, 275);
+		g2.drawString("Level    : " + p1.getLevel(), 0, 300);
+		g2.drawString("HitPoint : " + p1.getStat(EStatElement.HitPoint), 0, 325);
+		g2.drawString("Attack   : " + p1.getStat(EStatElement.Attack), 0, 350);
+		g2.drawString("Defense  : " + p1.getStat(EStatElement.Defense), 0, 375);
+		
+		g2.drawString("  " + p2.getName(), (this.view.getWidth() / 2) + 10, 275);
+		g2.drawString("Level    : " + p2.getLevel(), (this.view.getWidth() / 2) + 10, 300);
+		g2.drawString("HitPoint : " + p2.getStat(EStatElement.HitPoint), (this.view.getWidth() / 2) + 10, 325);
+		g2.drawString("Attack   : " + p2.getStat(EStatElement.Attack), (this.view.getWidth() / 2) + 10, 350);
+		g2.drawString("Defense  : " + p2.getStat(EStatElement.Defense), (this.view.getWidth() / 2) + 10, 375);
+		
 		paintSpriteLeft(g2, p1.getSprite());
 		paintSpriteRight(g2, p2.getSprite());
 		
-		Sprite.ESCAPE.paint(g2, 100, 300);
+		//fleeing output
+		font = new Font("Serif", Font.PLAIN, 50);
+		g2.setFont(font);
+		Sprite.ESCAPE.paint(g2, 0, (this.view.getHeight() - (Sprite.ESCAPE.getHeight() + 50)));
+		g2.setColor(Color.BLACK);
+		g2.drawString("FOR ESCAPE TAP KEY [DELETE]", 0, this.view.getHeight());
+		
+		
+		g2.drawString("FOR FIGHT TAP KEY [ENTER]", (this.view.getWidth() / 2) + 10, this.view.getHeight());
 	}
 	
 	private void paintSpriteLeft(Graphics2D g2, Sprite s) {

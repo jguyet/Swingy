@@ -7,11 +7,13 @@
 /Users/jguyet/git/Swingy/src/swingy/views/components/GameBannerInterfaceComponent.java
 /Users/jguyet/git/Swingy/src/swingy/views/components/SwingyTitleComponent.java
 /Users/jguyet/git/Swingy/src/swingy/utils/Vector2.java
+/Users/jguyet/git/Swingy/src/swingy/views/components/EndFightMenuComponent.java
 /Users/jguyet/git/Swingy/src/swingy/entity/CrazyHero.java
 /Users/jguyet/git/Swingy/src/swingy/world/WorldMap.java
 /Users/jguyet/git/Swingy/src/swingy/entity/Warrior.java
 /Users/jguyet/git/Swingy/src/swingy/entity/artefacs/Helm.java
 /Users/jguyet/git/Swingy/src/swingy/App.java
+/Users/jguyet/git/Swingy/src/swingy/controller/StartFightController.java
 /Users/jguyet/git/Swingy/src/swingy/controller/loop/MotorGraphics.java
 /Users/jguyet/git/Swingy/src/swingy/entity/artefacs/Weapon.java
 /Users/jguyet/git/Swingy/src/swingy/utils/Time.java
@@ -19,6 +21,7 @@
 /Users/jguyet/git/Swingy/src/swingy/views/components/HerosTableComponent.java
 /Users/jguyet/git/Swingy/src/swingy/module/interfaces/ConsoleInterface.java
 /Users/jguyet/git/Swingy/src/swingy/views/components/HerosFormComponent.java
+/Users/jguyet/git/Swingy/src/swingy/controller/EndFightController.java
 /Users/jguyet/git/Swingy/src/swingy/ressources/Sprite.java
 /Users/jguyet/git/Swingy/src/swingy/views/components/HerosSelectionComponent.java
 /Users/jguyet/git/Swingy/src/swingy/views/IView.java
@@ -48,6 +51,5 @@
 /Users/jguyet/git/Swingy/src/swingy/views/SwingyConsoleView.java
 /Users/jguyet/git/Swingy/src/swingy/controller/loop/LoopMotor.java
 /Users/jguyet/git/Swingy/src/swingy/controller/WorldMapController.java
-/Users/jguyet/git/Swingy/src/swingy/views/components/FightCinematiqueComponent.java
 /Users/jguyet/git/Swingy/src/swingy/entity/Rabit.java
 /Users/jguyet/git/Swingy/src/swingy/controller/GameController.java

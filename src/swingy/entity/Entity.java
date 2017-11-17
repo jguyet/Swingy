@@ -12,6 +12,7 @@ import swingy.entity.transform.Transform;
 import swingy.enums.EStatElement;
 import swingy.model.ISwingyModel;
 import swingy.ressources.Sprite;
+import swingy.utils.Utils;
 import swingy.utils.Vector2;
 import swingy.world.WorldMap;
 import swingy.world.WorldMap.Case;
@@ -108,6 +109,28 @@ public abstract class Entity implements ISwingyModel {
 	
 	public String toString() {
 		return (this.getName() + " " + this.classe() + " " + this.level + " " + this.exp + "\n");
+	}
+	
+	public void moveRandom(WorldMap world) {
+		Vector2 v = new Vector2(this.transform.position.x, this.transform.position.y);
+		
+		int dir = 1;
+		if (Utils.getRandomValue(1, 2) == 1)
+			dir = -1;
+		boolean xx = false;
+		if (dir == 1) {
+			if (Utils.getRandomValue(1, 2) == 1)
+				xx = true;
+		}
+		if (xx)
+			v.x += dir;
+		else
+			v.y += dir;
+		if (world.getCaseByPosition(v) != null && world.getCaseByPosition(v).isWalkable() && !world.getCaseByPosition(v).hasEntity()) {
+			world.getCaseByPosition(this.transform.position).removeEntity();
+			world.getCaseByPosition(v).addEntity(this);
+			this.transform.translate(v);
+		}
 	}
 	
 	public abstract String classe();

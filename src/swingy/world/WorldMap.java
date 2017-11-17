@@ -149,27 +149,6 @@ public class WorldMap implements ISwingyModel {
 		ArrayList<Entity> ms = new ArrayList<Entity>(this.monsters);
 		
 		for (Entity e : ms) {
-			
-			if (Utils.getRandomValue(1, 300) == 1) {
-				Vector2 v = new Vector2(e.transform.position.x, e.transform.position.y);
-				
-				int dir = 1;
-				if (Utils.getRandomValue(1, 2) == 1)
-					dir = -1;
-				boolean xx = false;
-				if (dir == 1) {
-					if (Utils.getRandomValue(1, 2) == 1)
-						xx = true;
-				}
-				
-				if (xx)
-					v.x += dir;
-				else
-					v.y += dir;
-				if (this.getCaseByPosition(v) != null && this.getCaseByPosition(v).walkable)
-					e.transform.translate(v);
-			}
-			
 			e.paint(g2);
 		}
 		if (character != null)

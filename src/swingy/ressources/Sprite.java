@@ -54,8 +54,8 @@ public class Sprite{
 		DRAG.setWidth(38);
 		
 		ESCAPE = new Sprite("res/sprites/escape.png", 5, 2, 0);
-		ESCAPE.setHeight(100);
-		ESCAPE.setWidth(100);
+		ESCAPE.setHeight(200);
+		ESCAPE.setWidth(200);
 	}
 	
 	public Image	img;

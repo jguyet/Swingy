@@ -72,6 +72,12 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 			return ;
 		}
 		
+		if (keysDown.containsKey(KeyEvent.VK_R)) {
+			Utils.writeHeros(App.Characters);
+			App.loopController.stop();
+			return ;
+		}
+		
 		Vector2 tmp = new Vector2(entity.transform.position.x, entity.transform.position.y);
 		
 		if (keysDown.containsKey(KeyEvent.VK_RIGHT)
@@ -93,6 +99,12 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 		if (App.worldMap.getCaseByPosition(tmp) == null || App.worldMap.getCaseByPosition(tmp).isWalkable()) {
 			Vector2 movement = new Vector2(entity.transform.position.x - tmp.x, entity.transform.position.y - tmp.y);
 			if (!(movement.x == 0 && movement.y == 0)) {
+				
+				if (App.worldMap.getCaseByPosition(entity.transform.position) != null)
+					App.worldMap.getCaseByPosition(entity.transform.position).removeEntity();
+				if (App.worldMap.getCaseByPosition(tmp) != null)
+					App.worldMap.getCaseByPosition(tmp).addEntity(entity);
+				
 				entity.transform.translate(tmp);
 				App.worldMap.setStartWidth(App.worldMap.getStartWidth() + (movement.x * App.SCALE));
 				App.worldMap.setStartHeight(App.worldMap.getStartHeight() + (movement.y * App.SCALE));
