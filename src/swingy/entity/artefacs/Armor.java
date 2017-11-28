@@ -1,18 +1,30 @@
 package swingy.entity.artefacs;
 
 import swingy.entity.statistics.Statistics;
+import swingy.enums.EArtefact;
 import swingy.enums.EStatElement;
+import swingy.ressources.Sprite;
 
 public class Armor extends Artefact{
 
-	private static Statistics stats = new Statistics();
+	private static Sprite	  sprite = Sprite.ARMOR;
 	
-	static {
-		stats.addStat(EStatElement.Defense, 2);
+	public Armor(String name, int level, Statistics stats, boolean equiped) {
+		super(name, stats, level, equiped);
 	}
 	
-	public Armor() {
-		super(stats);
+	public Armor(String name, int level, String stats, boolean equiped) {
+		super(name, stats, level, equiped);
+	}
+
+	@Override
+	public Sprite getSprite() {
+		return Armor.sprite;
+	}
+
+	@Override
+	public EArtefact getType() {
+		return EArtefact.ARMOR;
 	}
 	
 }

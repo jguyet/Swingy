@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import swingy.App;
 import swingy.entity.artefacs.Armor;
+import swingy.entity.artefacs.Artefact;
 import swingy.entity.artefacs.Helm;
 import swingy.entity.artefacs.Weapon;
 import swingy.entity.statistics.Statistics;
@@ -18,21 +19,16 @@ import swingy.utils.Vector2;
 
 public class Drag extends Entity {
 	private static Sprite		sprite = Sprite.DRAG;
-	private static Statistics	baseStats = new Statistics(
-															EStatElement.Attack, 5,
-															EStatElement.Defense, 0,
-															EStatElement.HitPoint, 30
-															);
-	private static ArrayList<Class<?>> drops = new ArrayList<Class<?>>();
+	private static ArrayList<Artefact> drops = new ArrayList<Artefact>();
 	
 	static {
-		drops.add(Armor.class);
-		drops.add(Helm.class);
-		drops.add(Weapon.class);
+		drops.add(new Armor("DragAmor", 10, new Statistics(EStatElement.Defense, 8), false));
+		drops.add(new Helm("DragHelm", 15, new Statistics(EStatElement.HitPoint, 20), false));
+		drops.add(new Weapon("DragSword", 15, new Statistics(EStatElement.Attack, 15), false));
 	}
 	
-	public Drag(String name, Vector2 position) {
-		super(name, baseStats, position);
+	public Drag(String name, Statistics stats, Vector2 position) {
+		super(name, stats, position);
 		this.transform.direction = 3;
 	}
 
@@ -66,7 +62,7 @@ public class Drag extends Entity {
 	}
 
 	@Override
-	public ArrayList<Class<?>> getDrops() {
+	public ArrayList<Artefact> getDrops() {
 		return Drag.drops;
 	}
 }

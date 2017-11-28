@@ -1,7 +1,10 @@
 package swingy.views.factory;
 
+import java.util.ArrayList;
+
 import swingy.App;
 import swingy.entity.Entity;
+import swingy.entity.artefacs.Artefact;
 import swingy.enums.EModule;
 import swingy.views.IView;
 import swingy.views.SwingyConsoleView;
@@ -45,9 +48,9 @@ public class ViewFactory {
 		return null;
 	}
 	
-	public static EndFightMenuComponent newEndFightMenuComponent(EModule type, IView v, Entity p1, Entity p2, boolean hasWin) {
+	public static EndFightMenuComponent newEndFightMenuComponent(EModule type, IView v, Entity p1, Entity p2, boolean hasWin, ArrayList<Artefact> drops) {
 		if (type == EModule.GUI) {
-			return (new EndFightMenuComponent((SwingyGUIGameView)v, p1, p2, hasWin));
+			return (new EndFightMenuComponent((SwingyGUIGameView)v, p1, p2, hasWin, drops));
 		}
 		return null;
 	}

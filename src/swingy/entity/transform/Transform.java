@@ -5,6 +5,7 @@ import swingy.utils.Vector2;
 public class Transform {
 
 	public Vector2	position;
+	public Vector2	lastPosition;
 	
 	/*
 	 *   678
@@ -14,6 +15,7 @@ public class Transform {
 	public byte		direction = 1;
 	
 	public Transform(Vector2 position) {
+		this.lastPosition = this.position;
 		this.position = position;
 	}
 	
@@ -26,6 +28,11 @@ public class Transform {
 			direction = 3;
 		if (newposition.y < position.y)
 			direction = 7;
+		this.lastPosition = this.position;
 		this.position = newposition;
+	}
+	
+	public void setToLastPosition() {
+		this.position = this.lastPosition;
 	}
 }

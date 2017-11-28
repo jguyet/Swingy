@@ -8,6 +8,7 @@ import swingy.App;
 import swingy.entity.Drag;
 import swingy.entity.Entity;
 import swingy.entity.Rabit;
+import swingy.entity.monsters.MonsterGradesFactory;
 import swingy.model.ISwingyModel;
 import swingy.ressources.Sprite;
 import swingy.utils.Utils;
@@ -15,6 +16,7 @@ import swingy.utils.Vector2;
 
 public class WorldMap implements ISwingyModel {
 
+	private int size;
 	private int width;
 	private int height;
 	
@@ -33,6 +35,7 @@ public class WorldMap implements ISwingyModel {
 	public WorldMap(int size) {
 		this.width = size;
 		this.height = size;
+		this.size = size;
 		intitalize();
 	}
 	
@@ -202,27 +205,7 @@ public class WorldMap implements ISwingyModel {
 		
 		for (int i = 0; i < number; i++) {
 			
-			Entity r = null;
-			
-			if (Utils.getRandomValue(1, 2) == 1) {
-				r = new Drag("Drag", new Vector2(0,0));
-			}
-			else
-				r = new Rabit("Rabit", new Vector2(0,0));
-			
-			int maxlevel = App.Character.getLevel() + 3;
-			int minlevel = 1;
-			
-			int level = Utils.getRandomValue(minlevel, maxlevel);
-			
-			r.setLevel(level);
-			
-			/*int attack = Utils.getRandomValue(2, level);
-			int def = Utils.getRandomValue(0, level / 10);
-			int hit = Utils.getRandomValue(2, level);
-			r.stats.addStat(EStatElement.Attack, attack);
-			r.stats.addStat(EStatElement.Defense, def);
-			r.stats.addStat(EStatElement.HitPoint, hit);*/
+			Entity r = MonsterGradesFactory.getRandomEntityGradeByWorldMapSize(this.size);
 			
 			r.initRandomPositionToMap(this);
 			this.addMonster(r);

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import swingy.App;
 import swingy.entity.artefacs.Armor;
+import swingy.entity.artefacs.Artefact;
 import swingy.entity.artefacs.Helm;
 import swingy.entity.artefacs.Weapon;
 import swingy.entity.statistics.Statistics;
@@ -18,21 +19,16 @@ import swingy.utils.Vector2;
 
 public class Rabit extends Entity {
 	private static Sprite		sprite = Sprite.RABIT;
-	private static Statistics	baseStats = new Statistics(
-															EStatElement.Attack, 2,
-															EStatElement.Defense, 0,
-															EStatElement.HitPoint, 4
-															);
-	private static ArrayList<Class<?>> drops = new ArrayList<Class<?>>();
+	private static ArrayList<Artefact> drops = new ArrayList<Artefact>();
 	
 	static {
-		drops.add(Armor.class);
-		drops.add(Helm.class);
-		drops.add(Weapon.class);
+		drops.add(new Armor("RabitAmor", 2, new Statistics(EStatElement.Defense, 2), false));
+		drops.add(new Helm("RabitHelm", 2, new Statistics(EStatElement.HitPoint, 4), false));
+		drops.add(new Weapon("RabitSword", 3, new Statistics(EStatElement.Attack, 5), false));
 	}
 	
-	public Rabit(String name, Vector2 position) {
-		super(name, baseStats, position);
+	public Rabit(String name, Statistics stats, Vector2 position) {
+		super(name, stats, position);
 		this.transform.direction = 3;
 	}
 	
@@ -109,7 +105,7 @@ public class Rabit extends Entity {
 	}
 
 	@Override
-	public ArrayList<Class<?>> getDrops() {
+	public ArrayList<Artefact> getDrops() {
 		return Rabit.drops;
 	}
 }

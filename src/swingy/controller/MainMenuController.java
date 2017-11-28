@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -16,11 +17,13 @@ import swingy.entity.Entity;
 import swingy.entity.Magician;
 import swingy.entity.Princess;
 import swingy.entity.Warrior;
+import swingy.entity.factory.EntityFactory;
 import swingy.enums.EModule;
 import swingy.enums.EStatElement;
 import swingy.enums.GameConsoleLabel;
 import swingy.utils.Utils;
 import swingy.utils.Vector2;
+import swingy.validation.ValidatorEntity;
 import swingy.views.SwingyGUIMainMenuView;
 import swingy.views.components.HerosCreationComponent;
 import swingy.views.components.HerosFormComponent;
@@ -52,12 +55,13 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 			swingyTitlePanel = new SwingyTitleComponent((SwingyGUIMainMenuView)App.mainmenuview);
 			miniMenuCreateHero = new HerosCreationComponent((SwingyGUIMainMenuView)App.mainmenuview);
 			miniMenuSelectionHero = new HerosSelectionComponent((SwingyGUIMainMenuView)App.mainmenuview);
+			heroTable = new HerosTableComponent((SwingyGUIMainMenuView)App.mainmenuview);
 			
 			miniMenuCreateHero.getButton().addActionListener(this);
 			miniMenuSelectionHero.getButton().addActionListener(this);
 			heroFormPanel.getButton().addActionListener(this);
 			
-			this.heroTable = new HerosTableComponent((SwingyGUIMainMenuView)App.mainmenuview);
+			heroTable.addDeleteActionListener(new EventdeleteRowButton());
 			
 			this.swingyTitlePanel.paintModel();
 			this.heroTable.paintModel();
@@ -78,11 +82,28 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 			if (App.modelInterface.getinstance() == EModule.GUI) {
 				this.heroTable.remove();
 				this.heroTable = new HerosTableComponent((SwingyGUIMainMenuView)App.mainmenuview);
+				this.heroTable.addDeleteActionListener(new EventdeleteRowButton());
 				
 				for (Entity e : this.characters) {
+					
+					String weapon = "no weapon";
+					String helm = "no helm";
+					String armor = "no armor";
+					
+					if (e.getWeapon() != null) {
+						weapon = e.getWeapon().getName();
+					}
+					if (e.getHelm() != null) {
+						helm = e.getHelm().getName();
+					}
+					if (e.getArmor() != null) {
+						armor = e.getArmor().getName();
+					}
+					
 					this.heroTable.addnewHero(e.getName(), e.classe(), e.getLevel(), e.getExp(),
-							e.stats.getStat(EStatElement.Attack),
-							e.stats.getStat(EStatElement.Defense), "...", "...");
+							e.getStat(EStatElement.HitPoint),
+							e.getStat(EStatElement.Attack),
+							e.getStat(EStatElement.Defense), weapon, armor, helm);
 				}
 				this.heroTable.paintModel();
 				this.heroTable.addListSelectionListener(this);
@@ -183,7 +204,7 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 				App.Characters.add(new CrazyHero(namegetter.name, new Vector2(0,0)));
 				break ;
 		}
-		Utils.writeHeros(App.Characters);
+		EntityFactory.saveCharacters();
 		this.createConsoleHero = false;
 	}
 	
@@ -300,23 +321,38 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 			} else {
 				closeHeroPanelCreation();
 			}
-		} else if (button.getText().equalsIgnoreCase(this.heroFormPanel.getButton().getText()) && this.heroFormPanel.getName().length() > 0) {
+		} else if (button.getText().equalsIgnoreCase(this.heroFormPanel.getButton().getText())) {
+			
+			String characterName = this.heroFormPanel.getName().trim();
+			
+			if (characterName.length() <= 0) {
+				JOptionPane.showMessageDialog(App.window, "Hero name is empty");
+				return ;
+			}
+			Entity en = null;
+			
 			switch (((String)this.heroFormPanel.getComboBox().getSelectedItem())) {
 				case "Magician":
-					App.Characters.add(new Magician(this.heroFormPanel.getName(), new Vector2(0,0)));
+					en = new Magician(characterName, new Vector2(0,0));
 					break ;
 				case "Princess":
-					App.Characters.add(new Princess(this.heroFormPanel.getName(), new Vector2(0,0)));
+					en = new Princess(characterName, new Vector2(0,0));
 					break ;
 				case "Warrior":
-					App.Characters.add(new Warrior(this.heroFormPanel.getName(), new Vector2(0,0)));
+					en = new Warrior(characterName, new Vector2(0,0));
 					break ;
 				case "Crazy":
-					App.Characters.add(new CrazyHero(this.heroFormPanel.getName(), new Vector2(0,0)));
+					en = new CrazyHero(characterName, new Vector2(0,0));
 					break ;
 			}
-			Utils.writeHeros(App.Characters);
-			closeHeroPanelCreation();
+			if (e != null && ValidatorEntity.validateEntity(en)) {
+				App.Characters.add(en);
+				EntityFactory.saveCharacters();
+				closeHeroPanelCreation();
+			} else {
+				JOptionPane.showMessageDialog(App.window, "Validation failure due name length minimal is 3 and length maximal is 50 characters.");
+				return ;
+			}
 		}
 	}
 	
@@ -353,4 +389,21 @@ public class MainMenuController implements ISwingyController, ActionListener, Li
 
 	@Override
 	public void keyReleased(KeyEvent e) {}
+	
+	
+	private class EventdeleteRowButton implements ActionListener {
+		
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        	
+        	int id = heroTable.getTable().getSelectedRow();
+        	
+        	Entity en = characters.get(id);
+        	
+        	if (en != null) {
+        		App.Characters.remove(en);
+        		EntityFactory.saveCharacters();
+        	}
+        }
+    }
 }

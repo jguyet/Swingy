@@ -117,5 +117,15 @@ public class SwingyGUIGameView extends JPanel implements IView{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void removeKeyListener(KeyListener l) {
+		this.win.removeKeyListener(l);
+	}
+
+	@Override
+	public void removeMouseListener(MouseListener m) {
+		this.win.removeMouseListener(m);
+	}
 
 }

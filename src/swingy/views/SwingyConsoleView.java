@@ -75,4 +75,14 @@ public class SwingyConsoleView implements IView{
 		System.out.print(txt);
 	}
 
+	@Override
+	public void removeKeyListener(KeyListener l) {
+		this.keyl = null;
+	}
+
+	@Override
+	public void removeMouseListener(MouseListener m) {
+		this.mousel = null;
+	}
+
 }

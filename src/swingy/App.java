@@ -2,6 +2,10 @@ package swingy;
 
 import java.util.ArrayList;
 
+import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import swingy.controller.CharacterController;
 import swingy.controller.GameController;
 import swingy.controller.MainMenuController;
@@ -10,12 +14,12 @@ import swingy.controller.loop.LoopMotor;
 import swingy.controller.loop.MotorGraphics;
 import swingy.entity.Entity;
 import swingy.entity.Magician;
+import swingy.entity.factory.EntityFactory;
 import swingy.enums.EModule;
 import swingy.exceptions.ModuleException;
 import swingy.module.IModule;
 import swingy.module.factory.ModuleFactory;
 import swingy.ressources.Sprite;
-import swingy.utils.Utils;
 import swingy.utils.Vector2;
 import swingy.views.IView;
 import swingy.views.Window;
@@ -59,6 +63,23 @@ public class App {
 	public static ArrayList<Entity>		Characters = new ArrayList<Entity>();
 	
 	public static String				arg;
+	
+	static {
+		/**
+		 * SET OFF hibernate logs
+		 */
+		Logger orgHibernateLogger = (Logger) LoggerFactory.getLogger("org.hibernate.validator.util.Version");
+		orgHibernateLogger.setLevel(Level.OFF); // or whatever level you want
+		
+		Logger defaultTraversableResolver = (Logger) LoggerFactory.getLogger("org.hibernate.validator.engine.resolver.DefaultTraversableResolver");
+		defaultTraversableResolver.setLevel(Level.OFF); // or whatever level you want
+		
+		Logger validationXmlParser = (Logger) LoggerFactory.getLogger("org.hibernate.validator.xml.ValidationXmlParser");
+		validationXmlParser.setLevel(Level.OFF); // or whatever level you want
+		
+		Logger hb = (Logger) LoggerFactory.getLogger("org.hibernate");
+		hb.setLevel(Level.OFF); // or whatever level you want
+	}
 
 	/**
 	 * Main of swingy
@@ -66,6 +87,7 @@ public class App {
 	 * @throws ModuleException
 	 */
 	public static void main(String[] args) throws ModuleException {
+		
 		if (args.length != 1)
 			throw new ModuleException();
 		arg = args[0];
@@ -87,7 +109,7 @@ public class App {
 		lastFPS = System.currentTimeMillis();
 		if (App.modelInterface.getinstance() == EModule.GUI)
 			Sprite.LOAD();
-		App.Characters = Utils.loadHeros();
+		EntityFactory.loadCharacters();
 		loadMainInterfaces();
 		loopMainMenu();
 		return true;
@@ -182,7 +204,6 @@ public class App {
 	public static void loopApp() {
 		//init gameview
 		gameview.init();
-		
 		gameview.println("Spawn to map");
 		
 		gameController = new GameController();
@@ -204,6 +225,13 @@ public class App {
 			
 		});
 		loopController.start();
+		
+		characterController.destroy();
+		
+		gameController = null;
+		worldMapController = null;
+		characterController = null;
+		
 		if (toMainMenu) {
 			toMainMenu = false;
 			start(arg);

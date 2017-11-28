@@ -10,6 +10,7 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.JPanel;
 
 import swingy.entity.Entity;
+import swingy.entity.artefacs.Artefact;
 import swingy.enums.EStatElement;
 import swingy.model.ISwingyModel;
 import swingy.utils.Utils;
@@ -67,8 +68,7 @@ public class GameBannerInterfaceComponent extends JPanel implements ISwingyModel
 		    g2.setColor(Color.BLACK);
 		    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 			        RenderingHints.VALUE_ANTIALIAS_ON);
-			Font font = new Font("Serif", Font.PLAIN, 15);
-			g2.setFont(font);
+			g2.setFont(new Font("Serif", Font.PLAIN, 15));
 			g2.drawString("Name : ", 0, 15);
 			g2.drawString(name, 50, 15);
 			
@@ -101,6 +101,39 @@ public class GameBannerInterfaceComponent extends JPanel implements ISwingyModel
 			g2.setColor(Color.BLACK);
 			g2.drawLine(0, this.view.getHeight() - 10, 550, this.view.getHeight() - 10);
 			g2.drawString("W = up, D = right, A = left, S = down, ESC = menu, ENTER = accept, DELETE = refuse", 0, this.view.getHeight() - 10);
+			
+			g2.setColor(Color.GRAY);
+			g2.fillRect(0, 60, 50, 50);
+			
+			Artefact helm = character.getHelm();
+			Artefact armor = character.getArmor();
+			Artefact weapon = character.getWeapon();
+			
+			if (helm != null) {
+				helm.getSprite().paint(g2, 0, 60);
+				
+				g2.setFont(new Font("Serif", Font.PLAIN, 15));
+				g2.setColor(Color.WHITE);
+				g2.drawString("lvl(" + helm.getLevel() + ")", 0, 130);
+			}
+			g2.setColor(Color.GRAY);
+			g2.fillRect(60, 60, 50, 50);
+			if (armor != null) {
+				armor.getSprite().paint(g2, 60, 60);
+				
+				g2.setFont(new Font("Serif", Font.PLAIN, 15));
+				g2.setColor(Color.WHITE);
+				g2.drawString("lvl(" + armor.getLevel() + ")", 60, 130);
+			}
+			g2.setColor(Color.GRAY);
+			g2.fillRect(120, 60, 50, 50);
+			if (weapon != null) {
+				weapon.getSprite().paint(g2, 120, 60);
+				
+				g2.setFont(new Font("Serif", Font.PLAIN, 15));
+				g2.setColor(Color.WHITE);
+				g2.drawString("lvl(" + weapon.getLevel() + ")", 120, 130);
+			}
 			
 	    }
 	}

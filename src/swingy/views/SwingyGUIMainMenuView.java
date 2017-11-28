@@ -3,6 +3,8 @@ package swingy.views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -190,6 +192,16 @@ public class SwingyGUIMainMenuView extends JPanel implements IView{
 	@Override
 	public void print(String txt) {
 		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void removeKeyListener(KeyListener l) {
+		this.win.removeKeyListener(l);
+	}
+
+	@Override
+	public void removeMouseListener(MouseListener m) {
+		this.win.removeMouseListener(m);
 	}
 
 }

@@ -8,13 +8,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
-import swingy.entity.CrazyHero;
 import swingy.entity.Entity;
-import swingy.entity.Magician;
-import swingy.entity.Princess;
-import swingy.entity.Warrior;
+import swingy.entity.artefacs.Armor;
+import swingy.entity.artefacs.Artefact;
+import swingy.entity.artefacs.Helm;
+import swingy.entity.artefacs.Weapon;
+import swingy.entity.artefacs.factory.ArtefactFactory;
+import swingy.entity.factory.EntityFactory;
 import swingy.validation.ValidatorEntity;
 
 public class Utils {
@@ -46,6 +50,13 @@ public class Utils {
 		return (characters);
 	}
 	
+	public class CustomComparator implements Comparator<Entity> {
+		@Override
+		public int compare(Entity object1, Entity object2) {
+	        return object1.getLevel() > object2.getLevel() ? 1 : 0;
+	    }
+	}
+	
 	public static ArrayList<Entity> loadHeros() {
 		ArrayList<String> list = readHeros();
 		ArrayList<Entity> entList = new ArrayList<Entity>();
@@ -54,39 +65,53 @@ public class Utils {
 			
 			String[] pattern = c.split(" ");
 			
-			if (pattern.length != 4)
+			if (pattern.length < 4) {
 				continue ;
+			}
 			
 			Entity e = null;
-			
 			int level = -1;
 			long exp = -1;
 			
-			try { level = Integer.parseInt(pattern[2]); } catch (NumberFormatException a) { a.printStackTrace(); }
-			try { exp = Long.parseLong(pattern[3]); } catch (NumberFormatException a) { a.printStackTrace(); }
-			
-			switch (pattern[1]) {
-			case "Magician":
-				e = new Magician(pattern[0], new Vector2());
-				break ;
-			case "Princess":
-				e = new Princess(pattern[0], new Vector2());
-				break ;
-			case "Warrior":
-				e = new Warrior(pattern[0], new Vector2());
-				break ;
-			case "CrazyHero":
-				e = new CrazyHero(pattern[0], new Vector2());
-				break ;
+			try { level = Integer.parseInt(pattern[2]); } catch (NumberFormatException a) {
+				System.out.println("\033[31m{Syntax level error on character line \"" + pattern[0] + "\"}\033[00m");
 			}
+			try { exp = Long.parseLong(pattern[3]); } catch (NumberFormatException a) {
+				System.out.println("\033[31m{Syntax exp error on character line \"" + pattern[0] + "\"}\033[00m");
+			}
+			
+			e = EntityFactory.createPlayableCharacterByClassName(pattern[1], pattern[0]);
+
 			if (e != null) {
+				//LEVEL
 				e.setLevel(level);
 				e.setExp(exp);
 				
-				if (ValidatorEntity.validateEntity(e))
-					entList.add(e);
+				//ARTEFACTS
+				for (int i = 4; i < pattern.length; i++) {
+					Artefact a = ArtefactFactory.createArtefactByPattern(pattern[i]);
+					
+					if (a == null) {
+						System.out.println("\033[31m{Syntax artefact error on character line \"" + e.getName() + "\"}\033[00m");
+						continue ;
+					}
+					e.inventory.add(a);
+					if (a.equiped) {
+						e.equipe(a);
+					}
+				}
+				entList.add(e);
 			}
 		}
+		entList = ValidatorEntity.valideEntityList(entList);	
+		//Sort list level > level
+		Collections.sort(entList, new Comparator<Entity>() {
+			@Override
+			public int compare(Entity object1, Entity object2) {
+		        return object2.getLevel() - object1.getLevel();
+		    }
+		});
+		
 		return (entList);
 	}
 	

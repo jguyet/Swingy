@@ -1,6 +1,10 @@
 package swingy.entity;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 
 import swingy.App;
@@ -9,21 +13,23 @@ import swingy.entity.artefacs.Artefact;
 import swingy.entity.artefacs.Helm;
 import swingy.entity.artefacs.Weapon;
 import swingy.entity.statistics.Statistics;
-import swingy.enums.EPlayableCharacter;
 import swingy.enums.EStatElement;
 import swingy.ressources.Sprite;
 import swingy.utils.Vector2;
 
-public class Princess extends Entity{
-	private static Sprite		sprite = Sprite.PRINCESS;
-	private static Statistics	baseStats = new Statistics(
-															EStatElement.Attack, 2,
-															EStatElement.Defense, 6,
-															EStatElement.HitPoint, 4
-															);
+public class Spider extends Entity {
+	private static Sprite		sprite = Sprite.SPIDER;
+	private static ArrayList<Artefact> drops = new ArrayList<Artefact>();
 	
-	public Princess(String name, Vector2 position) {
-		super(name, baseStats, position);
+	static {
+		drops.add(new Armor("SpiderAmor", 5, new Statistics(EStatElement.Defense, 5), false));
+		drops.add(new Helm("SpiderHelm", 6, new Statistics(EStatElement.HitPoint, 8), false));
+		drops.add(new Weapon("SpiderSword", 4, new Statistics(EStatElement.Attack, 10), false));
+	}
+	
+	public Spider(String name, Statistics stats, Vector2 position) {
+		super(name, stats, position);
+		this.transform.direction = 3;
 	}
 	
 	private int[]		animation;
@@ -32,6 +38,7 @@ public class Princess extends Entity{
 
 	@Override
 	public void paint(Graphics g) {
+		Graphics2D g2 = (Graphics2D)g;
 		
 		switch (this.transform.direction) {
 		case 1://east
@@ -72,6 +79,15 @@ public class Princess extends Entity{
 		int px = App.worldMap.getStartWidth() + (this.transform.position.x * App.SCALE) - (sprite.getWidth() / 2);
 		int py = App.worldMap.getStartHeight() + (this.transform.position.y * App.SCALE) - (sprite.getHeight() / 2);
 		
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		        RenderingHints.VALUE_ANTIALIAS_ON);
+		Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);
+		g.setFont(font);
+		g.setColor(Color.YELLOW);
+		g.drawString(this.getName(), px + 2, py - 15);
+		g.setColor(Color.WHITE);
+		g.drawString("lvl " + this.getLevel(), px, py);
+		
 		sprite.paint(g, px, py);
 		if (!(lastpos.x == this.transform.position.x && lastpos.y == this.transform.position.y))
 			animid++;
@@ -80,17 +96,16 @@ public class Princess extends Entity{
 	
 	@Override
 	public String classe() {
-		return EPlayableCharacter.PRINCESS.getName();
+		return "Spider";
 	}
 	
 	@Override
 	public Sprite getSprite() {
-		return Princess.sprite;
+		return Spider.sprite;
 	}
 
 	@Override
 	public ArrayList<Artefact> getDrops() {
-		// TODO Auto-generated method stub
-		return null;
+		return Spider.drops;
 	}
 }

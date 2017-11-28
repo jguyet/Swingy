@@ -13,15 +13,43 @@ import swingy.utils.Vector2;
 public class Sprite{
 	
 	public static Sprite TITLE;
+	
+	/**
+	 * Map grounds
+	 */
 	public static Sprite grounds;
+	
+	/**
+	 * Characters
+	 */
 	public static Sprite CRAZY;
 	public static Sprite MAGE;
 	public static Sprite PRINCESS;
-	public static Sprite RABIT;
 	public static Sprite WARRIOR;
+	
+	/**
+	 * Monsters
+	 */
+	public static Sprite RABIT;
 	public static Sprite DRAG;
+	public static Sprite SPIDER;
+	
+	
+	/**
+	 * Button
+	 */
 	public static Sprite ESCAPE;
 	
+	/**
+	 * Artefacts
+	 */
+	public static Sprite ARMOR;
+	public static Sprite HELM;
+	public static Sprite WEAPON;
+	
+	/**
+	 * Static method for load all res
+	 */
 	public static void LOAD() {
 		TITLE = new Sprite("res/sprites/swingy.png", 1, 1, 0);
 		
@@ -56,6 +84,23 @@ public class Sprite{
 		ESCAPE = new Sprite("res/sprites/escape.png", 5, 2, 0);
 		ESCAPE.setHeight(200);
 		ESCAPE.setWidth(200);
+		
+		ARMOR = new Sprite("res/sprites/artefacts/armor.png", 1, 1, 0);
+		ARMOR.setHeight(50);
+		ARMOR.setWidth(50);
+		
+		HELM = new Sprite("res/sprites/artefacts/helm.png", 1, 1, 0);
+		HELM.setHeight(50);
+		HELM.setWidth(50);
+		
+		WEAPON = new Sprite("res/sprites/artefacts/weapon.png", 1, 1, 0);
+		WEAPON.setHeight(50);
+		WEAPON.setWidth(50);
+		
+		SPIDER = new Sprite("res/sprites/spider.png", 7, 4, 0);
+		SPIDER.setHeight(38);
+		SPIDER.setWidth(38);
+		
 	}
 	
 	public Image	img;

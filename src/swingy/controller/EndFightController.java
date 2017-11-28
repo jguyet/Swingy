@@ -2,9 +2,11 @@ package swingy.controller;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import swingy.App;
 import swingy.entity.Entity;
+import swingy.entity.artefacs.Artefact;
 import swingy.enums.EModule;
 import swingy.views.components.EndFightMenuComponent;
 import swingy.views.factory.ViewFactory;
@@ -16,9 +18,9 @@ public class EndFightController implements ISwingyController, KeyListener {
 	private boolean					wait = true;
 	private boolean					hasWin;
 	
-	public EndFightController(Entity winner, Entity looser, boolean hasWin) {
+	public EndFightController(Entity winner, Entity looser, boolean hasWin, ArrayList<Artefact> drops) {
 		this.hasWin = hasWin;
-		this.view = ViewFactory.newEndFightMenuComponent(App.modelInterface.getinstance(), App.gameview, winner, looser, hasWin);
+		this.view = ViewFactory.newEndFightMenuComponent(App.modelInterface.getinstance(), App.gameview, winner, looser, hasWin, drops);
 		
 		if (App.modelInterface.getinstance() == EModule.GUI) {
 			App.window.addKeyListener(this);
@@ -28,6 +30,7 @@ public class EndFightController implements ISwingyController, KeyListener {
 	@Override
 	public void control() {
 		
+		//GUI
 		if (App.modelInterface.getinstance() == EModule.GUI) {
 			while (wait) {
 				try{ Thread.sleep(100); } catch (Exception e) {}
@@ -35,11 +38,14 @@ public class EndFightController implements ISwingyController, KeyListener {
 			this.view.removeModel();
 			App.window.removeKeyListener(this);
 		}
-		
-		if (hasWin) {
-			App.gameview.println("You Win !");
-		} else {
-			App.gameview.println("You loose !@@");
+		else
+		//CONSOLE
+		{
+			if (hasWin) {
+				App.gameview.println("You Win !");
+			} else {
+				App.gameview.println("You loose !@@");
+			}
 		}
 	}
 

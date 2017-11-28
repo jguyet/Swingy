@@ -17,11 +17,11 @@
   <!-- ########################################################################## -->
   <!-- LIBRARIES DEPENDENCIES -->
   <dependencies>
-	 <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-simple</artifactId>
-        <version>1.7.5</version>
-    </dependency>
+    <dependency>
+	    <groupId>ch.qos.logback</groupId><!-- with org.slf4j -->
+	    <artifactId>logback-classic</artifactId>
+	    <version>1.2.3</version>
+	</dependency>
   	<dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-validator-annotation-processor</artifactId>

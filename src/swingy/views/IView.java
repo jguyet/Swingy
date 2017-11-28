@@ -22,6 +22,10 @@ public interface IView {
 	
 	public void addMouseListener(MouseListener m);
 	
+	public void removeKeyListener(KeyListener l);
+	
+	public void removeMouseListener(MouseListener m);
+	
 	public void waitResponse(ResponseListener rep);
 	
 	public void println(String txt);

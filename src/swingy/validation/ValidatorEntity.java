@@ -1,5 +1,6 @@
 package swingy.validation;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import javax.validation.Configuration;
@@ -27,15 +28,29 @@ public class ValidatorEntity {
 		Set<ConstraintViolation<Entity>> constraintViolations = validator.validate(e);
 		 
 		if (constraintViolations.size() > 0 ) {
-			System.out.println("Impossible de valider les donnees du bean : Error information -> ");
+			System.out.println("\033[31m{");
+			System.out.println("	Impossible de valider les donnees du bean <" + e.getClass().getName() + ">(\"" + e.getName() + "\") : Error information -> ");
 			for (ConstraintViolation<Entity> contraintes : constraintViolations) {
-				System.out.println("\033[31m" + contraintes.getPropertyPath() + " " + contraintes.getMessage() + "\033[00m");
+				System.out.println("	" + contraintes.getPropertyPath() + " " + contraintes.getMessage() + "");
 			}
-			System.out.println("}");
+			System.out.println("}\033[00m");
 			return false;
 		}
 		
-		System.out.println("Les donnees du bean <" + e.getClass().getName() + "> sont valides");
+		System.out.println("\033[32m{Les donnees du bean <" + e.getClass().getName() + ">(\"" + e.getName() + "\") sont valides}\033[00m");
 		return true;
+	}
+	
+	public static ArrayList<Entity> valideEntityList(ArrayList<Entity> list) {
+		ArrayList<Entity> entities = new ArrayList<Entity>();
+		
+		System.out.println("=========== Test des Beans ============");
+		for (Entity e : list) {
+			if (ValidatorEntity.validateEntity(e)) {
+				entities.add(e);
+			}
+		}
+		System.out.println("=======================================");
+		return (entities);
 	}
 }

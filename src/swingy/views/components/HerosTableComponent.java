@@ -2,12 +2,18 @@ package swingy.views.components;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionListener;
 
+import swingy.App;
 import swingy.model.ISwingyModel;
 import swingy.views.SwingyGUIMainMenuView;
 
@@ -21,12 +27,16 @@ public class HerosTableComponent extends JPanel implements ISwingyModel {
 	//##########################################################
 	// JTABLE
 	private Object[][]				contents =  new Object[0][0];
-	private String[]				entetes = {"Name", "Class", "Level", "Experience", "Attack", "Defense", "Weapon", "Armor"};
+	private String[]				entetes = {"Name", "Class", "Level", "Experience", "HitPoint", "Attack", "Defense", "Weapon", "Armor", "Helm"};
 	private JTable					tab;
 	//##########################################################
 	// VIEW
 	private SwingyGUIMainMenuView	view;
 	//##########################################################
+	
+	private JPopupMenu				popupMenu = new JPopupMenu();
+	private JMenuItem				deleteItem = new JMenuItem("Delete");
+	private ActionListener			deleteItemActionListener = null;
 	
 	
 	public HerosTableComponent(SwingyGUIMainMenuView view) {
@@ -40,6 +50,7 @@ public class HerosTableComponent extends JPanel implements ISwingyModel {
 	 */
 	@SuppressWarnings("serial")
 	public void paintModel() {
+		
 		//add characters contents and title table and scrollbar
 		this.tab = new JTable(contents, entetes) {
 			//SET NOT EDITABLE COLUMNS AND ROWS
@@ -47,6 +58,7 @@ public class HerosTableComponent extends JPanel implements ISwingyModel {
 		};
 		this.add(this.tab.getTableHeader(), BorderLayout.NORTH);
 		this.tab.setPreferredScrollableViewportSize(new Dimension(TAB_WIDTH,TAB_HEIGHT));
+		
 		JScrollPane pane = new JScrollPane(this.tab);
 		this.add(pane, BorderLayout.SOUTH);
 		//add to view
@@ -56,6 +68,11 @@ public class HerosTableComponent extends JPanel implements ISwingyModel {
 		this.view.update();
 		this.setVisible(false);
 		this.setVisible(true);
+		
+		popupMenu.add(deleteItem);
+		deleteItem.addActionListener(deleteItemActionListener);
+		
+		this.tab.setComponentPopupMenu(popupMenu);
 	}
 	
 	public void remove() {
@@ -63,10 +80,10 @@ public class HerosTableComponent extends JPanel implements ISwingyModel {
 		this.view.update();
 	}
 	
-	public void addnewHero(String name, String classe, int level, long exp, int attack, int defense, String weapon, String armor) {
+	public void addnewHero(String name, String classe, int level, long exp, int hitPoint, int attack, int defense, String weapon, String armor, String helm) {
 		//{"John", "Warrior", 100, 10000, 5, 0, "Short bow", "unknow"}
 		incrementContents();
-		contents[contents.length - 1] = new Object[] {name, classe, level, exp, attack, defense, weapon, armor};
+		contents[contents.length - 1] = new Object[] {name, classe, level, exp, hitPoint, attack, defense, weapon, armor, helm};
 	}
 	
 	private void incrementContents() {
@@ -87,6 +104,29 @@ public class HerosTableComponent extends JPanel implements ISwingyModel {
 	
 	public Object[] getRow(int id) {
 		return (this.contents[id]);
+	}
+	
+	public void deleteRow(int id) {
+		if (this.contents.length > id) {
+			Object[][] n = new Object[contents.length][];
+			int o = 0;
+			for (int i = 0; i < contents.length; i++) {
+				
+				if (i == id)
+					continue ;
+				
+				n[o] = contents[i];
+				o++;
+			}
+			contents = n;
+		}
+		
+		this.remove();
+		this.paintModel();
+	}
+	
+	public void addDeleteActionListener(ActionListener a) {
+		this.deleteItemActionListener = a;
 	}
 	
 	/**

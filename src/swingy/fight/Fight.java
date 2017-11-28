@@ -1,11 +1,13 @@
 package swingy.fight;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 import swingy.App;
 import swingy.entity.Entity;
+import swingy.entity.artefacs.Armor;
 import swingy.entity.artefacs.Artefact;
+import swingy.entity.artefacs.Helm;
+import swingy.entity.artefacs.Weapon;
 import swingy.enums.EStatElement;
 import swingy.utils.Utils;
 
@@ -16,6 +18,7 @@ public class Fight {
 	
 	private Entity winner;
 	private Entity looser;
+	private ArrayList<Artefact> drops;
 	
 	
 	public Fight(Entity fighter1, Entity fighter2) {
@@ -69,7 +72,6 @@ public class Fight {
 			App.gameview.println("\033[00mYou has loose fight\033[00m");
 		}
 		App.gameview.println("\033[00m===========================\033[00m");
-		this.winner.inventory.addAll(endfight(this.winner, this.looser));
 		return (winner);
 	}
 	
@@ -97,25 +99,41 @@ public class Fight {
 	}
 	
 	public ArrayList<Artefact> endfight(Entity winner, Entity looser) {
-		ArrayList<Class<?>> possibleDrops = looser.getDrops();
+		ArrayList<Artefact> possibleDrops = looser.getDrops();
 		ArrayList<Artefact> drops = new ArrayList<Artefact>();
 		
-		for (Class<?> drop : possibleDrops) {
+		for (Artefact drop : possibleDrops) {
 			
 			int chancedrop = Utils.getRandomValue(1, 3);
 			
 			if (chancedrop == 1) {
-				try {
-				Constructor<?> constructor = drop.getConstructors()[0];
+				Artefact a = null;
 				
-				constructor.setAccessible(true);
-				Artefact a = (Artefact)constructor.newInstance();
-				drops.add(a);
-				
-				System.out.println("\033[31m" + a.getClass().getName() + " dropped \033[00m");
-				
-				} catch (Exception e) {
-					e.printStackTrace();
+				switch (drop.getType())
+				{
+					case ARMOR:
+						a = new Armor(drop.getName(), drop.getLevel(), drop.stats, false);
+						
+						if (winner.getArmor() == null || winner.getArmor().getLevel() < a.getLevel()) {
+							winner.equipeArmor((Armor)a);
+						}
+						break ;
+					case HELM:
+						a = new Helm(drop.getName(), drop.getLevel(), drop.stats, false);
+						if (winner.getHelm() == null || winner.getHelm().getLevel() < a.getLevel()) {
+							winner.equipeHelm((Helm)a);
+						}
+						break ;
+					case WEAPON:
+						a = new Weapon(drop.getName(), drop.getLevel(), drop.stats, false);
+						if (winner.getWeapon() == null || winner.getWeapon().getLevel() < a.getLevel()) {
+							winner.equipeWeapon((Weapon)a);
+						}
+						break ;
+				}
+				if (a != null) {
+					drops.add(a);
+					App.gameview.println("\033[31m Artefact \"" + a.getName() + "\" dropped \033[00m");
 				}
 			}
 		}

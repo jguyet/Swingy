@@ -7,15 +7,21 @@ import java.util.Map;
 
 import swingy.App;
 import swingy.entity.Entity;
+import swingy.entity.artefacs.Armor;
+import swingy.entity.artefacs.Artefact;
+import swingy.entity.artefacs.Helm;
+import swingy.entity.artefacs.Weapon;
+import swingy.entity.factory.EntityFactory;
 import swingy.enums.EModule;
 import swingy.enums.EStatElement;
 import swingy.enums.GameConsoleLabel;
-import swingy.utils.Utils;
 import swingy.utils.Vector2;
 import swingy.views.events.ResponseListener;
 
 public class CharacterController implements ISwingyController, KeyListener, ResponseListener {
 
+	public boolean wait = false;
+	
 	private Entity					entity;
 	private Map<Integer, KeyEvent>	keysDown = new HashMap<Integer, KeyEvent>();
 	
@@ -26,22 +32,29 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 		//printMap();
 	}
 	
+	public void destroy() {
+		App.gameview.removeKeyListener(this);
+	}
+	
 	//##################################################################
 	// CONTROLER METHOD
 	//##################################################################
 	
 	@Override
 	public void control() {
+		
+		if (wait)
+			return ;
 		//control entity movements and modif
 		
 		//wait console response
 		App.gameview.print(GameConsoleLabel.CHOISE_YOUR_DIRECTION.lbl());
 		App.gameview.waitResponse(this);
-		mouseCharacter();
+		moveCharacter();
 		
 		if (App.worldMap.getCaseByPosition(this.entity.transform.position) == null) {
 			this.entity.addExp(1000);
-			Utils.writeHeros(App.Characters);
+			EntityFactory.saveCharacters();
 			App.loopController.stop();
 		}
 	}
@@ -64,7 +77,7 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 		}
 	}
 	
-	private void mouseCharacter() {
+	private void moveCharacter() {
 		
 		if (keysDown.containsKey(KeyEvent.VK_ESCAPE)) {
 			
@@ -73,7 +86,7 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 		}
 		
 		if (keysDown.containsKey(KeyEvent.VK_R)) {
-			Utils.writeHeros(App.Characters);
+			EntityFactory.saveCharacters();
 			App.loopController.stop();
 			return ;
 		}
@@ -139,7 +152,7 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 	@Override
 	public void onResponse(String response) {
 		
-		switch (response.toUpperCase()) {
+		switch (response.split(" ")[0].toUpperCase()) {
 			case "NORTH" :
 			case "UP":
 				keysDown.put(KeyEvent.VK_UP, null);
@@ -159,6 +172,45 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 			case "DEBUGMAP":
 				this.printMap();
 				break ;
+			case "INVENTORY":
+				App.gameview.println("Inventory information :");
+				
+				for (Artefact a: App.Character.inventory) {
+					
+					String equiped = "";
+					
+					if (a.equiped)
+						equiped = " (Equiped)";
+					
+					App.gameview.println("(" + App.Character.inventory.indexOf(a) + ") " + a.getName() + " lvl(" + a.getLevel() + ")" + equiped);
+				}
+				break ;
+			case "EQUIPE":
+				
+				try {
+					int id = Integer.parseInt(response.split(" ")[1]);
+					Artefact a = App.Character.inventory.get(id);
+					
+					switch (a.getType()) {
+					case WEAPON:
+						App.Character.equipeWeapon((Weapon)a);
+						break ;
+					case HELM:
+						App.Character.equipeHelm((Helm)a);
+						break ;
+					case ARMOR:
+						App.Character.equipeArmor((Armor)a);
+						break ;
+					}
+					
+					App.gameview.println(a.getType().getString() + " equiped.");
+					EntityFactory.saveCharacters();
+					
+				} catch (Exception e) {
+					App.gameview.println("Syntax error id not fund");
+				}
+				
+				break ;
 			case "STATS":
 				App.gameview.println("Statistics information :");
 				App.gameview.println("Name : " + App.Character.getName());
@@ -170,7 +222,7 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 				break ;
 			case "BACKTOMENU":
 				App.gameview.println("=====================================");
-				Utils.writeHeros(App.Characters);
+				EntityFactory.saveCharacters();
 				if (App.window != null) {
 					App.window.setVisible(false);
 				}
@@ -180,9 +232,11 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 				break ;
 			case "HELP":
 				App.gameview.println("=====================================");
-				App.gameview.println("STATS      print character statistics");
-				App.gameview.println("BACKTOMENU return to main menu");
-				App.gameview.println("QUIT       quit the game");
+				App.gameview.println("STATS       print character statistics");
+				App.gameview.println("BACKTOMENU  return to main menu");
+				App.gameview.println("INVENTORY   print inventory");
+				App.gameview.println("EQUIPE <id> equipe artefact id");
+				App.gameview.println("QUIT        quit the game");
 				App.gameview.println("=====================================");
 				break ;
 			case "QUIT":

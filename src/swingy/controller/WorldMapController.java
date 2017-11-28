@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import swingy.App;
 import swingy.entity.Entity;
+import swingy.entity.artefacs.Artefact;
+import swingy.entity.factory.EntityFactory;
 import swingy.enums.EModule;
+import swingy.enums.GameConsoleLabel;
 import swingy.fight.Fight;
 import swingy.utils.Utils;
 import swingy.views.components.EndFightMenuComponent;
@@ -37,52 +40,61 @@ public class WorldMapController implements ISwingyController{
 		return (controller.hasSelectedGoFight());
 	}
 	
-	private void waitResponseEndFightPanel(Entity winner, Entity looser, boolean hasWin) {
+	private void waitResponseEndFightPanel(Entity winner, Entity looser, boolean hasWin, ArrayList<Artefact> drops) {
 		
-		EndFightController endFightController = new EndFightController(winner, looser, hasWin);
+		EndFightController endFightController = new EndFightController(winner, looser, hasWin, drops);
 		endFightController.control();
 	}
 	
 	private void goFight(Entity character, Entity monster) {
-		
 		boolean gofight = waitResponseStartFight(character, monster);
 		
-		if (gofight == false && Utils.getRandomValue(1, 100) < 30) {
+		App.characterController.wait = true;
+		//50 % of chance escaping fight
+		if (gofight == false && Utils.getRandomValue(1, 100) < 50) {
 			//TODO ANIMATION
 			gofight = true;
 		}
 		
 		if (gofight) {
-			
-			Fight fight = new Fight(App.Character, monster);
+			Fight fight = new Fight(character, monster);
 			
 			Entity winner = fight.startFight();
 			
-			if (winner == App.Character) {
+			if (winner == character) {
 			
-				character.addExp(100L);
-				waitResponseEndFightPanel(character, monster, true);
+				ArrayList<Artefact> drops = fight.endfight(character, monster);
+				character.inventory.addAll(drops);
 				
+				character.addExp(100L);
+				
+				waitResponseEndFightPanel(character, monster, true, drops);
 				Case c = world.getCaseByPosition(monster.transform.position);
 				if (c != null)
 					c.removeEntity();
 				world.removeMonster(monster);
-			} else {
-				waitResponseEndFightPanel(monster, character, false);
+				EntityFactory.saveCharacters();
 				
-				Utils.writeHeros(App.Characters);
-				App.loopController.stop();
+			} else {
+				waitResponseEndFightPanel(monster, character, false, new ArrayList<Artefact>());
+				
+				EntityFactory.saveCharacters();
 				App.gameview.println("Respawn to center of the map");
+				App.loopController.stop();
+				
+				return ;
 			}
 		} else {
-			for (int i = 0; i < 3; i++) {
-				monster.moveRandom(world);
-			}
+			//escapefight
+			character.transform.setToLastPosition();
+			App.gameview.println("Fight escape with success");
+			App.gameview.println("\033[32m" + GameConsoleLabel.INDICE_CHARACTER_POSITION.lbl() + character.transform.position.x + " y :" + character.transform.position.y + "\033[00m");
 		}
+		if (App.characterController != null)
+			App.characterController.wait = false;
 	}
 	
 	private void checkMapCollision(Entity character) {
-		
 		final ArrayList<Entity> list = new ArrayList<Entity>(this.world.getMonsters());
 		
 		for (Entity e : list) {
@@ -99,7 +111,6 @@ public class WorldMapController implements ISwingyController{
 		Entity character = App.Character;
 		
 		checkMapCollision(character);
-		
 		if (App.modelInterface.getinstance() == EModule.GUI) {
 			for (Entity e : this.world.getMonsters()) {
 				

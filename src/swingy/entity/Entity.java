@@ -6,7 +6,10 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import swingy.entity.artefacs.Armor;
 import swingy.entity.artefacs.Artefact;
+import swingy.entity.artefacs.Helm;
+import swingy.entity.artefacs.Weapon;
 import swingy.entity.statistics.Statistics;
 import swingy.entity.transform.Transform;
 import swingy.enums.EStatElement;
@@ -28,11 +31,15 @@ public abstract class Entity implements ISwingyModel {
 	public ArrayList<Artefact> inventory = new ArrayList<Artefact>();
 	public int			fightHitPoint = 0;
 	
+	private Weapon		weapon;
+	private Helm		helm;
+	private Armor		armor;
+	
 	/**
 	 * PRIVATE VARS
 	 */
 	@NotNull
-	@Size(max=50,min=1)
+	@Size(max=50,min=3)
 	private String		name;
 	@Min(value=1)
 	private int			level = 1;
@@ -88,10 +95,59 @@ public abstract class Entity implements ISwingyModel {
 	public int getStat(EStatElement e) {
 		int baseStat = this.stats.getStat(e);
 		
-		for (Artefact a : this.inventory) {
-			baseStat += a.stats.getStat(e);
-		}
+		if (this.weapon != null)
+			baseStat += this.weapon.stats.getStat(e);
+		if (this.helm != null)
+			baseStat += this.helm.stats.getStat(e);
+		if (this.armor != null)
+			baseStat += this.armor.stats.getStat(e);
 		return baseStat;
+	}
+	
+	public Weapon getWeapon() {
+		return (this.weapon);
+	}
+	
+	public Armor getArmor() {
+		return (this.armor);
+	}
+	
+	public Helm getHelm() {
+		return (this.helm);
+	}
+	
+	public void equipeWeapon(Weapon w) {
+		if (this.weapon != null) {
+			this.weapon.equiped = false;
+		}
+		this.weapon = w;
+		w.equiped = true;
+	}
+	
+	public void equipeArmor(Armor a) {
+		if (this.armor != null) {
+			this.armor.equiped = false;
+		}
+		this.armor = a;
+		a.equiped = true;
+	}
+	
+	public void equipeHelm(Helm h) {
+		if (this.helm != null) {
+			this.helm.equiped = false;
+		}
+		this.helm = h;
+		h.equiped = true;
+	}
+	
+	public void equipe(Artefact a) {
+		if (a instanceof Weapon) {
+			this.equipeWeapon((Weapon)a);
+		} else if (a instanceof Helm) {
+			this.equipeHelm((Helm)a);
+		} else if (a instanceof Armor) {
+			this.equipeArmor((Armor)a);
+		}
 	}
 	
 	public boolean addExp(long exp) {
@@ -108,7 +164,21 @@ public abstract class Entity implements ISwingyModel {
 	}
 	
 	public String toString() {
-		return (this.getName() + " " + this.classe() + " " + this.level + " " + this.exp + "\n");
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(this.name).append(" ")
+		.append(this.classe()).append(" ")
+		.append(this.level).append(" ")
+		.append(this.exp);
+		
+		for (Artefact a : this.inventory) {
+			str.append(" ").append(a.toString());
+		}
+		
+		str.append("\n");
+		
+		return (str.toString());
 	}
 	
 	public void moveRandom(WorldMap world) {
@@ -137,5 +207,5 @@ public abstract class Entity implements ISwingyModel {
 	
 	public abstract Sprite getSprite();
 	
-	public abstract ArrayList<Class<?>> getDrops();
+	public abstract ArrayList<Artefact> getDrops();
 }
