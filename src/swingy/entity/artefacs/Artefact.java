@@ -14,25 +14,29 @@ public abstract class Artefact {
 	
 	private String		name;
 	private int			level;
+	private int			pictureId;
 	
-	public Artefact(String name, Statistics stats, int level) {
+	public Artefact(String name, Statistics stats, int level, int pictureId) {
 		this.name = name;
 		this.stats = stats;
 		this.level = level;
+		this.pictureId = pictureId;
 	}
 	
-	public Artefact(String name, Statistics stats, int level, boolean equiped) {
+	public Artefact(String name, Statistics stats, int level, boolean equiped, int pictureId) {
 		this.name = name;
 		this.stats = stats;
 		this.level = level;
 		this.equiped = equiped;
+		this.pictureId = pictureId;
 	}
 	
-	public Artefact(String name, String stats, int level, boolean equiped) {
+	public Artefact(String name, String stats, int level, boolean equiped, int pictureId) {
 		this.name = name;
 		this.stats = parseStats(stats);
 		this.level = level;
 		this.equiped = equiped;
+		this.pictureId = pictureId;
 	}
 	
 	public String getName() {
@@ -41,6 +45,10 @@ public abstract class Artefact {
 	
 	public int getLevel() {
 		return (this.level);
+	}
+	
+	public int getPictureId() {
+		return (this.pictureId);
 	}
 	
 	public String toString() {
@@ -61,7 +69,8 @@ public abstract class Artefact {
 		}
 		
 		str.append(",");
-		str.append(this.equiped);
+		str.append(this.equiped).append(",");
+		str.append(this.pictureId);
 		return (str.toString());
 	}
 	

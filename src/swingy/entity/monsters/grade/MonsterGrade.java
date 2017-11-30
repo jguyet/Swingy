@@ -1,4 +1,4 @@
-package swingy.entity.monsters;
+package swingy.entity.monsters.grade;
 
 import swingy.entity.statistics.Statistics;
 
@@ -11,5 +11,4 @@ public class MonsterGrade {
 		this.level = level;
 		this.stats = stats;
 	}
-	
 }

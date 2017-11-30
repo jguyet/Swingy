@@ -66,7 +66,11 @@ public class WorldMapController implements ISwingyController{
 				ArrayList<Artefact> drops = fight.endfight(character, monster);
 				character.inventory.addAll(drops);
 				
-				character.addExp(100L);
+				App.gameview.println("+ 100 exp");
+				if (character.addExp(100L)) {
+					App.gameview.println("Level UP !");
+				}
+				
 				
 				waitResponseEndFightPanel(character, monster, true, drops);
 				Case c = world.getCaseByPosition(monster.transform.position);

@@ -104,7 +104,7 @@ public class Fight {
 		
 		for (Artefact drop : possibleDrops) {
 			
-			int chancedrop = Utils.getRandomValue(1, 3);
+			int chancedrop = Utils.getRandomValue(1, 6);
 			
 			if (chancedrop == 1) {
 				Artefact a = null;
@@ -112,20 +112,20 @@ public class Fight {
 				switch (drop.getType())
 				{
 					case ARMOR:
-						a = new Armor(drop.getName(), drop.getLevel(), drop.stats, false);
+						a = new Armor(drop.getName(), drop.getLevel(), drop.stats, false, drop.getPictureId());
 						
 						if (winner.getArmor() == null || winner.getArmor().getLevel() < a.getLevel()) {
 							winner.equipeArmor((Armor)a);
 						}
 						break ;
 					case HELM:
-						a = new Helm(drop.getName(), drop.getLevel(), drop.stats, false);
+						a = new Helm(drop.getName(), drop.getLevel(), drop.stats, false, drop.getPictureId());
 						if (winner.getHelm() == null || winner.getHelm().getLevel() < a.getLevel()) {
 							winner.equipeHelm((Helm)a);
 						}
 						break ;
 					case WEAPON:
-						a = new Weapon(drop.getName(), drop.getLevel(), drop.stats, false);
+						a = new Weapon(drop.getName(), drop.getLevel(), drop.stats, false, drop.getPictureId());
 						if (winner.getWeapon() == null || winner.getWeapon().getLevel() < a.getLevel()) {
 							winner.equipeWeapon((Weapon)a);
 						}

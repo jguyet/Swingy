@@ -215,10 +215,16 @@ public class CharacterController implements ISwingyController, KeyListener, Resp
 				App.gameview.println("Statistics information :");
 				App.gameview.println("Name : " + App.Character.getName());
 				App.gameview.println("Level : " + App.Character.getLevel());
-				App.gameview.println("Exp : " + App.Character.getExp());
+				App.gameview.println("Exp : " + App.Character.getExpLevel(App.Character.getLevel()) + "/[" + App.Character.getExp() + "]/" + App.Character.getExpLevel(App.Character.getLevel() + 1));
 				App.gameview.println("HitPoint : " + App.Character.getStat(EStatElement.HitPoint));
 				App.gameview.println("Attack : " + App.Character.getStat(EStatElement.Attack));
 				App.gameview.println("Defense : " + App.Character.getStat(EStatElement.Defense));
+				break ;
+			case "%XP%":
+				long current = App.Character.getExp() - App.Character.getExpLevel(App.Character.getLevel());
+				long fn = App.Character.getExpLevel(App.Character.getLevel() + 1) - App.Character.getExpLevel(App.Character.getLevel());
+				long percent = 100 * current / fn;
+				App.gameview.println(percent + "%");
 				break ;
 			case "BACKTOMENU":
 				App.gameview.println("=====================================");

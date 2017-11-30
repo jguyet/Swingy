@@ -102,9 +102,9 @@ public class EndFightMenuComponent extends JPanel implements ISwingyModel {
 		
 		int i = 0;
 		for (Artefact a : drops) {
-			Sprite s = a.getSprite();
 			
-			s.paint(g2, px + 10 + (i * 60), py + 70);
+			Sprite.ITEMS.posid = a.getPictureId();
+			Sprite.ITEMS.paint(g2, px + 10 + (i * 60), py + 70);
 			g2.drawString(a.getName(), px + 10 + (i * 60), py + 70 + 70);
 			
 			i++;

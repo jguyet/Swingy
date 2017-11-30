@@ -1,4 +1,4 @@
-package swingy.entity;
+package swingy.entity.monsters;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 
 import swingy.App;
+import swingy.entity.Entity;
 import swingy.entity.artefacs.Armor;
 import swingy.entity.artefacs.Artefact;
 import swingy.entity.artefacs.Helm;
@@ -22,9 +23,9 @@ public class Spider extends Entity {
 	private static ArrayList<Artefact> drops = new ArrayList<Artefact>();
 	
 	static {
-		drops.add(new Armor("SpiderAmor", 5, new Statistics(EStatElement.Defense, 5), false));
-		drops.add(new Helm("SpiderHelm", 6, new Statistics(EStatElement.HitPoint, 8), false));
-		drops.add(new Weapon("SpiderSword", 4, new Statistics(EStatElement.Attack, 10), false));
+		drops.add(new Armor("SpiderAmor", 5, new Statistics(EStatElement.Defense, 5), false, 392));
+		drops.add(new Helm("SpiderHelm", 6, new Statistics(EStatElement.HitPoint, 8), false, 400));
+		drops.add(new Weapon("SpiderBat", 4, new Statistics(EStatElement.Attack, 10), false, 246));
 	}
 	
 	public Spider(String name, Statistics stats, Vector2 position) {

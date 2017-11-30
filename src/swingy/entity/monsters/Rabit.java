@@ -1,4 +1,4 @@
-package swingy.entity;
+package swingy.entity.monsters;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 
 import swingy.App;
+import swingy.entity.Entity;
 import swingy.entity.artefacs.Armor;
 import swingy.entity.artefacs.Artefact;
 import swingy.entity.artefacs.Helm;
@@ -22,9 +23,9 @@ public class Rabit extends Entity {
 	private static ArrayList<Artefact> drops = new ArrayList<Artefact>();
 	
 	static {
-		drops.add(new Armor("RabitAmor", 2, new Statistics(EStatElement.Defense, 2), false));
-		drops.add(new Helm("RabitHelm", 2, new Statistics(EStatElement.HitPoint, 4), false));
-		drops.add(new Weapon("RabitSword", 3, new Statistics(EStatElement.Attack, 5), false));
+		drops.add(new Armor("RabitAmor", 2, new Statistics(EStatElement.Defense, 2), false, 394));
+		drops.add(new Helm("RabitHelm", 2, new Statistics(EStatElement.HitPoint, 4), false, 402));
+		drops.add(new Weapon("RabitSword", 3, new Statistics(EStatElement.Attack, 5), false, 197));
 	}
 	
 	public Rabit(String name, Statistics stats, Vector2 position) {

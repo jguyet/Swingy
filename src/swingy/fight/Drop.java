@@ -18,11 +18,13 @@ public class Drop {
 	private int			level;
 	private Statistics	min;
 	private Statistics	max;
+	private int			pictureId;
 
-	public Drop(EArtefact type, String name, int level, Statistics min, Statistics max) {
+	public Drop(EArtefact type, String name, int level, Statistics min, Statistics max, int pictureId) {
 		
 		this.min = min;
 		this.max = max;
+		this.pictureId = pictureId;
 	}
 	
 	public Artefact generateArtefact() {
@@ -32,13 +34,13 @@ public class Drop {
 		
 		switch (type) {
 			case WEAPON:
-				a = new Weapon(name, level, n, false);
+				a = new Weapon(name, level, n, false, this.pictureId);
 				break ;
 			case HELM:
-				a = new Helm(name, level, n, false);
+				a = new Helm(name, level, n, false, this.pictureId);
 				break ;
 			case ARMOR:
-				a = new Armor(name, level, n, false);
+				a = new Armor(name, level, n, false, this.pictureId);
 				break ;
 		}
 		
@@ -53,5 +55,53 @@ public class Drop {
 		}
 		a.stats = n;
 		return (a);
+	}
+
+	public EArtefact getType() {
+		return type;
+	}
+
+	public void setType(EArtefact type) {
+		this.type = type;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public Statistics getMin() {
+		return min;
+	}
+
+	public void setMin(Statistics min) {
+		this.min = min;
+	}
+
+	public Statistics getMax() {
+		return max;
+	}
+
+	public void setMax(Statistics max) {
+		this.max = max;
+	}
+
+	public int getPictureId() {
+		return pictureId;
+	}
+
+	public void setPictureId(int pictureId) {
+		this.pictureId = pictureId;
 	}
 }

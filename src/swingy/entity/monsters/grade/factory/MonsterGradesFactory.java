@@ -1,11 +1,13 @@
-package swingy.entity.monsters;
+package swingy.entity.monsters.grade.factory;
 
 import java.util.ArrayList;
 
-import swingy.entity.Drag;
 import swingy.entity.Entity;
-import swingy.entity.Rabit;
-import swingy.entity.Spider;
+import swingy.entity.monsters.Drag;
+import swingy.entity.monsters.Rabit;
+import swingy.entity.monsters.Sirene;
+import swingy.entity.monsters.Spider;
+import swingy.entity.monsters.grade.MonsterGrade;
 import swingy.entity.statistics.Statistics;
 import swingy.enums.EStatElement;
 import swingy.utils.Utils;
@@ -157,10 +159,59 @@ public class MonsterGradesFactory {
 		return (r);
 	}
 	
+	/**
+	 * SIRENE GRADES
+	 */
+	
+	private static ArrayList<MonsterGrade> sireneGrades = new ArrayList<MonsterGrade>();
+	
+	static {
+		//Grade 1
+		sireneGrades.add(0, new MonsterGrade(12, new Statistics(
+				EStatElement.Attack, 13,
+				EStatElement.Defense, 0,
+				EStatElement.HitPoint, 15
+				)));
+		//Grade 2
+		sireneGrades.add(1 ,new MonsterGrade(16, new Statistics(
+				EStatElement.Attack, 13,
+				EStatElement.Defense, 0,
+				EStatElement.HitPoint, 15
+				)));
+		//Grade 3
+		sireneGrades.add(2, new MonsterGrade(19, new Statistics(
+				EStatElement.Attack, 13,
+				EStatElement.Defense, 0,
+				EStatElement.HitPoint, 15
+				)));
+		//Grade 4
+		sireneGrades.add(3, new MonsterGrade(24, new Statistics(
+				EStatElement.Attack, 13,
+				EStatElement.Defense, 0,
+				EStatElement.HitPoint, 15
+				)));
+		//Grade 5
+		sireneGrades.add(4, new MonsterGrade(29, new Statistics(
+				EStatElement.Attack, 13,
+				EStatElement.Defense, 0,
+				EStatElement.HitPoint, 30
+				)));
+	}
+	
+	public static Sirene getRandomSirene() {
+		MonsterGrade g = sireneGrades.get(Utils.getRandomValue(0, sireneGrades.size() - 1));
+		
+		Sirene r = new Sirene("Sirene", g.stats, new Vector2(0,0));
+		
+		r.setLevel(g.level);
+		return (r);
+	}
+	
 	public static Entity getRandomEntityGradeByWorldMapSize(int size) {
 		MonsterGrade rabit = rabitGrades.get(0);
 		MonsterGrade drag = dragGrades.get(0);
 		MonsterGrade spider = spiderGrades.get(0);
+		MonsterGrade sirene = sireneGrades.get(0);
 		
 		ArrayList<Entity> lst = new ArrayList<Entity>();
 		
@@ -174,6 +225,10 @@ public class MonsterGradesFactory {
 		
 		for (int i = 0; i < (size / spider.level) && i < 100; i++) {
 			lst.add(getRandomSpider());
+		}
+		
+		for (int i = 0; i < (size / sirene.level) && i < 100; i++) {
+			lst.add(getRandomSirene());
 		}
 		
 		return (lst.get(Utils.getRandomValue(1, lst.size() - 1)));

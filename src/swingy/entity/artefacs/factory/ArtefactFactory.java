@@ -18,6 +18,7 @@ public class ArtefactFactory {
 			int level = Integer.parseInt(split[2]);
 			String stats = split[3];
 			boolean equiped = split[4].equalsIgnoreCase("true") ? true : false;
+			int pictureId = Integer.parseInt(split[5]);
 			
 			EArtefact ea = EArtefact.getArtefact(className);
 			
@@ -27,11 +28,11 @@ public class ArtefactFactory {
 			switch (ea)
 			{
 				case HELM:
-					return new Helm(name, level, stats, equiped);
+					return new Helm(name, level, stats, equiped, pictureId);
 				case ARMOR:
-					return new Armor(name, level, stats, equiped);
+					return new Armor(name, level, stats, equiped, pictureId);
 				case WEAPON:
-					return new Weapon(name, level, stats, equiped);
+					return new Weapon(name, level, stats, equiped, pictureId);
 			}
 		} catch (Exception e) {
 			return null;

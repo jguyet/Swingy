@@ -6,6 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import swingy.App;
 import swingy.entity.artefacs.Armor;
 import swingy.entity.artefacs.Artefact;
 import swingy.entity.artefacs.Helm;
@@ -150,12 +151,16 @@ public abstract class Entity implements ISwingyModel {
 		}
 	}
 	
+	public long getExpLevel(int level) {
+		
+		return ((long)(((level)*1000) + (Math.sqrt((level) - 1)*450)));
+	}
+	
 	public boolean addExp(long exp) {
 		boolean	levelUp		= false;
 		
-		long lastLevelXp = (long) (((this.level - 1)*1000)+(Math.sqrt(this.level - 2)*450));
 		
-		while (((this.exp + exp) - lastLevelXp) > (this.level*1000)+(Math.sqrt(this.level - 1)*450)) {
+		while ((this.exp + exp) > getExpLevel(this.level + 1)) {
 			this.level++;
 			levelUp = true;
 		}

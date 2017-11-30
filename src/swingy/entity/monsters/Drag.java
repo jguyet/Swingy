@@ -1,4 +1,4 @@
-package swingy.entity;
+package swingy.entity.monsters;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 
 import swingy.App;
+import swingy.entity.Entity;
 import swingy.entity.artefacs.Armor;
 import swingy.entity.artefacs.Artefact;
 import swingy.entity.artefacs.Helm;
@@ -22,9 +23,9 @@ public class Drag extends Entity {
 	private static ArrayList<Artefact> drops = new ArrayList<Artefact>();
 	
 	static {
-		drops.add(new Armor("DragAmor", 10, new Statistics(EStatElement.Defense, 8), false));
-		drops.add(new Helm("DragHelm", 15, new Statistics(EStatElement.HitPoint, 20), false));
-		drops.add(new Weapon("DragSword", 15, new Statistics(EStatElement.Attack, 15), false));
+		drops.add(new Armor("DragAmor", 30, new Statistics(EStatElement.Defense, 12), false, 398));
+		drops.add(new Helm("DragHelm", 25, new Statistics(EStatElement.HitPoint, 80), false, 370));
+		drops.add(new Weapon("DragSword", 50, new Statistics(EStatElement.Attack, 45), false, 208));
 	}
 	
 	public Drag(String name, Statistics stats, Vector2 position) {
@@ -53,7 +54,7 @@ public class Drag extends Entity {
 	
 	@Override
 	public String classe() {
-		return "Rabit";
+		return "Drag";
 	}
 	
 	@Override

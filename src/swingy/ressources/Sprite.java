@@ -33,7 +33,7 @@ public class Sprite{
 	public static Sprite RABIT;
 	public static Sprite DRAG;
 	public static Sprite SPIDER;
-	
+	public static Sprite SIRENE;
 	
 	/**
 	 * Button
@@ -46,6 +46,8 @@ public class Sprite{
 	public static Sprite ARMOR;
 	public static Sprite HELM;
 	public static Sprite WEAPON;
+	
+	public static Sprite ITEMS;
 	
 	/**
 	 * Static method for load all res
@@ -100,6 +102,14 @@ public class Sprite{
 		SPIDER = new Sprite("res/sprites/spider.png", 7, 4, 0);
 		SPIDER.setHeight(38);
 		SPIDER.setWidth(38);
+		
+		SIRENE = new Sprite("res/sprites/sirene.png", 4, 4, 0);
+		SIRENE.setHeight(38);
+		SIRENE.setWidth(38);
+		
+		ITEMS = new Sprite("res/sprites/items.png", 14, 30, 0);
+		ITEMS.setHeight(50);
+		ITEMS.setWidth(50);
 		
 	}
 	

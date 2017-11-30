@@ -13,6 +13,7 @@ import swingy.entity.Entity;
 import swingy.entity.artefacs.Artefact;
 import swingy.enums.EStatElement;
 import swingy.model.ISwingyModel;
+import swingy.ressources.Sprite;
 import swingy.utils.Utils;
 import swingy.views.SwingyGUIGameView;
 
@@ -110,7 +111,8 @@ public class GameBannerInterfaceComponent extends JPanel implements ISwingyModel
 			Artefact weapon = character.getWeapon();
 			
 			if (helm != null) {
-				helm.getSprite().paint(g2, 0, 60);
+				Sprite.ITEMS.posid = helm.getPictureId();
+				Sprite.ITEMS.paint(g2, 0, 60);
 				
 				g2.setFont(new Font("Serif", Font.PLAIN, 15));
 				g2.setColor(Color.WHITE);
@@ -119,7 +121,8 @@ public class GameBannerInterfaceComponent extends JPanel implements ISwingyModel
 			g2.setColor(Color.GRAY);
 			g2.fillRect(60, 60, 50, 50);
 			if (armor != null) {
-				armor.getSprite().paint(g2, 60, 60);
+				Sprite.ITEMS.posid = armor.getPictureId();
+				Sprite.ITEMS.paint(g2, 60, 60);
 				
 				g2.setFont(new Font("Serif", Font.PLAIN, 15));
 				g2.setColor(Color.WHITE);
@@ -128,7 +131,8 @@ public class GameBannerInterfaceComponent extends JPanel implements ISwingyModel
 			g2.setColor(Color.GRAY);
 			g2.fillRect(120, 60, 50, 50);
 			if (weapon != null) {
-				weapon.getSprite().paint(g2, 120, 60);
+				Sprite.ITEMS.posid = weapon.getPictureId();
+				Sprite.ITEMS.paint(g2, 120, 60);
 				
 				g2.setFont(new Font("Serif", Font.PLAIN, 15));
 				g2.setColor(Color.WHITE);
