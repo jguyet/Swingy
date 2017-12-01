@@ -13,10 +13,7 @@ import java.util.Comparator;
 import java.util.Random;
 
 import swingy.entity.Entity;
-import swingy.entity.artefacs.Armor;
 import swingy.entity.artefacs.Artefact;
-import swingy.entity.artefacs.Helm;
-import swingy.entity.artefacs.Weapon;
 import swingy.entity.artefacs.factory.ArtefactFactory;
 import swingy.entity.factory.EntityFactory;
 import swingy.validation.ValidatorEntity;

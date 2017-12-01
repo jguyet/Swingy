@@ -6,10 +6,7 @@ import java.util.ArrayList;
 import javax.validation.constraints.Null;
 
 import swingy.App;
-import swingy.entity.artefacs.Armor;
 import swingy.entity.artefacs.Artefact;
-import swingy.entity.artefacs.Helm;
-import swingy.entity.artefacs.Weapon;
 import swingy.entity.statistics.Statistics;
 import swingy.enums.EPlayableCharacter;
 import swingy.enums.EStatElement;

@@ -6,8 +6,6 @@ import java.util.ArrayList;
 
 import swingy.App;
 import swingy.entity.Entity;
-import swingy.entity.monsters.Drag;
-import swingy.entity.monsters.Rabit;
 import swingy.entity.monsters.grade.factory.MonsterGradesFactory;
 import swingy.model.ISwingyModel;
 import swingy.ressources.Sprite;

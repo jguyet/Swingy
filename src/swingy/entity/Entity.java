@@ -6,7 +6,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import swingy.App;
 import swingy.entity.artefacs.Armor;
 import swingy.entity.artefacs.Artefact;
 import swingy.entity.artefacs.Helm;

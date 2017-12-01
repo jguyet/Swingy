@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import swingy.model.ISwingyModel;
-import swingy.utils.Utils;
 import swingy.views.events.ResponseListener;
 
 public class SwingyGUIGameView extends JPanel implements IView{

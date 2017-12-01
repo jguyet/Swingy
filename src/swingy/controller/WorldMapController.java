@@ -10,9 +10,6 @@ import swingy.enums.EModule;
 import swingy.enums.GameConsoleLabel;
 import swingy.fight.Fight;
 import swingy.utils.Utils;
-import swingy.views.components.EndFightMenuComponent;
-import swingy.views.components.FightStartMenuComponent;
-import swingy.views.factory.ViewFactory;
 import swingy.world.WorldMap;
 import swingy.world.WorldMap.Case;
 

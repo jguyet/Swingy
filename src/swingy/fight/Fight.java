@@ -17,8 +17,8 @@ public class Fight {
 	private Entity fighter2;
 	
 	private Entity winner;
+	@SuppressWarnings("unused")
 	private Entity looser;
-	private ArrayList<Artefact> drops;
 	
 	
 	public Fight(Entity fighter1, Entity fighter2) {

@@ -19,6 +19,7 @@ public class StartFightController implements ISwingyController, MouseListener, K
 	private boolean wait = true;
 	private boolean goFight = false;
 	
+	@SuppressWarnings("unused")
 	private Entity	p1;
 	private Entity	p2;
 	

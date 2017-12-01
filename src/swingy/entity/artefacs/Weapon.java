@@ -2,7 +2,6 @@ package swingy.entity.artefacs;
 
 import swingy.entity.statistics.Statistics;
 import swingy.enums.EArtefact;
-import swingy.enums.EStatElement;
 import swingy.ressources.Sprite;
 
 public class Weapon extends Artefact{

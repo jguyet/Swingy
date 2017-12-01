@@ -21,7 +21,6 @@ import swingy.entity.factory.EntityFactory;
 import swingy.enums.EModule;
 import swingy.enums.EStatElement;
 import swingy.enums.GameConsoleLabel;
-import swingy.utils.Utils;
 import swingy.utils.Vector2;
 import swingy.validation.ValidatorEntity;
 import swingy.views.SwingyGUIMainMenuView;
